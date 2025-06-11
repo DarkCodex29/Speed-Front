@@ -1,0 +1,19 @@
+@media (max-width: 425px) {
+  .label-custom {
+    width: 100% !important;
+  }
+  .content-form-control {
+    flex-direction: column;
+  }
+}
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.not-visible {
+  opacity: 0;
+}
+.visible {
+  opacity: 1;
+}

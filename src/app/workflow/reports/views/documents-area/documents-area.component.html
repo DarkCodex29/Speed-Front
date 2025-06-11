@@ -1,0 +1,188 @@
+<div class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Documentos por Area</h4>
+    </div>
+  </div>
+  <div class="card-body" [formGroup]="requestForm">
+    <div class="accordion mb-3" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="false"
+            aria-controls="collapseOne"
+          >
+            Panel de Búsqueda
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Area Creación:</div>
+                  <div class="content-control px-0">
+                    <hdc-select
+                      class="w-100"
+                      [items]="areasCreacion"
+                      [valueKey]="'id'"
+                      formControlName="idAreaCreacion"
+                      [valueLabel]="'nombre'"
+                      [lock]="false"
+                      customReactiveForm
+                    ></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Tipo de Documento:</div>
+                  <div class="content-control px-0">
+                    <hdc-select
+                      class="w-100"
+                      [items]="tiposDocumento"
+                      [valueKey]="'id'"
+                      formControlName="idTipoDocumento"
+                      [valueLabel]="'nombre'"
+                      [lock]="false"
+                      customReactiveForm
+                    ></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Fecha Inicio:</div>
+                  <div class="content-control px-0">
+                    <input type="date" id="fechaInicio" class="form-control" formControlName="fechaInicio" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Número Expediente:</div>
+                  <div class="content-control px-0">
+                    <input type="text" class="form-control" formControlName="numeroExpediente" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Area Actual:</div>
+                  <div class="content-control px-0">
+                    <hdc-select
+                      class="w-100"
+                      [items]="areasActual"
+                      [valueKey]="'id'"
+                      formControlName="idAreaActual"
+                      [valueLabel]="'nombre'"
+                      [lock]="false"
+                      customReactiveForm
+                    ></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Estado Expediente:</div>
+                  <div class="content-control px-0">
+                    <hdc-select
+                      class="w-100"
+                      [items]="estadosList"
+                      [valueKey]="'id'"
+                      formControlName="estado"
+                      [valueLabel]="'nombre'"
+                      [lock]="false"
+                      customReactiveForm
+                    ></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 135px">Fecha Fin:</div>
+                  <div class="content-control px-0">
+                    <input type="date" id="fechaFin" class="form-control" formControlName="fechaFin" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px" (click)="openPrintModal()">
+                <i class="fa-solid fa-print"></i> Imprimir
+              </button>
+              <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px" (click)="cleanForm()">
+                <i class="fa-solid fa-trash-can"></i> Limpiar
+              </button>
+              <button type="button" class="ms-1 btn btn-primary btn-sm" style="height: 38px" (click)="submit()">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="documentosAreaFilter.length > 0" class="table-responsive">
+      <p-table
+        #pt
+        [value]="documentosAreaFilter"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 15, 25]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+        [globalFilterFields]="[
+          'area',
+          'nombreDocumento',
+          'numeroDocumento',
+          'fechaCreacion',
+          'asunto',
+          'numeroExpediente',
+          'estado',
+          'areaActual'
+        ]"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+        <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-end align-items-center">
+            <div class="p-input-icon-left table-input-search">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="area" style="text-align: center">Área</th>
+            <th pSortableColumn="nombreDocumento">Nombre Documento<p-sortIcon field="nombreDocumento"></p-sortIcon></th>
+            <th pSortableColumn="numeroDocumento">Número Documento<p-sortIcon field="numeroDocumento"></p-sortIcon></th>
+            <th pSortableColumn="fechaCreacion">Fecha Creación<p-sortIcon field="fechaCreacion"></p-sortIcon></th>
+            <th pSortableColumn="asunto">Asunto<p-sortIcon field="asunto"></p-sortIcon></th>
+            <th pSortableColumn="numeroExpediente">Número Expediente<p-sortIcon field="numeroExpediente"></p-sortIcon></th>
+            <th pSortableColumn="estado">Estado<p-sortIcon field="estado"></p-sortIcon></th>
+            <th pSortableColumn="areaActual">Área Actual<p-sortIcon field="areaActual"></p-sortIcon></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.area }}</td>
+            <td>{{ item.nombreDocumento }}</td>
+            <td>{{ item.numeroDocumento }}</td>
+            <td>{{ item.fechaCreacion | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.asunto }}</td>
+            <td>{{ item.numeroExpediente }}</td>
+            <td>{{ item.estado }}</td>
+            <td>{{ item.areaActual }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

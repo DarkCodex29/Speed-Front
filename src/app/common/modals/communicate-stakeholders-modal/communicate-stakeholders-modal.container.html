@@ -1,0 +1,7 @@
+<ui-communicate-stakeholders-modal
+  [idExpediente]="idExpediente"
+  [listUsers]="listUsers"
+  (clickedClose)="onClickedClose()"
+  (searchUser)="searchUsersByName($event)"
+  (save)="notifyStakeholders($event)"
+></ui-communicate-stakeholders-modal>

@@ -1,0 +1,19 @@
+<div class="modal-backdrop"></div>
+<div class="modal-container">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeModalF()">X</button>
+    <h4>Estado Solicitud: {{ dataSolicitudesGeneralesElaborado[0].estado }} ({{ getTotalCantidad() }} - {{ porcentajeElaborado }}%)</h4>
+    <ul>
+      <li class="header">
+        <span class="area">Ubicación</span>
+        <span class="cantidad">Cantidad</span>
+        <span class="porcentaje">Porcentaje</span>
+      </li>
+      <li *ngFor="let item of dataSolicitudesGeneralesElaborado" (click)="viewDetails(item.idUbicacion)">
+        <span class="area linkModal">{{ item.ubicacion }}</span>
+        <span class="cantidad linkModal">{{ item.cantidad }}</span>
+        <span class="porcentaje linkModal">{{ item.porcentaje.toFixed(2) }}%</span>
+      </li>
+    </ul>
+  </div>
+</div>

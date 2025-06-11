@@ -1,0 +1,2 @@
+function n(n,t,r){return(n||"")+(t?` ${t}`:"")+(r?` ${r}`:"")}function t(n){const t=n.target;const r=t.value;const o=t.selectionStart;const s=r.substring(0,o)+n.key+r.substring(o);return s}function r(n){return n.replace(/\s{2,}/g," ")}function o(n,t){if(t.length===1){return n[t[0]]}const r=t[0];const s=n[r];if(s){return o(s,t.slice(1))}return""}export{t as a,n as f,o as g,r};
+//# sourceMappingURL=p-23440397.js.map

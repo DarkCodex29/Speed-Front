@@ -1,0 +1,22 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="deleteDocumentLabel">Eliminar Documento</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <form [formGroup]="deleteDocumentForm" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+      <p>¿Está seguro de eliminar el documento{{ params ? ' ' + params.numero : '' }}?</p>
+      <div class="row content-form-control">
+        <div class="text-xs ps-0 label-custom" style="width: 110px">Observación:</div>
+        <div class="content-control px-0">
+          <textarea formControlName="observacion" name="" id="" style="width: 100%" rows="1"></textarea>
+        </div>
+      </div>
+      <br />
+      <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+        <button type="button" class="btn btn-primary btn-speed btn-sm" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+        <button type="submit" class="btn btn-secondary btn-speed btn-sm"><i class="fa-solid fa-check"></i> Aceptar</button>
+      </div>
+    </div>
+  </form>
+</div>

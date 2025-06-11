@@ -1,0 +1,31 @@
+<div class="status-document">
+  <div class="status-document__content-status">
+    <ng-container *ngIf="listEstados.length > 0; else noDisponibles">
+      <p>Documento Nº {{ mensaje }}</p>
+      <ul class="stepProgress" id="listStatesDocuments">
+        <li
+          class="stepProgress-item"
+          *ngFor="let item of listEstados"
+          [ngClass]="{ 'is-done': item.flujo === 'S', 'is-not-done': item.flujo !== 'S', 'current': item.situacion === 1 }"
+        >
+          <span
+            >{{ item.estado }}<br /><span>{{ formatDate(item.fecha!) }}</span></span
+          >
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noDisponibles>
+      <div *ngIf="busquedaInicial">No se encontro el documento</div>
+    </ng-template>
+  </div>
+  <div [formGroup]="requestForm">
+    <div class="request-form">
+      <div class="px-0 col-12" style="display: flex; flex-direction: row">
+        <input type="text" class="ml-1 form-control" style="width: 70%" formControlName="codigo" />
+        <button type="button" class="mx-0 btn btn-primary btn-sm" style="width: 30%; height: 38px" (click)="buscarDocumento()">
+          Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<ui-manager-dashboard
+  *ngIf="!isLoading"
+  [dataDashboard]="dataDashboard"
+  [dataSolicitudesGenerales]="dataSolicitudesGenerales"
+  [dataSolicitudesAbogadoResponsable]="dataSolicitudesAbogadoResponsable"
+  [dataClientesInternos]="dataClientesInternos"
+  [urlLegalAlDia]="urlLegalAlDia"
+  [modeloDocumentos]="modeloDocumentos"
+  (downloadFile)="onDownloadFile($event)"
+  [dataSolicitudesGeneralesElaborado]="dataSolicitudesGeneralesElaborado"
+  [grupos]="grupos"
+  [documentos]="documentos"
+></ui-manager-dashboard>

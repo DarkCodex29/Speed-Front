@@ -1,0 +1,102 @@
+<div class="card card-contract h-100 overflow-auto" *ngIf="!isLoading">
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-primary btn-sm me-1" style="height: 38px" (click)="saveProgress()">
+        <i class="fa-regular fa-floppy-disk"></i> Guardar Avance
+      </button>
+      <button class="btn btn-primary btn-sm me-1" style="height: 38px" (click)="sendRequest()">
+        <i class="fa-regular fa-floppy-disk"></i> Enviar Solicitud
+      </button>
+      <button class="btn btn-danger btn-sm" style="height: 38px" (click)="openModalEliminarSolicitud()">
+        <i class="fa-solid fa-trash-can"></i> Eliminar Solicitud
+      </button>
+    </div>
+
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Datos Generales</legend>
+      <div class="row">
+        <div class="col-12 col-md-4" [formGroup]="getFormGroup('requested')">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 100px">Proceso<span class="text-danger">(*)</span>:</div>
+            <div class="content-control px-0">
+              <hdc-select
+                class="w-100"
+                [items]="procesos"
+                [valueKey]="'id'"
+                formControlName="idProceso"
+                [valueLabel]="'nombre'"
+                [lock]="false"
+                customReactiveForm
+              ></hdc-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-5" [formGroup]="getFormGroup('process')">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 160px">Abogado Responsable<span class="text-danger">(*)</span>:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-label="nombreCompleto"
+                [items]="responsibleLawyersList"
+                formControlName="abogadoResponsable"
+                (selectedValue)="selectAbogadoResponsable($event)"
+                customReactiveForm
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="requestForm.value.requested.idProceso === enumProcessType.CONTRATO">
+          <div class="col-12 col-md-3" [formGroup]="getFormGroup('requested')">
+            <div class="row content-form-control">
+              <div class="text-xs ps-md-0" style="width: 125px">¿Aplica Penalidad?:</div>
+              <div class="content-control">
+                <span>No</span>
+                <div class="form-check form-switch d-inline-block ms-2">
+                  <input
+                    class="form-check-input pointer"
+                    type="checkbox"
+                    value="true"
+                    id="rs-aplica-penalidad"
+                    formControlName="aplicaPenalidad"
+                  />
+                </div>
+                <span>Sí</span>
+                <label class="form-check-label text-xs" for="rs-aplica-penalidad"></label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </fieldset>
+
+    <ng-container [ngSwitch]="requestForm.value.requested.idProceso">
+      <!-- CONTRATO -->
+      <ng-container *ngSwitchCase="enumProcessType.CONTRATO">
+        <app-contract-form
+          [requestForm]="requestForm"
+          [tabApplicationDocuments]="tabApplicationDocuments"
+          [tabPowers]="tabPowers"
+        ></app-contract-form>
+      </ng-container>
+
+      <!-- ADENDA -->
+      <ng-container *ngSwitchCase="enumProcessType.ADENDA">
+        <app-addendum-form
+          [requestForm]="requestForm"
+          [contractInfo]="contractInfo"
+          [tabApplicationDocuments]="tabApplicationDocuments"
+        ></app-addendum-form>
+      </ng-container>
+
+      <!-- ADENDA AUTOMATICA -->
+      <ng-container *ngSwitchCase="enumProcessType.ADENDA_AUTOMATICA">
+        <app-automatic-addendum-form
+          [requestForm]="requestForm"
+          [contractInfo]="contractInfo"
+          [tabApplicationDocuments]="tabApplicationDocuments"
+        ></app-automatic-addendum-form>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

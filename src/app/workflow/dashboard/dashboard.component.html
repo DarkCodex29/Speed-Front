@@ -1,0 +1,22 @@
+<container [ngSwitch]="typeUser">
+  <ng-container *ngSwitchCase="1">
+    <app-lawyer-dashboard [dataDashboard]="dataDashboard" [urlLegalAlDia]="urlLegalAlDia"></app-lawyer-dashboard>
+  </ng-container>
+  <ng-container *ngSwitchCase="2">
+    <app-practicing-dashboard [dataDashboard]="dataDashboard" [urlLegalAlDia]="urlLegalAlDia"></app-practicing-dashboard>
+  </ng-container>
+  <ng-container *ngSwitchCase="3">
+    <app-adc-dashboard [dataDashboard]="dataDashboard" [urlLegalAlDia]="urlLegalAlDia"></app-adc-dashboard>
+  </ng-container>
+  <ng-container *ngSwitchCase="4">
+    <app-area-dashboard [dataDashboard]="dataDashboard" [urlLegalAlDia]="urlLegalAlDia"></app-area-dashboard>
+  </ng-container>
+  <ng-container *ngSwitchCase="5">
+    <app-manager-dashboard [dataDashboard]="dataDashboard" [urlLegalAlDia]="urlLegalAlDia"></app-manager-dashboard>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <div class="p-5">
+      <h2 class="text-center">NO TIENE UN DASHBOARD DISPONIBLE</h2>
+    </div>
+  </ng-container>
+</container>

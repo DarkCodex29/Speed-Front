@@ -1,0 +1,53 @@
+.accordion-custom h3 {
+  font-family: var(--bs-body-font-family);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  color: #737272;
+  border-top: 1px solid #c29a39;
+  position: relative;
+  cursor: pointer;
+
+  button {
+    font-family: var(--bs-body-font-family);
+    font-size: 14px;
+    line-height: 19px;
+  }
+}
+
+.accordion-button-custom {
+  background-color: #fcfbf9 !important;
+}
+.accordion-custom h3:hover {
+  background: #fffcf3;
+}
+
+.accordion-button-custom:hover {
+  background: #fffcf3 !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url('../../../../assets/img/virtual-assistant/arrow-accordion-off.svg');
+}
+
+.accordion-body {
+  padding: 20px 30px 30px;
+  font-family: var(--bs-body-font-family);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  background-color: #fcfbf9 !important;
+  color: #737272;
+}
+.accordion-item {
+  background-color: #f5f6fa;
+  border: 0px;
+}
+.accordion-button.collapsed {
+  /* -webkit-border-bottom-right-radius: -webkit-calc(0.5rem - 1px); */
+  border-bottom-right-radius: 0px !important;
+  /* -webkit-border-bottom-left-radius: -webkit-calc(0.5rem - 1px); */
+  border-bottom-left-radius: 0px !important;
+}

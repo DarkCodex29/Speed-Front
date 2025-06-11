@@ -1,0 +1,286 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <span *ngIf="actionType === action.EDITAR">Editar Proceso</span>
+    <span *ngIf="actionType === action.REGISTRAR">Registrar Proceso</span>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-footer pb-0 justify-content-start">
+    <button class="btn btn-sm btn-primary" style="height: 39px" (click)="submit()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+  </div>
+  <div class="modal-body">
+    <div [formGroup]="processForm">
+      <fieldset class="fieldset-speed">
+        <legend>Datos del Proceso</legend>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Nombre:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="nombre" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Tipo Proceso:</div>
+          <div class="w-100">
+            <hdc-select
+              value-key="id"
+              value-label="nombre"
+              [items]="tipoProcesos"
+              formControlName="idTipoProceso"
+              style="width: 100%"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Nivel de confidencialidad:</div>
+          <div class="w-100">
+            <hdc-select
+              value-key="id"
+              value-label="descripcion"
+              [items]="confidencialidad"
+              formControlName="idConfidencialidad"
+              style="width: 100%"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Descripción:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="descripcion" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Plazo:</div>
+          <div class="w-100">
+            <input type="number" class="form-control" formControlName="plazo" />
+          </div>
+        </div>
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 130px">Activo:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input class="form-check-input pointer" type="checkbox" formControlName="estado" />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 130px">Con Cliente:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input class="form-check-input pointer" type="checkbox" formControlName="conCliente" />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </fieldset>
+      <br />
+      <fieldset class="fieldset-speed">
+        <legend>Responsable</legend>
+        <div class="d-flex align-items-center mb-2">
+          <div class="text-xs ps-md-0" style="width: 130px">Creador Responsable:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input class="form-check-input pointer" type="checkbox" formControlName="creadorResponsable" />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Usuario Responsable:</div>
+          <div class="w-100">
+            <hdc-select
+              value-key="id"
+              value-label="nombreCompleto"
+              [items]="usuariosResponsables"
+              formControlName="idUsuarioResponsable"
+              style="width: 100%"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Rol Responsable:</div>
+          <div class="w-100">
+            <hdc-select
+              value-key="id"
+              value-label="nombre"
+              [items]="rolesResponsable"
+              formControlName="idRolResponsable"
+              style="width: 100%"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+      </fieldset>
+      <br />
+      <div class="accordion mb-3" id="accordionExample" style="margin-bottom: 32px">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="false"
+              aria-controls="collapseOne"
+            >
+              Usuarios participantes
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="row content-form-control">
+                <p-pickList
+                  [source]="usuariosParticipanteFuente"
+                  [target]="usuariosParticipanteAsignados"
+                  sourceHeader="Disponible"
+                  targetHeader="Asignado"
+                  [dragdrop]="true"
+                  [responsive]="true"
+                  [sourceStyle]="{ height: '20rem' }"
+                  [targetStyle]="{ height: '20rem' }"
+                  breakpoint="1400px"
+                >
+                  <ng-template let-usuario pTemplate="item">
+                    <div class="flex flex-wrap p-2 align-items-center gap-3">
+                      <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">{{ usuario.nombreCompleto }}</span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion mb-3" id="accordionExample" style="margin-bottom: 32px">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              Roles participantes
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="row content-form-control">
+                <p-pickList
+                  [source]="rolesParticipanteFuente"
+                  [target]="rolesParticipanteAsignados"
+                  sourceHeader="Disponible"
+                  targetHeader="Asignado"
+                  [dragdrop]="true"
+                  [responsive]="true"
+                  [sourceStyle]="{ height: '20rem' }"
+                  [targetStyle]="{ height: '20rem' }"
+                  breakpoint="1400px"
+                >
+                  <ng-template let-rol pTemplate="item">
+                    <div class="flex flex-wrap p-2 align-items-center gap-3">
+                      <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">{{ rol.nombre }}</span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion mb-3" id="accordionExample" style="margin-bottom: 32px">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              Roles que pueden iniciar este proceso
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="row content-form-control">
+                <p-pickList
+                  [source]="rolesProcesoFuente"
+                  [target]="rolesProcesoAsignados"
+                  sourceHeader="Disponible"
+                  targetHeader="Asignado"
+                  [dragdrop]="true"
+                  [responsive]="true"
+                  [sourceStyle]="{ height: '20rem' }"
+                  [targetStyle]="{ height: '20rem' }"
+                  breakpoint="1400px"
+                >
+                  <ng-template let-rol pTemplate="item">
+                    <div class="flex flex-wrap p-2 align-items-center gap-3">
+                      <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">{{ rol.nombre }}</span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion mb-3" id="accordionExample" style="margin-bottom: 32px">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseFour"
+              aria-expanded="false"
+              aria-controls="collapseFour"
+            >
+              Tipos de documento por defecto
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="row content-form-control">
+                <p-pickList
+                  [source]="tipoDocumentosFuente"
+                  [target]="tipoDocumentosAsignados"
+                  sourceHeader="Disponible"
+                  targetHeader="Asignado"
+                  [dragdrop]="true"
+                  [responsive]="true"
+                  [sourceStyle]="{ height: '20rem' }"
+                  [targetStyle]="{ height: '20rem' }"
+                  breakpoint="1400px"
+                >
+                  <ng-template let-rol pTemplate="item">
+                    <div class="flex flex-wrap p-2 align-items-center gap-3">
+                      <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">{{ rol.nombre }}</span>
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-pickList>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

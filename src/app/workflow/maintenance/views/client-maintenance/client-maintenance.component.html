@@ -1,0 +1,139 @@
+<div class="card content-speed h-100 overflow-hidden">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Mantenimiento de Clientes</h4>
+    </div>
+  </div>
+  <div class="card-body d-flex h-100 flex-column overflow-hidden pb-2">
+    <div class="accordion mb-3" id="accordionExample" style="margin-bottom: 32px">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="false"
+            aria-controls="collapseOne"
+          >
+            Panel de Búsqueda
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div [formGroup]="filterForm" class="row gx-xxl-5 text-xs">
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 150px">Tipo:</div>
+                  <div class="content-control px-0">
+                    <hdc-select
+                      class="w-100"
+                      [items]="listTipos"
+                      formControlName="idTipo"
+                      [valueKey]="'id'"
+                      [valueLabel]="'nombre'"
+                      [lock]="false"
+                      customReactiveForm
+                    >
+                    </hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 150px">Razón Social:</div>
+                  <div class="content-control px-0">
+                    <input type="text" class="form-control" formControlName="filtroRazonSocial" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 150px">Correo:</div>
+                  <div class="content-control px-0">
+                    <input type="text" class="form-control" formControlName="filtroCorreo" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 150px">Nº Documento:</div>
+                  <div class="content-control px-0">
+                    <input type="text" class="form-control" formControlName="filtroNumDocumento" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end">
+              <button type="button" class="btn btn-primary btn-sm me-1" (click)="openModalRegistrar()" style="height: 38px">
+                <i class="fa-regular fa-file"></i> Nuevo
+              </button>
+              <button type="button" class="btn btn-primary btn-sm me-1" (click)="clean()" style="height: 38px">
+                <i class="fa fa-refresh" aria-hidden="true"></i> Limpiar
+              </button>
+              <button type="button" class="btn btn-primary btn-sm me-1" (click)="submit()" style="height: 38px">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-hidden" style="flex: 1 1 auto" *ngIf="data.length > 0" [ngClass]="visible ? 'visible' : 'not-visible'">
+      <p-table
+        #pt
+        [value]="data"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 15, 25]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+        [globalFilterFields]="['indice', 'tipo', 'numeroDocumento', 'razonSocial', 'nombre', 'correo']"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+        <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-end align-items-center">
+            <div class="p-input-icon-left table-input-search">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="indice" class="text-center" style="width: 5%">#<p-sortIcon field="indice"></p-sortIcon></th>
+            <th pSortableColumn="tipo" class="text-center" style="width: 15%">Tipo <p-sortIcon field="tipo"></p-sortIcon></th>
+            <th pSortableColumn="numeroDocumento" class="text-center" style="width: 15%">
+              Nro. Documento <p-sortIcon field="numeroDocumento"></p-sortIcon>
+            </th>
+            <th pSortableColumn="razonSocial" class="text-center" style="width: 25%">
+              Razón social <p-sortIcon field="razonSocial"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombre" class="text-center" style="width: 25%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+            <th pSortableColumn="correo" class="text-center" style="width: 10%">Correo <p-sortIcon field="correo"></p-sortIcon></th>
+            <th class="text-center" style="width: 5%">Acción</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+          <tr>
+            <td class="text-center">{{ rowIndex + 1 }}</td>
+            <td class="text-center">{{ item.tipo.nombre }}</td>
+            <td class="text-center">{{ item.numeroIdentificacion }}</td>
+            <td style="width: 15%; text-align: center; overflow: hidden" class="truncate">{{ item.razonSocial }}</td>
+            <td style="width: 15%; text-align: center; overflow: hidden" class="truncate">{{ item.nombre }}</td>
+            <td class="text-center">{{ item.correo }}</td>
+            <td class="text-center">
+              <button type="button" class="btn btn-sm btn-primary" (click)="openEditCliente(item.id)" style="padding: 1px 6px">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,169 @@
+<div class="row gx-xxl-5" [formGroup]="counterPartForm">
+  <div class="col-12" [ngClass]="{ 'col-md-5': flagStyle }">
+    <div *ngIf="!flagDataAdenda" class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Contraparte<span class="text-danger">(*)</span>:</div>
+      <div *ngIf="!isRegistroAdendaManual" class="content-control px-0" style="align-items: normal; position: relative; overflow: inherit">
+        <ng-container>
+          <hdc-autocomplete
+            class="w-100"
+            [items]="counterpartList"
+            value-key="id"
+            value-label="nombres"
+            (selectedValue)="onClickSearchLegalRepresentative($event)"
+            [lock]="false"
+            formControlName="idContraparte"
+            customReactiveForm
+          ></hdc-autocomplete>
+          <button type="button" class="btn btn-primary btn-xs ms-2" style="min-width: 72px" (click)="openRegistrarContraparte()">
+            <i class="fa-regular fa-file"></i> Nuevo
+          </button>
+        </ng-container>
+        <ng-template #counterPartLine>
+          <span>-</span>
+        </ng-template>
+      </div>
+      <div *ngIf="isRegistroAdendaManual" class="content-control px-0">{{ counterPartForm.get('nameCounterPart')?.value }}</div>
+    </div>
+    <div *ngIf="flagDataAdenda" class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Contraparte<span class="text-danger">(*)</span>:</div>
+      <div class="content-control px-0">{{ counterPartForm.get('nameCounterPart')?.value }}</div>
+    </div>
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Número documento:</div>
+      <div class="content-control px-0">
+        <!--
+<input
+          *ngIf="!isRegistroAdendaManual"
+          type="text"
+          class="form-control"
+          style="max-width: calc(100% - 78px)"
+          [disabled]="true"
+          value="{{ documentNumber }}"
+        />
+        -->
+
+        <input
+          type="text"
+          class="form-control"
+          style="max-width: calc(100% - 78px)"
+          [disabled]="true"
+          value="{{ counterPartForm.get('numeroIdentificacion')?.value }}"
+        />
+      </div>
+    </div>
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Situación:</div>
+      <div class="content-control px-0">
+        <input
+          type="text"
+          class="form-control"
+          [readOnly]="true"
+          formControlName="situacionSunatContraparte"
+          style="max-width: calc(100% - 78px)"
+        />
+      </div>
+    </div>
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Domicilio:</div>
+      <div class="content-control px-0">
+        <input
+          type="text"
+          class="form-control"
+          [readOnly]="true"
+          formControlName="domicilioContraparte"
+          style="max-width: calc(100% - 78px)"
+        />
+      </div>
+    </div>
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Nombre Contacto:</div>
+      <div class="content-control px-0">
+        <input
+          type="text"
+          class="form-control"
+          [readOnly]="true"
+          formControlName="nombreContraparte"
+          style="max-width: calc(100% - 78px)"
+        />
+      </div>
+    </div>
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Teléfono Contacto:</div>
+      <div class="content-control px-0">
+        <input
+          type="text"
+          class="form-control"
+          [readOnly]="true"
+          formControlName="telefonoContraparte"
+          style="max-width: calc(100% - 78px)"
+        />
+      </div>
+    </div>
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Email Contacto:</div>
+      <div class="content-control px-0">
+        <input type="text" class="form-control" [readOnly]="true" formControlName="emailContraparte" style="max-width: calc(100% - 78px)" />
+      </div>
+    </div>
+  </div>
+  <div class="col-12" [ngClass]="{ 'col-md-7': flagStyle }">
+    <div class="row content-form-control">
+      <div class="text-xs ps-md-0" style="width: 135px">Representante Legal:</div>
+      <div class="content-control px-0 align-items-normal" style="overflow: inherit">
+        <hdc-autocomplete
+          class="w-100"
+          [items]="legalRepresentativesList"
+          [valueKey]="'id'"
+          [valueLabel]="'nombres'"
+          (selectedValue)="onClickAddRepresentativeTolist($event)"
+          [lock]="disableInputs"
+        ></hdc-autocomplete>
+        <button
+          type="button"
+          class="btn btn-primary btn-xs ms-2"
+          [disabled]="disableInputs"
+          style="min-width: 72px"
+          (click)="openRegistrarRepresentante()"
+        >
+          <i class="fa-regular fa-file"></i> Nuevo
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive mt-4">
+      <table class="table table-striped table-speed table-bordered text-xs">
+        <thead>
+          <tr>
+            <th>Representante Legal</th>
+            <th>Correo</th>
+            <th>Tipo Doc.</th>
+            <th>Número Doc.</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of counterPartForm.get('representantesLegales')?.value; let i = index">
+            <td>{{ item.apellidoPaterno }} {{ item.apellidoMaterno }}, {{ item.nombre }}</td>
+            <td class="text-center">{{ item.correo }}</td>
+            <td class="text-center">{{ item.tipoDocumento }}</td>
+            <td class="text-center">{{ item.numeroIdentificacion }}</td>
+            <td class="text-center d-flex flex-column flex-xxl-row col-12">
+              <div class="col-12 col-xxl-6">
+                <button class="btn btn-sm btn-primary" [disabled]="disableInputs" (click)="removeRepresentative(i)">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </div>
+              <div class="col-12 mt-1 mt-xxl-0 col-xxl-6">
+                <button class="btn btn-sm btn-primary" [disabled]="disableInputs" (click)="openEditarRepresentante(item)">
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <p><span class="text-danger">(*)</span> Debe seleccionar al menos un representante Legal</p>
+      </div>
+    </div>
+  </div>
+</div>

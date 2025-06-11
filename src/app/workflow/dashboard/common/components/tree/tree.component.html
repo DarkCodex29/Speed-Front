@@ -1,0 +1,33 @@
+<div *ngFor="let folder of folderKeys">
+  <div class="header-title">
+    <button class="folder-toggle buttonTitle" (click)="toggleFolder(folder)">
+      <span class="folder-icon">
+        <ng-container *ngIf="!openFolders[folder]">
+          <!-- Flecha derecha -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 18l6-6-6-6" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </ng-container>
+        <ng-container *ngIf="openFolders[folder]">
+          <!-- Flecha abajo -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M6 9l6 6 6-6" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </ng-container>
+        <!-- Carpeta -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="#c49227" d="M10 4H2c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2H12l-2-2z" />
+        </svg>
+      </span>
+      {{ folder }}
+    </button>
+  </div>
+  <ul *ngIf="openFolders[folder]" class="folder-contents">
+    <li *ngFor="let item of groupedDocuments[folder]" class="d-flex justify-content-between align-items-start mb-2">
+      <p class="mb-0 pe-3" style="font-size: 1rem">{{ item.nombre }}</p>
+      <button type="button" class="btn btn-outline-gold btn-sm" (click)="downloadDocument(item.ruta)">
+        <i class="fa-solid fa-download"></i>
+      </button>
+    </li>
+  </ul>
+</div>

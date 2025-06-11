@@ -1,0 +1,17 @@
+<div class="position-relative">
+  <input
+    [ngClass]="{ 'ng-invalid ng-touched': isInvalid }"
+    type="search"
+    class="form-control autocomplete-input {{ isInvalid }}"
+    (input)="searchForMatches($event)"
+    (keydown)="handleSelectItem($event)"
+    #inputSearch
+  />
+  <ul class="autocomplete-list" role="listbox" *ngIf="filteredResults.length > 0">
+    <ng-container *ngFor="let item of filteredResults; let i = index">
+      <li role="option" class="autocomplete-list-item" [ngClass]="{ selected: activeIndex === i }" (click)="handleResultClick(item)">
+        {{ item[labelItem] }}
+      </li>
+    </ng-container>
+  </ul>
+</div>

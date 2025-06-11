@@ -1,0 +1,74 @@
+.hdc-input-autocomplete {
+  position: relative;
+}
+.hdc-input-autocomplete .hdc-input__input {
+  padding-right: 25px;
+}
+.hdc-input-autocomplete-close {
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  height: 20px;
+  background: transparent;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+}
+.hdc-input-autocomplete-container {
+  position: absolute;
+  min-width: 100%;
+  z-index: 10;
+  border-radius: 3px;
+}
+.hdc-input-autocomplete-container--show {
+  border-top: 1px solid #ced4da;
+}
+.hdc-input-autocomplete-container--top {
+  bottom: 45px;
+}
+.hdc-input-autocomplete-container--top .hdc-input-autocomplete-item {
+  border-top: 1px solid #ced4da;
+  border-bottom: unset;
+}
+.hdc-input-autocomplete-options {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: auto;
+}
+.hdc-input-autocomplete-options::-webkit-scrollbar {
+  width: 0.5em;
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  border-color: #ced4da;
+  border-collapse: collapse;
+}
+.hdc-input-autocomplete-options::-webkit-scrollbar-track {
+  border: 1px solid #ccc;
+}
+.hdc-input-autocomplete-options::-webkit-scrollbar-thumb {
+  background-color: #c49227;
+}
+.hdc-input-autocomplete-item {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  border-top: unset;
+  list-style-position: outside;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0px 0.8rem;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.hdc-input-autocomplete-item:hover,
+.hdc-input-autocomplete-item-active {
+  background-color: #ced4da;
+}

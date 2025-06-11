@@ -1,0 +1,1 @@
+{"version":3,"file":"input-role-type.js","sourceRoot":"","sources":["../../../src/globals/enums/input-role-type.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,aAGX;AAHD,WAAY,aAAa;EACvB,8BAAa,CAAA;EACb,sCAAqB,CAAA;AACvB,CAAC,EAHW,aAAa,KAAb,aAAa,QAGxB","sourcesContent":["export enum InputRoleType {\n  TEXT = 'text',\n  PASSWORD = 'password',\n}\n"]}

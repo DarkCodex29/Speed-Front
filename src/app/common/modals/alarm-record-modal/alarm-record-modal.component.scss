@@ -1,0 +1,50 @@
+.modal {
+  &-close {
+    cursor: pointer;
+  }
+
+  &-container {
+    min-width: 640px;
+    max-width: 100%;
+
+    .alarm-user-container {
+      border: 1px solid #f1f1f1;
+      background-color: #f1f1f1;
+      border-radius: 6px;
+      padding: 0.5rem;
+      min-height: 120px;
+      max-height: 150px;
+      overflow: auto;
+    }
+
+    .alarm-border {
+      border: 1px solid rgb(192, 192, 192);
+      border-radius: 6px;
+    }
+
+    quill-editor {
+      width: 100%;
+    }
+  }
+}
+
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 0.2rem #eceff4;
+  border-color: #a1a6ad;
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+  border-color: #a1a6ad;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  border-color: #cda44d;
+  background: #cda44d;
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
+  border-color: #cda44d;
+  background: #cda44d;
+  color: #ffffff;
+}

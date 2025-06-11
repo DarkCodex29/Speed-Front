@@ -1,0 +1,43 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <span *ngIf="actionType === action.EDITAR">Editar Alerta</span>
+    <span *ngIf="actionType === action.REGISTRAR">Registrar Alerta</span>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-footer pb-0 justify-content-start">
+    <button class="btn btn-sm btn-primary" style="height: 39px" (click)="submit()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed">
+      <legend>Datos de Alerta</legend>
+      <div [formGroup]="alertForm">
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Grid:</div>
+          <div class="w-100">
+            <hdc-select
+              value-key="id"
+              value-label="nombre"
+              [items]="grids"
+              formControlName="idGrid"
+              style="width: 100%"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Tipo de Alerta:</div>
+          <div class="w-100">
+            <hdc-select
+              value-key="id"
+              value-label="nombre"
+              [items]="tipoAlertas"
+              formControlName="idTipoAlerta"
+              style="width: 100%"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>

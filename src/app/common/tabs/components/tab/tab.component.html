@@ -1,0 +1,15 @@
+<div *ngIf="dataContext">
+  <div *ngIf="!dataContext.linkOpcion" [hidden]="dataContext.title === 'External'">
+    <div [hidden]="!active" class="tab-pane fade show active h-100">
+      <ng-content></ng-content>
+      <ng-container *ngIf="template" [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ person: dataContext }"></ng-container>
+    </div>
+  </div>
+  <div *ngIf="dataContext.linkOpcion" [hidden]="dataContext.title === 'External'">
+    <div *ngIf="active" class="tab-pane fade show active h-100">
+      <ng-content></ng-content>
+      <ng-container *ngIf="template" [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ person: dataContext }"></ng-container>
+    </div>
+  </div>
+  
+</div>

@@ -1,0 +1,40 @@
+<div class="modal-container" [formGroup]="requestForm" *ngIf="!loading">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="observeRequestLabel">Entrega de documento</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed mb-3">
+      <p>Presione "Registrar Entrega" para indicar que el documento ha sido entregado para la firma de una de las partes.</p>
+    </fieldset>
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Acciones</legend>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="firmaInterna" type="checkbox" value="" id="flexCheckDefault1" />
+        <label class="form-check-label" for="flexCheckDefault"> Firma Interna </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="firmaContraparte" type="checkbox" value="" id="flexCheckDefault2" />
+        <label class="form-check-label" for="flexCheckChecked"> Firma Contraparte </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="cargaSistema" type="checkbox" value="" id="flexCheckDefault3" />
+        <label class="form-check-label" for="flexCheckChecked"> Carga en el sistema </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="otros" type="checkbox" value="" id="flexCheckDefault3" />
+        <label class="form-check-label" for="flexCheckChecked"> Otros </label>
+      </div>
+    </fieldset>
+    <div>
+      <p>Observación</p>
+      <textarea name="" id="" formControlName="observacion" style="width: 100%" rows="10"></textarea>
+    </div>
+    <br />
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-secondary btn-speed btn-sm" (click)="sendRequest()">
+        <i class="fa-regular fa-eye"></i> Registrar Entrega
+      </button>
+    </div>
+  </div>
+</div>

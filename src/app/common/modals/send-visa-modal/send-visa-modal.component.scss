@@ -1,0 +1,30 @@
+.modal {
+  &-header {
+    display: flex;
+    min-width: 500px;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &-container {
+    width: 680px;
+    max-width: 100%;
+
+    .container-notify-users {
+      border: 1px solid #f1f1f1;
+      background-color: #f1f1f1;
+      border-radius: 6px;
+      padding: 0.5rem;
+      max-height: 150px;
+      overflow: auto;
+    }
+
+    textarea {
+      border-color: rgb(192, 192, 192);
+    }
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,37 @@
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 1;
+  background: #fff;
+  margin: 0;
+  list-style: none;
+  transition: none;
+  padding: 0;
+  border: 1px solid #eee;
+  box-shadow:
+    0 3px 4px rgb(145 145 145 / 16%),
+    0 3px 6px rgb(145 145 145 / 23%);
+  max-height: 130px;
+  overflow: auto;
+
+  li {
+    padding: 6px 12px;
+    transition: 0.2s background;
+    cursor: pointer;
+
+    &.selected {
+      background: #e6f0f2;
+    }
+    &:hover {
+      background: #e6f0f2;
+    }
+    & + li {
+      border-top: 1px solid #eee;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}

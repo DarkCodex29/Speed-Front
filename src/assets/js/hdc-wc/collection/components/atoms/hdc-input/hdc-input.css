@@ -1,0 +1,85 @@
+.hdc-input-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 500;
+  line-height: 22px;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+.hdc-input-wrapper--success .hdc-input__input {
+  border-color: rgb(1, 180, 1);
+}
+.hdc-input-wrapper--danger .hdc-input__input {
+  border-color: rgb(214, 30, 30);
+}
+.hdc-input-wrapper--warning .hdc-input__input {
+  border-color: rgb(209, 209, 20);
+}
+.hdc-input-wrapper--icon-right .hdc-input__input,
+.hdc-input-wrapper--icon-left .hdc-input__input {
+  padding-left: 1.65rem;
+}
+.hdc-input-icon-left,
+.hdc-input-icon-right {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  top: 0;
+  font-size: 14px;
+  padding: 10px;
+}
+.hdc-input-icon-left--pointer,
+.hdc-input-icon-right--pointer {
+  cursor: pointer;
+}
+.hdc-input-icon-left {
+  left: 0;
+}
+.hdc-input-icon-right {
+  right: 0;
+}
+.hdc-input__input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.3rem 1.5rem 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #8a92a6;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #eee;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-border-radius: 0.25rem;
+  border-radius: 0.25rem;
+  -webkit-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
+  -webkit-transition:
+    border-color 0.15s ease-in-out,
+    -webkit-box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    -webkit-box-shadow 0.15s ease-in-out;
+  -o-transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out,
+    -webkit-box-shadow 0.15s ease-in-out;
+}
+.hdc-input__input:disabled {
+  background-color: #e9ecef;
+  cursor: auto;
+}

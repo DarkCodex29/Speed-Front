@@ -1,0 +1,8 @@
+<ui-alarm-record-modal
+  [idDocumentoLegal]="idDocumentoLegal"
+  [listUsers]="listUsers"
+  [alarmEdit]="alarmEdit"
+  (clickedClose)="onClickedClose()"
+  (searchUser)="searchUsersByName($event)"
+  (save)="saveAlarm($event)"
+></ui-alarm-record-modal>

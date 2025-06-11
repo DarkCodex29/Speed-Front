@@ -1,0 +1,62 @@
+<div class="modal-container" [formGroup]="requestForm.Form">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="observeRequestLabel">Enviar a firma electrónica</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Datos de firma</legend>
+      <div class="row">
+        <table class="table table-borderless" style="overflow: inherit !important">
+          <tbody>
+            <tr>
+              <td>Representante legal:</td>
+              <td>
+                <hdc-select
+                  value-key="id"
+                  value-label="label"
+                  [items]="representantesLegales"
+                  formControlName="idRepresentante"
+                  style="width: 100%"
+                  customReactiveForm
+                ></hdc-select>
+              </td>
+            </tr>
+            <tr>
+              <td>Tipo firma:</td>
+              <td>
+                <hdc-select
+                  value-key="valor"
+                  value-label="descripcion"
+                  [items]="tiposFirma"
+                  formControlName="tipoFirma"
+                  style="width: 100%"
+                  customReactiveForm
+                ></hdc-select>
+              </td>
+            </tr>
+            <tr>
+              <td>Idioma:</td>
+              <td>
+                <hdc-select
+                  value-key="valor"
+                  value-label="descripcion"
+                  [items]="idiomas"
+                  formControlName="idioma"
+                  style="width: 100%"
+                  customReactiveForm
+                ></hdc-select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mt-3">
+      <button type="button" class="btn btn-primary btn-sm" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button type="button" class="btn btn-secondary btn-speed btn-sm" (click)="sendRequest()">
+        <i class="fa-solid fa-circle-play"></i> Enviar
+      </button>
+    </div>
+  </div>
+</div>

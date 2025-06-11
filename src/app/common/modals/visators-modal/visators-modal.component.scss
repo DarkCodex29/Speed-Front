@@ -1,0 +1,21 @@
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+
+  .form-check {
+    min-height: auto;
+    margin-bottom: 0;
+  }
+
+  &-container {
+    width: 1200px;
+    min-width: 320px;
+  }
+}

@@ -1,0 +1,110 @@
+<div class="" *ngIf="!loading">
+  <!-- TABS -->
+  <ul class="nav nav-tabs" id="myTabAdendaAuto" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active btn-sm tab-start"
+        style="width: 200px"
+        id="datos-adendaa-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#datos-adendaa"
+        type="button"
+        role="tab"
+        aria-controls="datos-adendaa"
+        aria-selected="true"
+      >
+        Datos de la Adenda
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link btn-sm rounded-0"
+        style="width: 200px"
+        id="documentos-tab-adenda-a"
+        data-bs-toggle="tab"
+        data-bs-target="#documentos-adenda-a"
+        type="button"
+        role="tab"
+        aria-controls="documentos-adenda-a"
+        aria-selected="false"
+      >
+        Documentos de Solicitud
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content mt-3" id="myTabContentAutomatica">
+    <div class="tab-pane fade show active" id="datos-adendaa" role="tabpanel" aria-labelledby="datos-adendaa-tab">
+      <div class="accordion" id="accordionDatosAdendaA">
+        <!-- ELABORACION DOCUMENTO -->
+        <div class="accordion-item overflow-hidden">
+          <h4 class="accordion-header" id="headingTwoAdendaAE">
+            <button
+              class="accordion-button collapsed py-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwoAdendaAE"
+              aria-expanded="true"
+              aria-controls="collapseTwoAdendaAE"
+            >
+              Elaboración de Documento - Adenda Automática
+            </button>
+          </h4>
+          <div
+            id="collapseTwoAdendaAE"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingTwoAdendaAE"
+            data-bs-parent="#accordionDatosAdendaA"
+          >
+            <div class="accordion-body">
+              <ui-elaboration-document-panel
+                [processType]="enumProcessType.ADENDA_AUTOMATICA"
+                [edocumentForm]="addendumForm"
+                [countriesList]="countriesList"
+                [counterpartList]="counterpartList"
+                [companiesList]="companiesList"
+                [areasList]="areasList"
+                [contractInfo]="contractInfo"
+              ></ui-elaboration-document-panel>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTRAPARTE -->
+        <div class="accordion-item overflow-hidden">
+          <h4 class="accordion-header" id="headingOneAdendaAC">
+            <button
+              class="accordion-button py-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOneAdendaAC"
+              aria-expanded="false"
+              aria-controls="collapseOneAdendaAC"
+            >
+              Contraparte
+            </button>
+          </h4>
+          <div
+            id="collapseOneAdendaAC"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingOneAdendaAC"
+            data-bs-parent="#accordionDatosAdendaA"
+          >
+            <div class="accordion-body">
+              <ui-counterpart-panel
+                [processType]="enumProcessType.ADENDA"
+                [counterPartForm]="addendumForm"
+                [counterpartList]="counterpartList"
+                [legalRepresentativesList]="legalRepresentativesList"
+                [customerTypeList]="customerTypeList"
+              ></ui-counterpart-panel>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="documentos-adenda-a" role="tabpanel" aria-labelledby="documentos-tab-adenda-a">
+      <ui-documents-upload [infoTab]="tabApplicationDocuments" [form]="getformGroup('tabApplicationDocuments')"></ui-documents-upload>
+    </div>
+  </div>
+</div>

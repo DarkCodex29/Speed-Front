@@ -1,0 +1,41 @@
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+
+  &-container {
+    min-width: 680px;
+    max-width: 100%;
+
+    .container-notify-users {
+      max-height: 200px;
+      overflow: auto;
+    }
+  }
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 0.2rem #eceff4;
+  border-color: #a1a6ad;
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+  border-color: #a1a6ad;
+}
+
+::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  border-color: #cda44d;
+  background: #cda44d;
+}
+
+::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
+  border-color: #cda44d;
+  background: #cda44d;
+  color: #ffffff;
+}

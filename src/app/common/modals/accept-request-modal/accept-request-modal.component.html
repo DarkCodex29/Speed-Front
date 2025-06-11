@@ -1,0 +1,13 @@
+<div class="modal-container" [formGroup]="requestForm">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="acceptRequestLabel">Aceptar solicitud</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <p>¿Está seguro de aceptar solicitud?</p>
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-primary" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button type="button" class="btn btn-secondary" (click)="sendRequest()"><i class="fa-solid fa-check"></i> Aceptar</button>
+    </div>
+  </div>
+</div>

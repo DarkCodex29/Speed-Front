@@ -1,0 +1,51 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <span *ngIf="actionType === action.EDITAR">Editar Rol</span>
+    <span *ngIf="actionType === action.REGISTRAR">Registra Rol</span>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-footer pb-0 justify-content-start">
+    <button class="btn btn-sm btn-primary" style="height: 39px" (click)="submit()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed">
+      <legend>Datos del Rol</legend>
+      <div [formGroup]="roleForm">
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Nombre:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="nombre" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Descripción:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="descripcion" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Código:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="codigo" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Código SCA:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="codigoSCA" />
+          </div>
+        </div>
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 130px">Activo:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input class="form-check-input pointer" type="checkbox" formControlName="estado" />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>

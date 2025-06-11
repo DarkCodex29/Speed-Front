@@ -1,0 +1,61 @@
+<div class="modal-container" [formGroup]="requestForm.Form">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="observeRequestLabel">Enviar a VºBº</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Visadores</legend>
+      <div class="row mb-3">
+        <div class="col-12 col-md-6">
+          <p>Agregar visadores según orden de envío</p>
+          <div class="row content-form-control">
+            <div class="text-xs ps-0" style="width: 60px">Usuario:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-key="id"
+                value-label="nombre"
+                [items]="listUsuarios"
+                (selectedValue)="selectUser($event)"
+                (changeValue)="seleccionarUsuario($event)"
+                #selectUserInput
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="listUsuariosSelected.length > 0" class="col-12 col-md-6">
+          <div class="container-notify-users">
+            <div *ngFor="let item of listUsuariosSelected" class="alert alert-light mb-2 p-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="mb-0 me-4">{{ item.usuario }}</p>
+                <button (click)="eliminarUsuario(item.id)" class="btn-close"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Acciones</legend>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="esUrgente" type="checkbox" value="" id="flexCheckDefault1" />
+        <label class="form-check-label" for="flexCheckDefault">Urgente</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="tieneObservacion" type="checkbox" value="" id="flexCheckDefault2" />
+        <label class="form-check-label" for="flexCheckChecked">Observación</label>
+      </div>
+    </fieldset>
+    <div>
+      <textarea class="form-control" formControlName="observacion" style="width: 100%" rows="3"></textarea>
+    </div>
+    <br />
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-2">
+      <button type="button" class="btn btn-primary btn-sm" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button type="button" class="btn btn-secondary btn-speed btn-sm" (click)="sendRequest()">
+        <i class="fa-solid fa-circle-play"></i> Enviar
+      </button>
+    </div>
+  </div>
+</div>

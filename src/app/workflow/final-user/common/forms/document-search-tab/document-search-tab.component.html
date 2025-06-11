@@ -1,0 +1,21 @@
+<ng-container [ngSwitch]="tipoTab">
+  <!-- Ver detalle contrato -->
+  <ng-container *ngSwitchCase="3">
+    <ui-contract-detail
+      [contract]="tabInfoDocument"
+      (closeTab)="closeTabTunnel($event)"
+      (reloadList)="reloadListTunnel($event)"
+      (openVerDocumento)="openOtherTabTunnel($event)"
+      [tipoBandeja]="5"
+    ></ui-contract-detail>
+  </ng-container>
+
+  <!-- Completar -->
+  <ng-container *ngSwitchCase="2">
+    <app-document-detail-rs
+      [contract]="tabInfoDocument"
+      (closeTab)="closeTabTunnel($event)"
+      [idProceso]="idProceso"
+    ></app-document-detail-rs>
+  </ng-container>
+</ng-container>

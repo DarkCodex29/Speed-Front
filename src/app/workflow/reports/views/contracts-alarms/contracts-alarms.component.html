@@ -1,0 +1,160 @@
+<div class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Alarmas de Contratos</h4>
+    </div>
+  </div>
+  <div class="card-body" [formGroup]="requestForm">
+    <div class="accordion mb-3" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Panel de Búsqueda
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 100px">Abogado Responsable:</div>
+                  <div class="content-control px-0" style="overflow: inherit">
+                    <hdc-autocomplete class="w-100" value-label="nombreCompleto" [items]="responsibleLawyerList"
+                      [lock]="false" formControlName="abogadoResponsableIdAC" customReactiveForm
+                      (selectedValue)="selectResponsibleLawyer($event)"></hdc-autocomplete>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6 col-xxl-3">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 80px">Número Contrato:</div>
+                  <div class="content-control px-0">
+                    <input type="text" class="form-control" formControlName="numeroContrato" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-5">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 100px">Contraparte:</div>
+                  <div class="content-control px-0">
+                    <hdc-autocomplete class="w-100" [valueKey]="'id'" [valueLabel]="'nombres'" [items]="contrapartes"
+                      (selectedValue)="selectContraparte($event)" formControlName="idContraparte"
+                      customReactiveForm></hdc-autocomplete>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 100px">Compañía:</div>
+                  <div class="content-control px-0" style="overflow: inherit">
+                    <hdc-select class="w-100" [items]="filterCompanies" [valueKey]="'id'" formControlName="idCompania"
+                      [valueLabel]="'nombre'" (changeValue)="updateCompany()" [lock]="false"
+                      customReactiveForm></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-3">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 80px">Área:</div>
+                  <div class="content-control px-0" style="overflow: inherit">
+                    <hdc-select class="w-100" [items]="filterAreas" [valueKey]="'id'" formControlName="idArea"
+                      [valueLabel]="'nombre'" [lock]="false" customReactiveForm></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-5">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-md-0 label-custom" style="width: 120px">Período Alarma:</div>
+                  <div class="content-control px-0">
+                    <span class="me-2 text-xs">Desde:</span>
+                    <p-calendar class="form-control" formControlName="fecInicio" view="month" dateFormat="mm/yy" [readonlyInput]="true"></p-calendar>
+                    <span class="mx-2 text-xs">Hasta:</span>
+                    <p-calendar class="form-control" formControlName="fecFin" view="month" dateFormat="mm/yy" [readonlyInput]="true"></p-calendar>
+                  </div>
+                </div>
+              </div>
+              <div class="text-end">
+                <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px"
+                  (click)="openModalPrint()">
+                  <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+
+                <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px" (click)="cleanForm()">
+                  <i class="fa-solid fa-trash-can"></i> Limpiar
+                </button>
+                <button type="button" class="ms-1 btn btn-primary btn-sm" style="height: 38px" (click)="submit()">
+                  <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="data.length > 0" class="table-responsive">
+        <p-table #pt [value]="data" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+          [rowsPerPageOptions]="[10, 15, 25]" [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed" [globalFilterFields]="[
+          'numero',
+          'compania',
+          'nombreContraparte',
+          'nombreResponsable',
+          'nombreSolicitante',
+          'fechaFinContrato',
+          'estadoAlarma',
+          'fechaAlarma',
+          'diasActivacion',
+          'intervaloPorMes',
+          'tituloAlarma'
+        ]" [scrollable]="true" scrollHeight="flex">
+          <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="p-input-icon-left table-input-search">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="numero" style="text-align: center">Nº de Doc</th>
+              <th pSortableColumn="compania">Compañía<p-sortIcon field="compania"></p-sortIcon></th>
+              <th pSortableColumn="nombreContraparte">Contraparte<p-sortIcon field="nombreContraparte"></p-sortIcon>
+              </th>
+              <th pSortableColumn="nombreResponsable">Abogado Responsable<p-sortIcon
+                  field="nombreResponsable"></p-sortIcon></th>
+              <th pSortableColumn="nombreSolicitante">Solicitante<p-sortIcon field="nombreSolicitante"></p-sortIcon>
+              </th>
+              <th pSortableColumn="fechaFinContrato">Fecha Fin de contrato<p-sortIcon
+                  field="fechaFinContrato"></p-sortIcon></th>
+              <th pSortableColumn="estadoAlarma">Estado<p-sortIcon field="estadoAlarma"></p-sortIcon></th>
+              <th pSortableColumn="fechaAlarma">Fecha Alarma<p-sortIcon field="fechaAlarma"></p-sortIcon></th>
+              <th pSortableColumn="diasActivacion">Días previos activación<p-sortIcon
+                  field="diasActivacion"></p-sortIcon>
+              </th>
+              <th pSortableColumn="intervaloPorMes">Intervalo por mes<p-sortIcon field="intervaloPorMes"></p-sortIcon>
+              </th>
+              <th pSortableColumn="tituloAlarma">Título alarma<p-sortIcon field="tituloAlarma"></p-sortIcon></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>{{ item.numero }}</td>
+              <td>{{ item.compania }}</td>
+              <td>{{ item.nombreContraparte }}</td>
+              <td>{{ item.nombreResponsable }}</td>
+              <td>{{ item.nombreSolicitante }}</td>
+              <td>{{ item.fechaFinContrato | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ item.estadoAlarma }}</td>
+              <td>{{ item.fechaAlarma | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ item.diasActivacion }}</td>
+              <td>{{ item.intervaloPorMes }}</td>
+              <td>{{ item.tituloAlarma }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>

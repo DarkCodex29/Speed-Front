@@ -1,0 +1,39 @@
+<div class="modal-container" [formGroup]="requestForm" *ngIf="!loading">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="observeRequestLabel">Observar solicitud</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Destinatario</legend>
+      <p>
+        Usuario: <span>{{ destinatario.nombreDestinatario }}</span>
+      </p>
+    </fieldset>
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Acciones</legend>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="documentacionIncompleta" type="checkbox" value="" id="flexCheckDefault1" />
+        <label class="form-check-label" for="flexCheckDefault"> Documentación Incompleta </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="solicitudDuplicada" type="checkbox" value="" id="flexCheckDefault2" />
+        <label class="form-check-label" for="flexCheckChecked"> Solicitud Duplicada </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" formControlName="otros" type="checkbox" value="" id="flexCheckDefault3" />
+        <label class="form-check-label" for="flexCheckChecked"> Otros </label>
+      </div>
+    </fieldset>
+    <div>
+      <p>Observación</p>
+      <textarea name="" id="" formControlName="observacion" style="width: 100%" rows="10"></textarea>
+    </div>
+    <br />
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-secondary btn-speed btn-sm" (click)="sendRequest()">
+        <i class="fa-regular fa-eye"></i> Observar
+      </button>
+    </div>
+  </div>
+</div>

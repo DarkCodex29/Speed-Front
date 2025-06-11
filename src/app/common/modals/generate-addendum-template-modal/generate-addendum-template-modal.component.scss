@@ -1,0 +1,14 @@
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+  &-container {
+    width: 30vw;
+  }
+}

@@ -1,0 +1,385 @@
+<div class="content-speed pb-3">
+  <!-- h-100 overflow-hidden -->
+  <div class="card mb-0 h-100" style="border-radius: 0 0 0.5rem 0.5rem">
+    <div class="card-header d-flex justify-content-between">
+      <div class="header-title">
+        <h4 class="card-title">Buscar Documentos</h4>
+      </div>
+    </div>
+    <div class="card-body d-flex h-100 flex-column pb-5">
+      <div class="accordion" id="accordionExample" style="margin-bottom: 32px">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              Panel de Búsqueda
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <form [formGroup]="searchDocumentsForm">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-12 col-md-6 col-custom">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Número de documento:</div>
+                      <div class="content-control px-0">
+                        <input type="text" class="form-control" formControlName="numero" />
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Sumilla:</div>
+                      <div class="content-control px-0">
+                        <input type="text" class="form-control" formControlName="sumilla" />
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Fecha de Inicio de Vigencia:</div>
+                      <div class="content-control px-0">
+                        <div class="row ms-0 w-100">
+                          <div class="col-12 col-xxl-6 ps-0 pe-0 pe-xxl-2">
+                            <div class="row content-form-control mb-0">
+                              <div class="text-xs ps-0" style="width: 60px">Desde:</div>
+                              <div class="content-control px-0">
+                                <input type="date" class="form-control" formControlName="fechaFirmaInicio" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-xxl-6 ps-0 pe-0 ps-xxl-2">
+                            <div class="row content-form-control mb-0">
+                              <div class="text-xs ps-0" style="width: 60px">Hasta:</div>
+                              <div class="content-control px-0">
+                                <input type="date" class="form-control" formControlName="fechaFirmaFin" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Fecha de vencimiento:</div>
+                      <div class="content-control px-0">
+                        <div class="row ms-0 w-100">
+                          <div class="col-12 col-xxl-6 ps-0 pe-0 pe-xxl-2">
+                            <div class="row content-form-control mb-0">
+                              <div class="text-xs ps-0" style="width: 60px">Desde:</div>
+                              <div class="content-control px-0">
+                                <input type="date" class="form-control" formControlName="fechaVencimientoInicio" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-xxl-6 ps-0 pe-0 ps-xxl-2">
+                            <div class="row content-form-control mb-0">
+                              <div class="text-xs ps-0" style="width: 60px">Hasta:</div>
+                              <div class="content-control px-0">
+                                <input type="date" class="form-control" formControlName="fechaVencimientoFin" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">País:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="countriesList"
+                          [valueKey]="'id'"
+                          formControlName="idPais"
+                          [valueLabel]="'nombre'"
+                          [lock]="false"
+                          customReactiveForm
+                          (changeValue)="updateCountry()"
+                        ></hdc-select>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Compañía:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="filterCompanies"
+                          [valueKey]="'id'"
+                          formControlName="idCompania"
+                          [valueLabel]="'nombre'"
+                          (changeValue)="updateCompany()"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Área:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="filterAreas"
+                          [valueKey]="'id'"
+                          formControlName="idArea"
+                          [valueLabel]="'nombre'"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Tipo de ubicación:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="locationTypeList"
+                          [valueKey]="'id'"
+                          formControlName="tipoUbicacion"
+                          [valueLabel]="'nombre'"
+                          (changeValue)="updateLocationType()"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Ubicación:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="filterLocationList"
+                          [valueKey]="'id'"
+                          formControlName="idUbicacion"
+                          [valueLabel]="'nombre'"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-custom">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Texto a buscar en archivos:</div>
+                      <div class="content-control px-0">
+                        <input type="text" formControlName="textoArchivo" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Solicitante:</div>
+                      <div class="content-control px-0">
+                        <hdc-autocomplete
+                          class="w-100"
+                          value-label="nombreCompleto"
+                          [items]="usuariosSolicitantes"
+                          formControlName="idSolicitante"
+                          (selectedValue)="selectSolicitante($event)"
+                          customReactiveForm
+                        ></hdc-autocomplete>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Abogado responsable:</div>
+                      <div class="content-control px-0">
+                        <hdc-autocomplete
+                          class="w-100"
+                          value-label="nombreCompleto"
+                          [items]="usuariosResponsables"
+                          formControlName="idResponsable"
+                          (selectedValue)="selectAbogadoResponsable($event)"
+                          customReactiveForm
+                        ></hdc-autocomplete>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Contraparte:</div>
+                      <div class="content-control px-0">
+                        <hdc-autocomplete
+                          class="w-100"
+                          [valueKey]="'id'"
+                          [valueLabel]="'nombres'"
+                          [items]="contrapartes"
+                          (selectedValue)="selectContraparte($event)"
+                          formControlName="idContraparte"
+                          customReactiveForm
+                        ></hdc-autocomplete>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Representante:</div>
+                      <div class="content-control px-0">
+                        <hdc-autocomplete
+                          class="w-100"
+                          value-label="nombres"
+                          [valueKey]="'id'"
+                          [items]="abogadosResponsables"
+                          formControlName="idRepresentante"
+                          (selectedValue)="selectRepresentante($event)"
+                          customReactiveForm
+                        ></hdc-autocomplete>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Valor de contrato:</div>
+                      <div class="content-control px-0">
+                        <div class="row ms-0 w-100">
+                          <div class="col-12 col-xxl-6 ps-0 pe-0 pe-xxl-2">
+                            <div class="row content-form-control mb-0">
+                              <div class="text-xs ps-0" style="width: 60px">Desde:</div>
+                              <div class="content-control px-0">
+                                <input type="number" class="form-control" formControlName="montoDesde" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-xxl-6 ps-0 pe-0 ps-xxl-2">
+                            <div class="row content-form-control mb-0">
+                              <div class="text-xs ps-0" style="width: 60px">Hasta:</div>
+                              <div class="content-control px-0">
+                                <input type="number" class="form-control" formControlName="montoHasta" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Tipo de contrato:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="contractTypesList"
+                          [valueKey]="'id'"
+                          formControlName="idTipoContrato"
+                          [valueLabel]="'nombre'"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Estado:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="statesList"
+                          [valueKey]="'id'"
+                          formControlName="estado"
+                          [valueLabel]="'estado'"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 150px">Tipo de Proceso:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select
+                          class="w-100"
+                          [items]="tipoSolicitudList"
+                          [valueKey]="'id'"
+                          formControlName="tipoSolicitud"
+                          [valueLabel]="'nombre'"
+                          [lock]="false"
+                          customReactiveForm
+                        ></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap cont-btn justify-content-end gap-1">
+                  <button type="button" class="btn btn-primary btn-sm btn-speed" (click)="resetForm()">
+                    <i class="fa-solid fa-trash"></i> Limpiar
+                  </button>
+                  <!---->
+                  <button type="button" class="btn btn-primary btn-sm btn-speed" (click)="exportarExcel()">
+                    <i class="fa-solid fa-file-arrow-down"></i> Exportar A Excel
+                  </button>
+                  <button type="button" (click)="submit()" class="btn btn-primary btn-sm btn-speed">
+                    <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-hidden" style="flex: 1 1 auto" *ngIf="rowsTable.length > 0">
+        <p-treeTable
+          #tt
+          [value]="rowsTable"
+          [columns]="colsTable"
+          [paginator]="true"
+          [rows]="10"
+          [rowsPerPageOptions]="[10, 15, 25]"
+          [filterMode]="'lenient'"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed tree-table-speed overflow-hidden"
+          [scrollable]="true"
+          scrollHeight="flex"
+        >
+          <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="p-input-icon-left table-input-search">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 40px"></th>
+              <th ttSortableColumn="numeroDocumento">
+                Número de documento <p-treeTableSortIcon field="numeroDocumento"></p-treeTableSortIcon>
+              </th>
+              <th ttSortableColumn="tipoSolicitud">
+                Tipo de solicitud <p-treeTableSortIcon field="tipoSolicitud"></p-treeTableSortIcon>
+              </th>
+              <th ttSortableColumn="tipoContrato">Tipo de contrato <p-treeTableSortIcon field="tipoContrato"></p-treeTableSortIcon></th>
+              <th ttSortableColumn="sumilla">Sumilla <p-treeTableSortIcon field="sumilla"></p-treeTableSortIcon></th>
+              <th ttSortableColumn="contraparte">Contraparte <p-treeTableSortIcon field="contraparte"></p-treeTableSortIcon></th>
+              <th ttSortableColumn="ubicacion">Ubicación <p-treeTableSortIcon field="ubicacion"></p-treeTableSortIcon></th>
+              <th ttSortableColumn="estado">Estado <p-treeTableSortIcon field="estado"></p-treeTableSortIcon></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr
+              [ttRow]="rowNode"
+              (click)="
+                onEditDocument(
+                  { id: rowData.idExpediente!, code: rowData.numeroDocumento!, isVerContratoButton: false },
+                  rowData.estado,
+                  rowData.idTipoProceso
+                )
+              "
+            >
+              <td style="width: 40px">
+                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+              </td>
+              <td>{{ rowData.numeroDocumento }}</td>
+              <td>{{ rowData.tipoSolicitud }}</td>
+              <td class="break-words">{{ rowData.tipoContrato }}</td>
+              <td class="break-words">{{ rowData.sumilla }}</td>
+              <td class="break-words">{{ rowData.contraparte }}</td>
+              <td class="break-words">{{ rowData.ubicacion }}</td>
+              <td>{{ rowData.estado }}</td>
+            </tr>
+          </ng-template>
+        </p-treeTable>
+      </div>
+    </div>
+  </div>
+
+  <ng-template let-contract="contract" #contractEdit>
+    <ui-document-search-tab
+      [tabInfoDocument]="contractSelected"
+      (closeTab)="onContractFormSubmit($event)"
+      (reloadList)="reloadList($event)"
+      (openVerDocumento)="openOtherTab($event)"
+      [tipoBandeja]="5"
+      [idProceso]="tipoProceso"
+      [tipo]="tipoTab"
+    >
+    </ui-document-search-tab>
+  </ng-template>
+</div>

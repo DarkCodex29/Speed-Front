@@ -1,0 +1,22 @@
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  &-body {
+    font-size: 1rem;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+}

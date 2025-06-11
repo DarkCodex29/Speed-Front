@@ -1,0 +1,65 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <span *ngIf="actionType === action.EDITAR">Editar Tipo Alerta</span>
+    <span *ngIf="actionType === action.REGISTRAR">Registrar Tipo Alerta</span>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-footer pb-0 justify-content-start">
+    <button class="btn btn-sm btn-primary" style="height: 39px" (click)="submit()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed">
+      <legend>Datos de Tipo de Alerta</legend>
+      <div [formGroup]="alertTypeForm">
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 150px">Nombre:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="nombre" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 150px">Imagen:</div>
+          <div class="w-100">
+            <p-dropdown
+              [options]="colores"
+              formControlName="imagen"
+              [(ngModel)]="selectedColor"
+              optionLabel="name"
+              [showClear]="true"
+              [style]="{ width: '100%' }"
+              placeholder="Selecciona un color"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="flex align-items-center gap-2" *ngIf="selectedColor">
+                  <div><img [(src)]="selectedColor.image" style="width: 18px" /> {{ selectedColor.name }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-color pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  <div><img [(src)]="color.image" style="width: 18px" /> {{ color.name }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 150px">Porcentaje Intervalo:</div>
+          <div class="w-100">
+            <p class="mb-0">{{ this.alertTypeForm.get('porcentajeIntervalo')!.value }}</p>
+          </div>
+        </div>
+        <p-slider formControlName="porcentajeIntervalo" [step]="5"></p-slider>
+        <div class="row content-form-control mt-2">
+          <div class="text-xs ps-md-0" style="width: 130px">Defecto:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input class="form-check-input pointer" type="checkbox" formControlName="defecto" />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>

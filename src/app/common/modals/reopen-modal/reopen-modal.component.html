@@ -1,0 +1,41 @@
+<div class="modal-container" *ngIf="!loading">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modalReopenTitle">Reabrir</h4>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div [formGroup]="requestForm" class="modal-body">
+    <p>Reabrir Contrato {{ contrato }}</p>
+    <p>
+      Al reabrir este proceso, se enviará el documento a la última etapa en la que estuvo antes de ser archivado. Indique si se mantendrá el
+      mismo abogado responsable o si se cambiará.
+    </p>
+    <div class="d-flex">
+      <p>Abogado Responsable</p>
+      <hdc-select
+        style="width: 100%"
+        value-key="id"
+        value-label="label"
+        [items]="responsablesList"
+        [placeholder]="'Seleccione responsable'"
+        formControlName="idResponsable"
+        (selectedValue)="selectResponsible($event)"
+        customReactiveForm
+      ></hdc-select>
+    </div>
+    <div>
+      <p>Observacion</p>
+      <textarea
+        class="form-control"
+        style="box-sizing: border-box; width: 100%"
+        formControlName="observacion"
+        rows="5"
+        cols="33"
+      ></textarea>
+    </div>
+    <br />
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-primary" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button type="button" class="btn btn-secondary" (click)="sendRequest()"><i class="fa-solid fa-door-open"></i> Reabrir</button>
+    </div>
+  </div>
+</div>

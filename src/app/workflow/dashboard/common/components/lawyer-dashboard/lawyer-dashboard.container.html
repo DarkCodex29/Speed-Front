@@ -1,0 +1,11 @@
+<ui-lawyer-dashboard
+  *ngIf="!isLoading"
+  [dataDashboard]="dataDashboard"
+  [dataSolicitudesGenerales]="dataSolicitudesGenerales"
+  [dataSolicitudesAbogadoResponsable]="dataSolicitudesAbogadoResponsable"
+  [dataClientesInternos]="dataClientesInternos"
+  [urlLegalAlDia]="urlLegalAlDia"
+  [modeloDocumentos]="modeloDocumentos"
+  (downloadFile)="onDownloadFile($event)"
+  [dataSolicitudesGeneralesElaborado]="dataSolicitudesGeneralesElaborado"
+></ui-lawyer-dashboard>

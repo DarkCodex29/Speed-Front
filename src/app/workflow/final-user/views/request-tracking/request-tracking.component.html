@@ -1,0 +1,198 @@
+<div class="card content-speed mb-0">
+  <!--h-100 overflow-hidden-->
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Seguimiento de Solicitudes</h4>
+    </div>
+  </div>
+  <div class="card-body d-flex h-100 flex-column overflow-hidden pb-2">
+    <div class="accordion mb-3" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            Panel de Búsqueda
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+          <form action="" [formGroup]="requestTrackingForm">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="col-12 col-md-6 col-custom">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 150px">Número de contrato:</div>
+                    <div class="content-control px-0">
+                      <input type="text" class="form-control" formControlName="numero" />
+                    </div>
+                  </div>
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 150px">Sumilla:</div>
+                    <div class="content-control px-0">
+                      <input type="text" class="form-control" formControlName="sumilla" />
+                    </div>
+                  </div>
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 150px">Contraparte:</div>
+                    <div class="content-control px-0">
+                      <hdc-autocomplete
+                        class="w-100"
+                        [valueKey]="'id'"
+                        [valueLabel]="'nombres'"
+                        [items]="contrapartes"
+                        (selectedValue)="selectContraparte($event)"
+                        formControlName="idContraparte"
+                        customReactiveForm
+                      ></hdc-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-custom">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 150px">Solicitante:</div>
+                    <div class="content-control px-0">
+                      <hdc-autocomplete
+                        class="w-100"
+                        value-label="nombreCompleto"
+                        [items]="usuariosSolicitantes"
+                        formControlName="idSolicitante"
+                        (selectedValue)="selectSolicitante($event)"
+                        customReactiveForm
+                      ></hdc-autocomplete>
+                    </div>
+                  </div>
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 150px">Abogado responsable:</div>
+                    <div class="content-control px-0">
+                      <hdc-autocomplete
+                        class="w-100"
+                        value-label="nombreCompleto"
+                        [items]="usuariosResponsables"
+                        formControlName="idResponsable"
+                        (selectedValue)="selectAbogadoResponsable($event)"
+                        customReactiveForm
+                      ></hdc-autocomplete>
+                    </div>
+                  </div>
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 150px">Estado:</div>
+                    <div class="content-control px-0" style="overflow: inherit">
+                      <hdc-select
+                        class="w-100"
+                        [items]="statesList"
+                        [valueKey]="'id'"
+                        formControlName="estado"
+                        [valueLabel]="'estado'"
+                        [lock]="false"
+                        customReactiveForm
+                      ></hdc-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex cont-btn justify-content-end gap-1">
+                <button type="button" class="btn btn-primary btn-sm" (click)="cleanInputs()">
+                  <i class="fa-solid fa-trash"></i> Limpiar
+                </button>
+                <button type="submit" (click)="submit()" class="btn btn-primary btn-sm">
+                  <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden" style="flex: 1 1 auto" *ngIf="data.length > 0">
+      <p-table
+        #pt
+        [value]="data"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 15, 25]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+        [globalFilterFields]="[
+          'numero',
+          'numeroDocumento',
+          'abogadoResponsable',
+          'sumilla',
+          'contraparte',
+          'solicitante',
+          'ultimoMovimiento',
+          'ubicacionDocumento',
+          'estado'
+        ]"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+        <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-primary btn-sm" (click)="onUpdateData()"><i class="fa-solid fa-pen"></i> Actualizar datos</button>
+            <div class="p-input-icon-left table-input-search">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>N°</th>
+            <th pSortableColumn="numeroDocumento">Número de Documento <p-sortIcon field="numeroDocumento"></p-sortIcon></th>
+            <th pSortableColumn="abogadoResponsable">Abogado Responsable <p-sortIcon field="abogadoResponsable"></p-sortIcon></th>
+            <th pSortableColumn="sumilla">Sumilla <p-sortIcon field="sumilla"></p-sortIcon></th>
+            <th pSortableColumn="contraparte">Contraparte <p-sortIcon field="contraparte"></p-sortIcon></th>
+            <th pSortableColumn="solicitante">Solicitante <p-sortIcon field="solicitante"></p-sortIcon></th>
+            <th pSortableColumn="ultimoMovimiento">Último movimiento <p-sortIcon field="ultimoMovimiento"></p-sortIcon></th>
+            <th pSortableColumn="ubicacionDocumento">Ubicación del documento <p-sortIcon field="ubicacionDocumento"></p-sortIcon></th>
+            <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+          <tr>
+            <td>{{ rowIndex + 1 }}</td>
+            <td>{{ item.numeroDocumento }}</td>
+            <td>{{ item.abogado }}</td>
+            <td>{{ item.sumilla }}</td>
+            <td>{{ item.contraparte }}</td>
+            <td>{{ item.solicitante }}</td>
+            <td [pEditableColumn]="item.ultimoMovimiento" pEditableColumnField="ultimoMovimiento" class="text-center">
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText class="p-inputtext-sm" type="date" [(ngModel)]="item.ultimoMovimiento" />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ item.ultimoMovimiento | date: 'dd/MM/yyyy' }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td [pEditableColumn]="item.ubicacionDocumento" pEditableColumnField="ubicacionDocumento" class="text-center">
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <select class="form-select" [(ngModel)]="item.ubicacionDocumento">
+                    <option value="ADC">ADC</option>
+                    <option value="Area Usuaria">Area Usuaria</option>
+                    <option value="Contratista">Contratista</option>
+                    <option value="Legal">Legal</option>
+                  </select>
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ item.ubicacionDocumento }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>{{ item.estado }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

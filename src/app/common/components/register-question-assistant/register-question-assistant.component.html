@@ -1,0 +1,13 @@
+<div [formGroup]="requestForm">
+    <div >
+        <div class="request-form">
+            <div class="px-0 col-12" style="display: flex; flex-direction: row;">
+                <input type="text" class="ml-1 form-control" style="width: 70%;" formControlName="pregunta" />
+                <button type="button" class="mx-0 btn btn-primary btn-sm" style="width: 30%; height: 38px;" (click)="registerPregunta()">
+                    Enviar
+                </button>
+            </div>
+            <p>{{mensaje}}</p>
+        </div>
+    </div>
+</div>

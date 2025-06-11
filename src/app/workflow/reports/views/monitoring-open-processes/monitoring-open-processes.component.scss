@@ -1,0 +1,18 @@
+.contenedor {
+  width: 992px;
+}
+
+@media (max-width: 425px) {
+  .label-custom {
+    width: 100% !important;
+  }
+  .content-form-control {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 425px) {
+  .cont-btn {
+    flex-direction: column;
+  }
+}

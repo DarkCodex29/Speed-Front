@@ -1,0 +1,33 @@
+.modal {
+  &-container {
+    min-width: 450px;
+  }
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+
+  .form-check {
+    min-height: auto;
+    margin-bottom: 0;
+  }
+}
+
+::ng-deep .p-picklist-buttons button {
+  background-color: #c49227;
+  border-color: #c49227;
+}
+::ng-deep .p-picklist-buttons button:hover {
+  background-color: #9d751f !important;
+  border-color: #c49227 !important;
+}

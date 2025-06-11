@@ -1,0 +1,7 @@
+export enum CustomerType {
+  PERSONA_JURIDICA = 1,
+  DNI = 2,
+  CARNET_EXTRANJERIA = 3,
+  PERSONA_NATURAL_NAC = 6,
+  PERSONA_NATURAL_EXT = 7,
+}

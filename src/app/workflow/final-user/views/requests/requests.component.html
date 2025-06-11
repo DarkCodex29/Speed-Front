@@ -1,0 +1,161 @@
+<div class="content-speed">
+  <!-- h-100 overflow-hidden -->
+  <div class="card mb-0 h-100" style="border-radius: 0 0 0.5rem 0.5rem">
+    <div class="card-header d-flex justify-content-between">
+      <div class="header-title">
+        <h4 class="card-title">Mis Solicitudes</h4>
+      </div>
+    </div>
+    <div class="card-body d-flex h-100 flex-column overflow-hidden pb-5">
+      <div class="accordion" id="accordionExample" style="margin-bottom: 32px">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+              aria-expanded="true" aria-controls="collapseOne">
+              Panel de Búsqueda
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <form action="" [formGroup]="requestsForm" (ngSubmit)="onSubmit()">
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">Número:</div>
+                      <div class="content-control px-0">
+                        <input type="text" formControlName="numero" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">País:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select style="width: 100%" value-key="id" value-label="nombre" [items]="countriesList"
+                          [placeholder]="'Todos'" (changeValue)="seleccionarPais($event)" formControlName="pais"
+                          customReactiveForm></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">Compañía:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select style="width: 100%" value-key="id" value-label="nombre" [items]="filterCompanies"
+                          [placeholder]="'Todas'" (changeValue)="seleccionarCompania($event)" formControlName="compania"
+                          customReactiveForm></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">Contraparte:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select style="width: 100%" value-key="id" value-label="nombresCombo"
+                          [items]="counterpartsListTemporal" [placeholder]="'Todas'"
+                          (changeValue)="seleccionarContraparte($event)" formControlName="contraparte"
+                          customReactiveForm></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-8">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">Sumilla:</div>
+                      <div class="content-control px-0">
+                        <input type="text" class="form-control" formControlName="sumilla" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">Estado:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select style="width: 100%" value-key="id" value-label="estado" [items]="statesList"
+                          [placeholder]="'Todos'" (changeValue)="seleccionarEstado($event)" formControlName="estado"
+                          customReactiveForm></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row content-form-control">
+                      <div class="text-xs ps-0 label-custom" style="width: 110px">Proceso:</div>
+                      <div class="content-control px-0" style="overflow: inherit">
+                        <hdc-select style="width: 100%" value-key="id" value-label="nombre" [items]="processesList"
+                          [placeholder]="'Todos'" (changeValue)="seleccionarProceso($event)" formControlName="proceso"
+                          customReactiveForm></hdc-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="d-flex cont-btn justify-content-end gap-1">
+                      <button (click)="exportarExcel()" type="button" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-file-arrow-down"></i> Exportar A Excel
+                      </button>
+                      <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-magnifying-glass"></i>
+                        Buscar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-hidden" style="flex: 1 1 auto" *ngIf="tableRequests.length > 0">
+        <p-table #pt [value]="tableRequests" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+          [rowsPerPageOptions]="[10, 15, 25]" [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed" [globalFilterFields]="[
+                'numero',
+                'compania',
+                'contraparte',
+                'sumilla',
+                'estado',
+                'fechaSolicitud',
+                'fechaBorrador',
+                'proceso'
+              ]" [scrollable]="true" scrollHeight="flex">
+          <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="p-input-icon-left table-input-search">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Número</th>
+              <th>Compañía</th>
+              <th>Contraparte</th>
+              <th>Sumilla</th>
+              <th>Estado</th>
+              <th>Fecha Solicitud</th>
+              <th>Fecha 1er borrador</th>
+              <th>Proceso</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr (click)="onEdit({ id: item.idExpediente, code: item.numero, isVerContratoButton: false })"
+              style="cursor: pointer">
+              <td>{{ item.numero }}</td>
+              <td>{{ item.nombreCompania }}</td>
+              <td>{{ item.contraparte }}</td>
+              <td>{{ item.sumilla }}</td>
+              <td>{{ item.estado }}</td>
+              <td>{{ item.fechaSolicitud }}</td>
+              <td>{{ item.fechaBorrador }}</td>
+              <td>{{ item.nombreProceso }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <ng-template let-contract="contract" #contractEdit>
+    <ui-contract-detail [contract]="contractSelected" (reloadList)="reloadList($event)"
+      (openVerDocumento)="openOtherTab($event)" (closeTab)="onCloseTab($event)" [tipoBandeja]="3"></ui-contract-detail>
+  </ng-template>
+</div>

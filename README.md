@@ -63,6 +63,14 @@
 - **Moment.js 2.29.4** - Manipulación de fechas
 - **File-Saver 2.0.5** - Descarga de archivos
 
+### Web Components Personalizados
+
+- **HDC-WC Library** - Librería de componentes atómicos personalizados
+  - `hdc-input` - Input personalizado
+  - `hdc-select` - Select avanzado
+  - `hdc-multiselect` - Multiselección
+  - `hdc-autocomplete` - Autocompletado
+
 ## 📋 Requisitos del Sistema
 
 - **Node.js** 18.x o superior
@@ -112,6 +120,8 @@ La aplicación estará disponible en `http://localhost:4200`
 | `npm run lint:fix`       | Corrige automáticamente problemas de linting    |
 | `npm run prettier:fix`   | Aplica formateo de código con Prettier          |
 | `npm run prettier:check` | Verifica el formateo del código                 |
+| `npm run version`        | Muestra la versión actual del proyecto          |
+| `grunt`                  | Genera archivo WAR para despliegue              |
 
 ## 📁 Estructura del Proyecto
 
@@ -197,10 +207,11 @@ export const environment = {
 
 ### Configuración de Backend
 
-- **API URL**: Configurable por entorno
+- **API URL**: Configurable por entorno (desarrollo: `localhost:9096/services`)
 - **Autenticación**: JWT Token based
-- **Reportes**: Integración con SSRS
+- **Reportes**: Integración con SSRS (SQL Server Reporting Services)
 - **File Upload**: Soporte para múltiples formatos
+- **Despliegue**: Generación de archivos WAR para servidores Java
 
 ## 🎯 Funcionalidades
 
@@ -279,5 +290,6 @@ Este proyecto es propietario y confidencial. Todos los derechos reservados.
 Para soporte técnico o consultas sobre el proyecto, contactar al equipo de desarrollo.
 
 **Desarrollado con ❤️ por el equipo Speed Front**
-#   S p e e d - F r o n t  
+#   S p e e d - F r o n t 
+ 
  

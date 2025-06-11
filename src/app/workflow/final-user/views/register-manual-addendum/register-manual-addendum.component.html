@@ -1,0 +1,185 @@
+<div class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Registrar Adenda Manual</h4>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-primary btn-sm" (click)="sendRequest()" style="height: 38px">
+        <i class="fa-regular fa-floppy-disk"></i> Registrar Adenda
+      </button>
+    </div>
+
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Datos Generales</legend>
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control" [formGroup]="formRequest">
+            <div class="text-xs ps-md-0" style="width: 115px">Solicitante:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-label="nombreCompleto"
+                [items]="requestingUserList"
+                formControlName="solicitante"
+                (selectedValue)="selectUserRequesting($event)"
+                customReactiveForm
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control" [formGroup]="formRequest">
+            <div class="text-xs ps-md-0" style="width: 145px">Abogado Responsable:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-label="nombreCompleto"
+                [items]="responsibleLawyersList"
+                formControlName="abogadoResponsable"
+                (selectedValue)="selectResponsibleLawyer($event)"
+                customReactiveForm
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control" [formGroup]="formRequest">
+            <div class="text-xs ps-md-0" style="width: 80px">Sumilla:</div>
+            <div class="content-control px-0">
+              <input type="text" formControlName="sumilla" class="form-control" FOR />
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs" id="myTabAdenda" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link active btn-sm tab-start"
+          style="width: 200px"
+          id="datos-adenda-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#datos-adenda"
+          type="button"
+          role="tab"
+          aria-controls="datos-adenda"
+          aria-selected="true"
+        >
+          Datos de la Adenda
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link btn-sm rounded-0"
+          style="width: 200px"
+          id="documentos-tab-adenda"
+          data-bs-toggle="tab"
+          data-bs-target="#documentos-adenda"
+          type="button"
+          role="tab"
+          aria-controls="documentos-adenda"
+          aria-selected="false"
+        >
+          Documentos de Solicitud
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link btn-sm rounded-0"
+          style="width: 200px"
+          id="adenda-tab-adenda"
+          data-bs-toggle="tab"
+          data-bs-target="#adenda-adenda"
+          type="button"
+          role="tab"
+          aria-controls="documentos-adenda"
+          aria-selected="false"
+        >
+          Adenda
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContentAdenda">
+      <div class="tab-pane fade show active" id="datos-adenda" role="tabpanel" aria-labelledby="datos-adenda-tab">
+        <div class="accordion" id="accordionDatosAdenda">
+          <!-- ELABORACION DOCUMENTO -->
+          <div class="accordion-item overflow-hidden">
+            <h4 class="accordion-header" id="headingTwoAdendaE">
+              <button
+                class="accordion-button collapsed py-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwoAdendaE"
+                aria-expanded="true"
+                aria-controls="collapseTwoAdendaE"
+              >
+                Elaboración de Documento
+              </button>
+            </h4>
+            <div
+              id="collapseTwoAdendaE"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingTwoAdendaE"
+              data-bs-parent="#accordionDatosAdenda"
+            >
+              <div class="accordion-body">
+                <ui-elaboration-document-panel
+                  [processType]="enumProcessType.ADENDA"
+                  [edocumentForm]="addendumForm"
+                  [countriesList]="countriesList"
+                  [companiesList]="companiesList"
+                  [counterpartList]="counterpartList"
+                  [areasList]="areasList"
+                ></ui-elaboration-document-panel>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONTRAPARTE -->
+          <div class="accordion-item overflow-hidden">
+            <h4 class="accordion-header" id="headingOneAdendaContraparte">
+              <button
+                class="accordion-button py-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOneAdendaC"
+                aria-expanded="false"
+                aria-controls="collapseOneAdendaC"
+              >
+                Contraparte
+              </button>
+            </h4>
+            <div
+              id="collapseOneAdendaC"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingOneAdendaContraparte"
+              data-bs-parent="#accordionDatosAdenda"
+            >
+              <div class="accordion-body">
+                <ui-counterpart-panel
+                  [processType]="enumProcessType.ADENDA"
+                  [counterPartForm]="addendumForm"
+                  [counterpartList]="counterpartList"
+                  [legalRepresentativesList]="legalRepresentativesList"
+                  [customerTypeList]="customerTypeList"
+                  [isRegistroAdendaManual]="true"
+                ></ui-counterpart-panel>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="documentos-adenda" role="tabpanel" aria-labelledby="documentos-tab-adenda">
+        <ui-documents-upload [infoTab]="tabApplicationDocuments" [form]="getFormGroup('tabApplicationDocuments')"></ui-documents-upload>
+      </div>
+      <div class="tab-pane fade" id="adenda-adenda" role="tabpanel" aria-labelledby="adenda-tab-adenda">
+        <ui-documents-upload [infoTab]="tabAdendum" [form]="getFormGroup('documentsAddendum')"></ui-documents-upload>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,212 @@
+<div class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Registrar Contrato Manual</h4>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-primary btn-sm" (click)="presionarBoton()" style="height: 38px">
+        <i class="fa-regular fa-floppy-disk"></i> Registrar Contrato
+      </button>
+    </div>
+
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Datos Generales</legend>
+      <div class="row" [formGroup]="formRequest">
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 115px">Solicitante:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-label="nombreCompleto"
+                [items]="requestingUserList"
+                formControlName="solicitante"
+                (selectedValue)="selectUserRequesting($event)"
+                customReactiveForm
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 145px">Abogado Responsable:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-label="nombreCompleto"
+                [items]="responsibleLawyersList"
+                formControlName="abogadoResponsable"
+                (selectedValue)="selectResponsibleLawyer($event)"
+                customReactiveForm
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 80px">Sumilla:</div>
+            <div class="content-control px-0">
+              <input type="text" formControlName="sumilla" class="form-control" FOR />
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 115px">Tipo de contrato:</div>
+            <div class="content-control px-0">
+              <hdc-select
+                class="w-100"
+                [items]="tiposContratoList"
+                value-key="id"
+                formControlName="tipoContrato"
+                value-label="nombre"
+                [lock]="false"
+                customReactiveForm
+              ></hdc-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link active btn-sm tab-start"
+          style="width: 200px"
+          id="datos-contrato-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#datos-contrato"
+          type="button"
+          role="tab"
+          aria-controls="datos-contrato"
+          aria-selected="true"
+        >
+          Datos del Contrato
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link btn-sm rounded-0"
+          style="width: 200px"
+          id="documentos-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#documentos"
+          type="button"
+          role="tab"
+          aria-controls="documentos"
+          aria-selected="false"
+        >
+          Documentos de Solicitud
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link btn-sm rounded-0"
+          style="width: 200px"
+          id="poderes-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#poderes"
+          type="button"
+          role="tab"
+          aria-controls="poderes"
+          aria-selected="false"
+        >
+          Poderes
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link btn-sm tab-end"
+          style="width: 200px"
+          id="contrato-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#contrato"
+          type="button"
+          role="tab"
+          aria-controls="contrato"
+          aria-selected="false"
+        >
+          Contrato
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+      <div class="tab-pane fade show active" id="datos-contrato" role="tabpanel" aria-labelledby="datos-contrato-tab">
+        <div class="accordion" id="accordionDatosContrato">
+          <!-- CONTRAPARTE -->
+          <div class="accordion-item overflow-hidden">
+            <h4 class="accordion-header" id="headingOne">
+              <button
+                class="accordion-button py-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
+                Contraparte
+              </button>
+            </h4>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
+              data-bs-parent="#accordionDatosContrato"
+            >
+              <div class="accordion-body">
+                <ui-counterpart-panel
+                  [counterPartForm]="contractForm"
+                  [counterpartList]="counterpartList"
+                  [legalRepresentativesList]="legalRepresentativesList"
+                  [customerTypeList]="customerTypeList"
+                ></ui-counterpart-panel>
+              </div>
+            </div>
+          </div>
+
+          <!-- ELABORACION DOCUMENTO -->
+          <div class="accordion-item overflow-hidden">
+            <h4 class="accordion-header" id="headingTwo">
+              <button
+                class="accordion-button collapsed py-2"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                Elaboración de Documento
+              </button>
+            </h4>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDatosContrato">
+              <div class="accordion-body">
+                <ui-elaboration-document-panel
+                  [edocumentForm]="contractForm"
+                  [countriesList]="countriesList"
+                  [companiesList]="companiesList"
+                  [areasList]="areasList"
+                  [processType]="enumProcessType.CONTRATO"
+                ></ui-elaboration-document-panel>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-3"><span class="text-danger">(*):</span> Campos m&iacute;nimos requeridos para poder guardar avance</p>
+      </div>
+      <div class="tab-pane fade" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
+        <ui-documents-upload [infoTab]="tabApplicationDocuments" [form]="getFormGroup('tabApplicationDocuments')"></ui-documents-upload>
+      </div>
+      <div class="tab-pane fade" id="poderes" role="tabpanel" aria-labelledby="poderes-tab">
+        <ui-documents-upload [infoTab]="tabPowers" [form]="getFormGroup('tabPowers')"></ui-documents-upload>
+      </div>
+      <div class="tab-pane fade" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
+        <ui-documents-upload [infoTab]="tabContract" [form]="getFormGroup('tabContract')"></ui-documents-upload>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.iq-banner:not(.hide) + .content-inner {
+  margin-top: 0 !important;
+  padding-top: 1rem;
+}
+.wizard-launcher {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 105;
+}

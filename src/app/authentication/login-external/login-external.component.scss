@@ -1,0 +1,86 @@
+.login-container {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.login-panel-background {
+  width: 470px;
+  min-height: 100vh;
+  background: white !important;
+  box-shadow: -1px -1px 11px 0px #b1b1b1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 9;
+  right: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.login-panel {
+  position: relative;
+  top: 48%;
+  transform: translateY(-50%);
+  padding: 1rem 3rem;
+}
+.login-panel .logo {
+  width: 205px;
+}
+.login-panel h5 {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+.login-panel p {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.login-panel .form-control {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.btnEyePassword {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: 0;
+  outline: none !important;
+  padding: 0.45rem 0.9rem;
+  z-index: 5;
+}
+
+.carousel-item.img-bg-login {
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+}
+
+@media (min-width: 1440px) {
+  .login-panel .logo {
+    width: 280px;
+  }
+  .login-panel h5 {
+    font-size: 30px;
+  }
+  .login-panel p {
+    font-size: 1rem;
+  }
+  .login-panel .form-control {
+    font-size: 1rem;
+  }
+}

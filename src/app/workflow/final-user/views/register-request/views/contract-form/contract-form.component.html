@@ -1,0 +1,196 @@
+<div class="" *ngIf="!loading">
+  <!-- TABS -->
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active btn-sm tab-start"
+        style="width: 200px"
+        id="datos-contrato-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#datos-contrato"
+        type="button"
+        role="tab"
+        aria-controls="datos-contrato"
+        aria-selected="true"
+      >
+        Datos de Contrato
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link btn-sm rounded-0"
+        style="width: 200px"
+        id="documentos-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#documentos"
+        type="button"
+        role="tab"
+        aria-controls="documentos"
+        aria-selected="false"
+      >
+        Documentos de Solicitud
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link btn-sm tab-end"
+        style="width: 200px"
+        id="poderes-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#poderes"
+        type="button"
+        role="tab"
+        aria-controls="poderes"
+        aria-selected="false"
+      >
+        Poderes
+      </button>
+    </li>
+    <li class="nav-item" role="presentation" *ngIf="showApplyPenalty">
+      <button
+        class="nav-link btn-sm tab-end"
+        style="width: 200px"
+        id="penalidades-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#penalidades"
+        type="button"
+        role="tab"
+        aria-controls="penalidades"
+        aria-selected="false"
+      >
+        Penalidades
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content mt-3" id="myTabContentContrato">
+    <div class="tab-pane fade show active" id="datos-contrato" role="tabpanel" aria-labelledby="datos-contrato-tab">
+      <div class="accordion" id="accordionDatosContrato">
+        <!-- CONTRAPARTE -->
+        <div class="accordion-item overflow-hidden">
+          <h4 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button py-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              Contraparte
+            </button>
+          </h4>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingOne"
+            data-bs-parent="#accordionDatosContrato"
+          >
+            <div class="accordion-body">
+              <ui-counterpart-panel
+                [counterPartForm]="contractForm"
+                [counterpartList]="counterpartList"
+                [legalRepresentativesList]="legalRepresentativesList"
+                [customerTypeList]="customerTypeList"
+              ></ui-counterpart-panel>
+            </div>
+          </div>
+        </div>
+
+        <!-- ELABORACION DOCUMENTO -->
+        <div class="accordion-item overflow-hidden">
+          <h4 class="accordion-header" id="headingTwo">
+            <button
+              class="accordion-button collapsed py-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              Elaboración de Documento
+            </button>
+          </h4>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDatosContrato">
+            <div class="accordion-body">
+              <ui-elaboration-document-panel
+                [edocumentForm]="contractForm"
+                [countriesList]="countriesList"
+                [companiesList]="companiesList"
+                [areasList]="areasList"
+              ></ui-elaboration-document-panel>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3"><span class="text-danger">(*):</span> Campos m&iacute;nimos requeridos para poder guardar avance</p>
+    </div>
+
+    <div class="tab-pane fade" id="documentos" role="tabpanel" aria-labelledby="documentos-tab">
+      <ui-documents-upload [infoTab]="tabApplicationDocuments" [form]="getformGroup('tabApplicationDocuments')"></ui-documents-upload>
+    </div>
+    <div class="tab-pane fade" id="poderes" role="tabpanel" aria-labelledby="poderes-tab">
+      <ui-documents-upload [infoTab]="tabPowers" [form]="getformGroup('tabPowers')"></ui-documents-upload>
+    </div>
+    <div class="tab-pane fade" id="penalidades" role="tabpanel" aria-labelledby="penalidades-tab" *ngIf="showApplyPenalty">
+      <div class="card-border">
+        <div class="table-responsive" [formGroup]="requestForm">
+          <table class="table table-striped table-speed table-bordered text-xs">
+            <thead>
+              <tr>
+                <th>Penalidad</th>
+                <th>
+                  <div class="d-flex align-items-center justify-content-between">
+                    Aplica
+                    <div class="form-check form-switch d-inline-block ms-2">
+                      <input
+                        type="checkbox"
+                        class="form-check-input pointer me-0"
+                        value="true"
+                        [disabled]="requestForm.get('penalidades')?.disabled"
+                        (change)="changeCheckbox($event)"
+                      />
+                    </div>
+                  </div>
+                </th>
+                <th>Reiterancia</th>
+                <th colspan="2">Valores</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container formArrayName="penalties">
+                <ng-container *ngFor="let penalty of getFormArray('penalties').controls; let i = index" [formGroupName]="i">
+                  <tr>
+                    <td [attr.rowspan]="getFormReiteration(i).length + 1">{{ penalty.get('descripcion')?.value }}</td>
+                    <td [attr.rowspan]="getFormReiteration(i).length + 1">
+                      <div class="d-flex justify-content-center align-items-center">
+                        <span>No</span>
+                        <div class="form-check form-switch d-inline-block ms-2">
+                          <input type="checkbox" class="form-check-input pointer" formControlName="aplica" value="true" />
+                        </div>
+                        <span>Sí</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <ng-container formArrayName="reiterancias">
+                    <tr *ngFor="let reiteration of getFormReiteration(i).controls; let j = index" [formGroupName]="j">
+                      <td>{{ reiteration.get('descripcion')?.value }}</td>
+                      <td>
+                        <select class="form-select" formControlName="moneda">
+                          <option value="soles">Soles</option>
+                          <option value="dolares">Dólares</option>
+                          <option value="porcentaje">Porcentaje</option>
+                        </select>
+                      </td>
+                      <td><input type="text" class="form-control" formControlName="valor" /></td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+<app-sidebar-menu
+  class="sidebar sidebar-default navs-rounded-all d-flex flex-column"
+  [ngClass]="{ 'sidebar-mini': sidebarMini }"
+  (toggleMenu)="toggleSidebar()"
+  (optionSelect)="optionClicked($event)"
+></app-sidebar-menu>
+
+<main class="main-content position-relative">
+  <!--Nav Start-->
+  <div class="iq-banner position-sticky">
+    <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar">
+      <div class="container-fluid navbar-inner">
+        <a class="navbar-brand" style="cursor: pointer">
+          <!--Logo start-->
+          <img alt="Logo Speed" width="30" src="assets/img/hoc_isotipo.png" />
+          <!--logo End-->
+          <h4 class="logo-title">SPEED 5.0</h4>
+        </a>
+        <div class="sidebar-toggle" (click)="toggleSidebar()" data-toggle="sidebar" data-active="true" style="background-color: #c49227">
+          <i class="icon">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
+            </svg>
+          </i>
+        </div>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon">
+            <span class="mt-2 navbar-toggler-bar bar1"></span>
+            <span class="navbar-toggler-bar bar2"></span>
+            <span class="navbar-toggler-bar bar3"></span>
+          </span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
+            <li class="nav-item dropdown">
+              <a style="cursor: pointer" class="search-toggle nav-link">
+                <img
+                  class="img-fluid rounded-circle"
+                  alt="user"
+                  style="height: 30px; min-width: 30px; width: 30px"
+                  src="assets/img/Flag/peru.png"
+                />
+                <span class="bg-primary"></span>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="py-0 nav-link d-flex align-items-center"
+                style="cursor: pointer"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  alt="User-Profile"
+                  class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded"
+                  src="assets/img/avatars/user.png"
+                />
+                <div class="caption ms-3 d-none d-md-block">
+                  <h6 class="mb-0 caption-title">{{ userInfo.nombre }}</h6>
+                  <p class="mb-0 caption-sub-title">{{ userInfo.puesto }}</p>
+                </div>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item d-flex align-items-center">
+                    <img width="20" class="img-fluid me-1" style="filter: contrast(0.1)" src="assets/img/avatars/location.png" />
+                    {{ userInfo.area }}
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item"><i class="fa-solid fa-envelope"></i> {{ userInfo.correo }}</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li><a (click)="logout()" style="cursor: pointer" class="dropdown-item">Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <!--Nav End-->
+
+  <!-- Nav Header Component Start -->
+  <div class="iq-navbar-header" style="height: 80px; position: absolute; left: 0; top: 0; right: 0">
+    <div class="iq-header-img">
+      <img
+        src="assets/img/dashboard/top-header2.png"
+        alt="header"
+        class="theme-color-blue-img img-fluid w-100 h-100 d-block animated-scaleX"
+      />
+    </div>
+  </div>
+  <!-- Nav Header Component End -->
+
+  <div class="container-fluid content-inner position-relative">
+    <ui-tabs-component class="tabs-overflow"> </ui-tabs-component>
+    <ng-template #tab>
+      <router-outlet></router-outlet>
+    </ng-template>
+    <ng-template #dasboardTab>
+      <app-dashboard-container></app-dashboard-container>
+    </ng-template>
+  </div>
+
+  <app-virtual-assistant class="wizard-launcher"></app-virtual-assistant>
+</main>

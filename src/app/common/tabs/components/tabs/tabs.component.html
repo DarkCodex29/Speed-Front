@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs nav-speed mb-0">
+  <li class="nav-item" *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
+    <div [hidden]="tab.title === 'External'">
+      <button class="nav-link" [class.active]="tab.active" style="cursor: pointer">{{ tab.title }}</button>
+    </div>
+  </li>
+  <!-- dynamic tabs -->
+  <li class="nav-item" *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" [class.active]="tab.active">
+    <div [hidden]="tab.title === 'External'">
+      <button class="nav-link" [class.active]="tab.active" style="cursor: pointer">
+        {{ tab.title }} <span class="tab-close" *ngIf="tab.isCloseable" (click)="closeTab(tab)">x</span>
+      </button>
+    </div>
+  </li>
+</ul>
+<ng-content></ng-content>
+<ng-template appDynamicTabs #container></ng-template>

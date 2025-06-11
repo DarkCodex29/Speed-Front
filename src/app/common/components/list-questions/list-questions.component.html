@@ -1,0 +1,29 @@
+<div class="accordion wizard-step-ajust accordion-flush" id="accordionFlushExample">
+  <div *ngFor="let item of questions" class="accordion-item accordion-custom">
+    <h3 class="accordion-header" [attr.id]="'heading' + item.id!.codigo!">
+      <button
+        (click)="registrarUsabilidad(item.codigoPregunta!)"
+        class="accordion-button accordion-button-custom collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#item' + item.id!.codigo!"
+        aria-expanded="false"
+        [attr.aria-controls]="'item' + item.id!.codigo!"
+      >
+        {{ item.descripcionPregunta }}
+      </button>
+    </h3>
+    <div
+      [attr.id]="'item' + item.id!.codigo!"
+      class="accordion-collapse collapse"
+      [attr.aria-labelledby]="'heading' + item.id!.codigo!"
+      data-bs-parent="#accordionFlushExample"
+    >
+      <div class="accordion-body">
+        <p class="descripcion-respuesta">
+          {{ item.descripcionRespuesta }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

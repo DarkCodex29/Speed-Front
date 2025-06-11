@@ -1,0 +1,21 @@
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+
+  &-container {
+    min-width: 680px;
+    max-width: 100%;
+
+    .container-notify-users {
+      max-height: 200px;
+      overflow: auto;
+    }
+  }
+}

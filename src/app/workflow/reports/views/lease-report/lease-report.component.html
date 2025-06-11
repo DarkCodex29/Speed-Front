@@ -1,0 +1,194 @@
+<div class="card content-speed">
+  <div class="card mb-0 h-100" style="border-radius: 0 0 0.5rem 0.5rem">
+    <div class="card-header d-flex justify-content-between">
+      <div class="header-title">
+        <h4 class="card-title">Reporte de Arrendamiento</h4>
+      </div>
+    </div>
+    <div class="card-body" [formGroup]="requestForm">
+      <div class="accordion mb-3" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              Panel de Búsqueda
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Número de documento:</div>
+                    <div class="content-control px-0">
+                      <input type="text" class="form-control" formControlName="num" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">País:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="countriesList" [valueKey]="'id'" formControlName="idP"
+                        [valueLabel]="'nombre'" [lock]="false" (changeValue)="changeCountry($event)"
+                        customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Compañía:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="filterCompanies" [valueKey]="'id'" formControlName="idC"
+                        [valueLabel]="'nombre'" [lock]="false" (changeValue)="changeCompany($event)"
+                        customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Área:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="filterAreas" [valueKey]="'id'" formControlName="idA"
+                        [valueLabel]="'nombre'" [lock]="false" customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Tipo de Ubicación:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="tiposUbicaciones" [valueKey]="'id'" formControlName="tUb"
+                        [valueLabel]="'nombre'" [lock]="false" (changeValue)="changeTipoUbicacion($event)"
+                        customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Ubicación:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="filterUbicacionesList" [valueKey]="'id'" formControlName="idU"
+                        [valueLabel]="'nombre'" [lock]="false" customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Contraparte:</div>
+                    <div class="content-control px-0" style="overflow: inherit">
+                      <hdc-autocomplete class="w-100" value-label="nombres" [items]="listCounterpart" [lock]="false"
+                        formControlName="idCo" customReactiveForm
+                        (selectedValue)="selectCounterpart($event)"></hdc-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-8 col-xxx-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-md-0 label-custom" style="width: 130px">Fecha de vencimiento:</div>
+                    <div class="content-control px-0">
+                      <span class="me-2 text-xs">Desde:</span>
+                      <input type="date" class="form-control" formControlName="fVI" />
+                      <span class="mx-2 text-xs">Hasta:</span>
+                      <input type="date" class="form-control" formControlName="fVF" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 130px">Valor de contrato:</div>
+                    <div class="content-control px-0">
+                      <span class="me-2 text-xs">Desde:</span>
+                      <input type="number" class="form-control" formControlName="mD" />
+                      <span class="mx-2 text-xs">Hasta:</span>
+                      <input type="number" class="form-control" formControlName="mH" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Tipo de contrato:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="listTiposContrato" [valueKey]="'id'" formControlName="idTC"
+                        [valueLabel]="'nombre'" [lock]="false" customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row content-form-control">
+                    <div class="text-xs ps-0 label-custom" style="width: 170px">Estado:</div>
+                    <div class="content-control px-0">
+                      <hdc-select class="w-100" [items]="listStatus" [valueKey]="'valor'" formControlName="est"
+                        [valueLabel]="'nombre'" [lock]="false" customReactiveForm></hdc-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-end mt-2">
+                <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px"
+                  (click)="openPrintModal()">
+                  <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+
+                <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px" (click)="cleanForm()">
+                  <i class="fa-solid fa-trash-can"></i> Limpiar
+                </button>
+
+                <button type="button" class="ms-1 btn btn-primary btn-sm" style="height: 38px" (click)="submit()">
+                  <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="data.length > 0" class="table-responsive">
+        <p-table #pt [value]="data" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+          [rowsPerPageOptions]="[10, 15, 25]" [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+          [globalFilterFields]="['numero', 'tipo', 'tipoContrato', 'contraparte', 'ubicacion', 'aplicaArrendamiento', 'estado']"
+          [scrollable]="true" scrollHeight="flex">
+          <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="p-input-icon-left table-input-search">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="numero" style="text-align: center">Nº de Doc</th>
+              <th pSortableColumn="tipo">Tipo de Solicitud<p-sortIcon field="tipo"></p-sortIcon></th>
+              <th pSortableColumn="tipoContrato">Tipo de Contrato<p-sortIcon field="tipoContrato"></p-sortIcon></th>
+              <th pSortableColumn="contraparte">Contraparte<p-sortIcon field="contraparte"></p-sortIcon></th>
+              <th pSortableColumn="ubicacion">Ubicacion<p-sortIcon field="ubicacion"></p-sortIcon></th>
+              <th pSortableColumn="aplicaArrendamiento">Situación<p-sortIcon field="aplicaArrendamiento"></p-sortIcon>
+              </th>
+              <th pSortableColumn="estado">Estado<p-sortIcon field="estado"></p-sortIcon></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr (click)="openTab({ id: item.idExpediente!, code: item.numero!, isVerContratoButton: false })">
+              <td style="text-align: center">{{ item.numero }}</td>
+              <td>{{ item.tipo }}</td>
+              <td>{{ item.tipoContrato }}</td>
+              <td>{{ item.contraparte }}</td>
+              <td>{{ item.ubicacion }}</td>
+              <td>{{ item.aplicaArrendamiento }}</td>
+              <td>{{ item.estado }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+  <ng-template let-contract="contract" #contractEdit>
+    <ui-contract-detail [contract]="contractSelected" (closeTab)="onContractFormSubmit($event)"
+      (reloadList)="reloadList($event)" (openVerDocumento)="openOtherTab($event)"
+      [tipoBandeja]="5"></ui-contract-detail>
+  </ng-template>
+</div>

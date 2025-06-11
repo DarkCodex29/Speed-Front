@@ -1,0 +1,92 @@
+<div class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Registrar Solicitud</h4>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-primary btn-sm me-1" (click)="saveProgress()" style="height: 38px">
+        <i class="fa-regular fa-floppy-disk"></i> Guardar Avance
+      </button>
+      <button class="btn btn-primary btn-sm" (click)="sendRequest()" style="height: 38px">
+        <i class="fa-regular fa-floppy-disk"></i> Enviar Solicitud
+      </button>
+    </div>
+
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Datos Generales</legend>
+      <div class="row">
+        <div class="col-12 col-md-4" [formGroup]="getFormGroup('requested')">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 100px">Proceso<span class="text-danger">(*)</span>:</div>
+            <div class="content-control px-0">
+              <hdc-select
+                class="w-100"
+                [items]="procesos"
+                [valueKey]="'id'"
+                formControlName="idProceso"
+                [valueLabel]="'nombre'"
+                [lock]="false"
+                customReactiveForm
+              ></hdc-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-5" [formGroup]="getFormGroup('process')">
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 160px">Abogado Responsable<span class="text-danger">(*)</span>:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-label="nombreCompleto"
+                [items]="responsibleLawyersList"
+                formControlName="abogadoResponsable"
+                (selectedValue)="selectAbogadoResponsable($event)"
+                customReactiveForm
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="requestForm.value.requested.idProceso === enumProcessType.CONTRATO">
+          <div class="col-12 col-md-3" [formGroup]="getFormGroup('requested')">
+            <div class="row content-form-control">
+              <div class="text-xs ps-md-0" style="width: 125px">¿Aplica Penalidad?:</div>
+              <div class="content-control">
+                <span>No</span>
+                <div class="form-check form-switch d-inline-block ms-2">
+                  <input
+                    class="form-check-input pointer"
+                    type="checkbox"
+                    value="true"
+                    id="rs-aplica-penalidad"
+                    formControlName="aplicaPenalidad"
+                  />
+                </div>
+                <span>Sí</span>
+                <label class="form-check-label text-xs" for="rs-aplica-penalidad"></label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </fieldset>
+
+    <ng-container [ngSwitch]="requestForm.value.requested.idProceso">
+      <!-- CONTRATO -->
+      <ng-container *ngSwitchCase="enumProcessType.CONTRATO">
+        <ui-contract-form [requestForm]="requestForm"></ui-contract-form>
+      </ng-container>
+
+      <!-- ADENDA -->
+      <ng-container *ngSwitchCase="enumProcessType.ADENDA">
+        <ui-addendum-form [requestForm]="requestForm"></ui-addendum-form>
+      </ng-container>
+
+      <!-- ADENDA AUTOMATICA -->
+      <ng-container *ngSwitchCase="enumProcessType.ADENDA_AUTOMATICA">
+        <ui-automatic-addendum-form [requestForm]="requestForm" ></ui-automatic-addendum-form>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

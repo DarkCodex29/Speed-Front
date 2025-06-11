@@ -1,0 +1,197 @@
+<div class="card card-contract h-100 overflow-auto" *ngIf="!loading">
+  <div class="card-body">
+    <div class="d-flex flex-wrap gap-1 mb-3" *ngIf="data.botones.length > 0">
+      <button
+        *ngFor="let item of data.botones"
+        type="button"
+        [ngClass]="item.botonClaseNuevo"
+        [disabled]="disabled(item)"
+        (click)="callFunction(item)"
+      >
+        <i [ngClass]="item.iconoNuevo"></i> {{ item.nombre }}
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6 card-contract__info">
+        <div class="card card-custom mb-3">
+          <div class="card-header text-center">
+            <span>{{ data.expediente.proceso.nombre }} {{ data.documentoLegal.numero }}</span>
+          </div>
+          <div class="card-body">
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Número:</span>
+              <span>{{ data.documentoLegal.numero }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Proceso:</span>
+              <span>{{ data.expediente.proceso.nombre }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Sumilla:</span>
+              <span>{{ data.documentoLegal.sumilla }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Contraparte:</span>
+              <span>{{
+                data.documentoLegal.contraparte?.tipo?.codigo === 'natural'
+                  ? data.documentoLegal.contraparte?.nombres
+                  : data.documentoLegal.contraparte?.razonSocial
+              }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Solicitante:</span>
+              <span>{{ data.documentoLegal.solicitante.nombreCompleto }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Área solicitante:</span>
+              <span>{{ data.documentoLegal.area.nombre }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Abogado responsable:</span>
+              <span>{{ data.documentoLegal.responsable.nombreCompleto }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">Estado:</span>
+              <span>{{ data.estadoDl }}</span>
+            </div>
+            <div class="datos-div d-flex mb-1">
+              <span style="width: 155px; flex-shrink: 0">¿Renov. Automática?:</span>
+              <span>No</span>
+            </div>
+            <hr />
+            <div class="form-group row">
+              <label for="exampleInputEmail1" class="form-label">Observación:</label>
+              <div class="col-12">
+                <p-editor id="exampleInputEmail1" [(ngModel)]="data.obsTraza" [readonly]="true" [style]="{ height: '100px' }">
+                  <ng-template pTemplate="header" style="display: none">
+                    <span class="ql-formats"> </span>
+                  </ng-template>
+                </p-editor>
+                <!--
+                <textarea name="observacion" class="form-control" id="exampleInputEmail1" rows="4" readonly>{{ data.obsTraza }}</textarea>
+                -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card card-custom card-contract__info-documents">
+          <div class="card-header text-center">
+            <span>Documentos</span>
+          </div>
+          <div class="card-body px-3">
+            <ng-container *ngFor="let item of data.documentos; let indice = index">
+              <button
+                *ngIf="showCarpeta(item)"
+                [disabled]="
+                  data.estadoDl === 'Doc. Elaborado' &&
+                  item.titulo.split(' ')[0] !== 'Borradores' &&
+                  data.documentoLegal.responsable.nombreCompleto !== nombreUsuario
+                "
+                type="button"
+                class="btn btn-icon-document"
+                (click)="changeIndexDocumento(indice, item.id)"
+              >
+                <img src="assets/img/icons/documento.png" alt="Documento" class="img-fluid mb-1" width="55" />
+                <span>{{ item.titulo }}</span>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-12 col-md-6 card-contract__documents"
+        *ngIf="documentos !== null && documentos.length > 0 && indiceDocumento !== null && !loadingDocumentDetail"
+      >
+        <div *ngIf="flagShowButtonsCarpeta" class="form-group">
+          <div class="d-flex flex-wrap gap-1">
+            <button
+              *ngFor="let item of dataDocumento.ltsBotonesDoc"
+              type="button"
+              [ngClass]="item.botonClaseNuevo"
+              (click)="callFunction(item)"
+            >
+              <i [ngClass]="item.iconoNuevo"></i>
+              {{
+                (indiceDocumento === getIndiceAdenda() || indiceDocumento === getIndiceContrato()) && item.nombre === 'Adjuntar Borrador'
+                  ? 'Adjuntar Versión Final'
+                  : item.nombre == 'Adjuntar Borrador' ? 'Adjuntar Archivo' : item.nombre
+              }}
+            </button>
+          </div>
+        </div>
+        <div class="card card-custom mb-3">
+          <div class="card-header-secondary text-center">Datos Detallados del Documento</div>
+          <div class="card-body">
+            <div class="datos-div d-flex mb-3">
+              <span style="width: 155px; flex-shrink: 0">Título:</span>
+              <span>{{ documentos[indiceDocumento].titulo }}</span>
+            </div>
+            <div class="datos-div d-flex mb-3">
+              <span style="width: 155px; flex-shrink: 0">Tipo de documento:</span>
+              <span>{{ documentos[indiceDocumento].tipoDocumento?.nombre }}</span>
+            </div>
+            <div class="datos-div d-flex mb-3">
+              <span style="width: 155px; flex-shrink: 0">Fecha de creación:</span>
+              <span>{{ documentos[indiceDocumento].fechaCreacion | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="datos-div d-flex mb-3">
+              <span style="width: 155px; flex-shrink: 0">Autor:</span>
+              <span>{{ documentos[indiceDocumento].autor?.nombreCompleto }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card card-custom mb-3 card-contract__documents-files">
+          <div class="card-header-secondary text-center">Lista de Archivos Correspondientes al Documentos</div>
+          <div class="card-body" *ngIf="dataDocumento.lstArchivos !== null">
+            <div class="d-inline-block position-relative" *ngFor="let archivo of dataDocumento.lstArchivos; let i = index">
+             
+
+              <!-- <div *ngIf="data.documentoLegal.estado === 'V' && i === 0">
+                <button
+                  (click)="descargaArchivo(archivo.id)"
+                  type="button"
+                  class="btn btn-icon-document"
+                >
+                  <img src="assets/img/icons/archivo.png" alt="Documento" class="img-fluid mb-1" width="45" />
+                  <span>{{ archivo.nombre }}</span>
+                </button>
+                <div class="tooltip-info" >
+                  <p class="text-center text-xs mb-2">
+                    {{ archivo.nombre }}<br /><span>F. Creación: {{ archivo.fechaCreacion | date: 'dd/MM/yyyy' }}</span>
+                  </p>
+                  <p class="mb-0 text-xs fw-bold">Versión: {{ archivo.versiones ? archivo.versiones[0]?.numeroVersion : 0 }}</p>
+                  <p class="mb-0 text-xs">
+                    Autor: {{ archivo.versiones ? archivo.versiones[0]?.autor : documentos[indiceDocumento].autor.label }}
+                  </p>
+                </div>
+              </div> -->
+
+              <div>
+                <button
+                  (click)="descargaArchivo(archivo.id)"
+                  type="button"
+                  class="btn btn-icon-document"
+                >
+                  <img src="assets/img/icons/archivo.png" alt="Documento" class="img-fluid mb-1" width="45" />
+                  <span>{{ archivo.nombre }}</span>
+                </button>
+                <div class="tooltip-info" >
+                  <p class="text-center text-xs mb-2">
+                    {{ archivo.nombre }}<br /><span>F. Creación: {{ archivo.fechaCreacion | date: 'dd/MM/yyyy' }}</span>
+                  </p>
+                  <p class="mb-0 text-xs fw-bold">Versión: {{ archivo.versiones ? archivo.versiones[0]?.numeroVersion : 0 }}</p>
+                  <p class="mb-0 text-xs">
+                    Autor: {{ archivo.versiones ? archivo.versiones[0]?.autor : documentos[indiceDocumento].autor.label }}
+                  </p>
+                </div>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

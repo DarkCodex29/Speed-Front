@@ -1,0 +1,47 @@
+<div class="card-border">
+  <div class="row align-items-center mx-0 my-2">
+    <div class="col-auto text-xs" style="min-width: 155px">Tipo de Documento:</div>
+    <div class="col ps-md-0">{{ infoTab?.documentType }}</div>
+  </div>
+  <div class="row align-items-center mx-0 mb-3">
+    <div class="col-auto text-xs" style="min-width: 155px">Asunto:</div>
+    <div class="col ps-md-0">
+      <input type="text" class="form-control w-auto" value="{{ infoTab?.documentType }}" />
+    </div>
+  </div>
+  <div class="table-responsive px-3">
+    <table class="table table-striped table-speed table-bordered">
+      <thead>
+        <tr>
+          <th>Archivos Obligatorios</th>
+          <th>Adjuntar</th>
+          <th>Archivos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let document of infoTab?.requiredFiles; let i = index">
+          <td class="text-center">{{ document.name }} <span class="text-danger" *ngIf="document.required">(*)</span></td>
+          <td class="text-center py-2">
+            <label class="btn btn-xs btn-primary">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              Adjuntar archivo
+              <input type="file" class="hidde" (change)="onUpload($event, i)" />
+            </label>
+          </td>
+          <td>
+            <div class="d-flex justify-content-center py-1" *ngFor="let file of document.files; let j = index">
+              <span class="d-inline-block me-2">{{ file.name }} ({{ file.size }} KB)|</span>
+              <button class="btn btn-sm btn-primary me-2" (click)="deleteFileUpload(i, j)">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
+            <ng-container *ngIf="isInvalidControlDocument(i)">
+              <p class="text-danger mb-0 text-center">Debe adjuntar el menos un archivo.</p>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="px-3"><span class="text-danger">(*):</span> Archivo obligatorio</p>
+</div>

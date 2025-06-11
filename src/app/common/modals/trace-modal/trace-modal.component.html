@@ -1,0 +1,48 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="observeRequestLabel">Ver Historia</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body p-4">
+    <div class="d-flex justify-content-between">
+      <p class="mb-3"><b>Historia del Documento:</b> {{ historialOutput?.numero }}</p>
+      <p class="mb-3"><b>Fecha Límite:</b> {{ historialOutput?.fechaLimite }}</p>
+    </div>
+    <div>
+      <div *ngIf="historialOutput?.historial && (historialOutput?.historial)!.length > 0">
+        <p-table
+          #pt
+          [value]="historialOutput!.historial"
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+          [rowsPerPageOptions]="[10, 15, 25]"
+          [tableStyle]="{ 'min-width': '30rem' }"
+          styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+          [scrollable]="true"
+          scrollHeight="200px"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Fecha Recepción</th>
+              <th>Acción Seleccionada</th>
+              <th>Remitente</th>
+              <th>Destinatarios</th>
+              <th>Observaciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td class="text-center">{{ item.fechaRecepcion }}</td>
+              <td class="text-center">{{ item.accionSeleccionada }}</td>
+              <td class="text-center" [innerHTML]="item.remitente"></td>
+              <td class="text-center" [innerHTML]="item.destinatarios"></td>
+              <td class="text-center" [innerHTML]="item.observaciones"></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

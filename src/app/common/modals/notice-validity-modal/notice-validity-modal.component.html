@@ -1,0 +1,44 @@
+<div class="modal-container" [formGroup]="noticeValidityForm">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modalAdendaTitle">Notificación de vigencia</h4>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed mb-3">
+      <legend>Usuarios</legend>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p>Agregar usuarios según orden de envío</p>
+          <div class="row content-form-control">
+            <div class="text-xs ps-md-0" style="width: 150px">Usuario:</div>
+            <div class="content-control px-0" style="overflow: inherit">
+              <hdc-autocomplete
+                class="w-100"
+                value-key="id"
+                value-label="nombre"
+                [items]="listUsuarios"
+                (selectedValue)="selectUser($event)"
+                (changeValue)="seleccionarUsuario($event)"
+                #selectUserInput
+              ></hdc-autocomplete>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="listUsuariosSelected.length > 0" class="col-12 col-md-6">
+          <div *ngFor="let item of listUsuariosSelected" class="alert alert-light mb-2" role="alert">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="mb-0 me-4">{{ item.usuario }}</p>
+              <button (click)="eliminarUsuario(item.id)" class="btn-close"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="d-flex flex-wrap flex-row-reverse gap-1 mb-2">
+      <button type="button" class="btn btn-primary btn-speed btn-sm" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button type="button" class="btn btn-secondary btn-speed btn-sm" (click)="register()">
+        <i class="fa-solid fa-check"></i> Aceptar
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modalVisadoresTitle">Visadores</h4>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped nowrap" style="width: 100%" *ngIf="tableVisators.length > 0">
+      <thead>
+        <tr>
+          <th style="text-align: center">Visador</th>
+          <th style="text-align: center">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="pointer" *ngFor="let item of tableVisators; let i = index">
+          <td style="text-align: center">{{ item.id.usuario.nombreCompleto }}</td>
+          <td style="text-align: center">{{ item.estadoFormat }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

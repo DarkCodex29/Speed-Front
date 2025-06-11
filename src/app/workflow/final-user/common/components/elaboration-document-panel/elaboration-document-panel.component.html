@@ -1,0 +1,538 @@
+<ng-container [formGroup]="edocumentForm">
+  <!-- PARA CONTRATO -->
+  <ng-container *ngIf="processType === enumProcessType.CONTRATO">
+    <div class="row gx-xxl-5 mb-2">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 80px">País<span class="text-danger">(*)</span>:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="countriesList"
+              [placeholder]="'Seleccione país'"
+              (changeValue)="seleccionarPais($event)"
+              formControlName="idPais"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 100px">Compañía<span class="text-danger">(*)</span>:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="filterCompanies"
+              [placeholder]="'Seleccione compañía'"
+              (changeValue)="seleccionarCompania($event)"
+              formControlName="idCompania"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 80px">Área:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="filterAreas"
+              [placeholder]="'Seleccione área'"
+              formControlName="idArea"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- PARA ADENDA -->
+  <ng-container *ngIf="processType === enumProcessType.ADENDA">
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 150px">Número de Contrato:</div>
+          <div class="content-control px-0" style="overflow: inherit">
+            <hdc-autocomplete
+              *ngIf="!flagDataAdenda"
+              class="w-100"
+              value-label="sumilla"
+              [items]="filterContracts"
+              formControlName="idContrato"
+              (selectedValue)="selectContract($event)"
+              (changeValue)="filterContract($event)"
+              customReactiveForm
+            ></hdc-autocomplete>
+            <span *ngIf="flagDataAdenda">{{ data?.documentoLegal?.numero }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 150px">Número de Adenda:</div>
+          <div class="content-control px-0">{{ contractInfo?.numeroAdenda || data?.documentoLegal?.adenda?.secuencia }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 150px">País:</div>
+          <div class="content-control px-0">{{ contractInfo?.pais || pais?.nombre }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 150px">Compañía:</div>
+          <div class="content-control px-0">{{ contractInfo?.compania || compania?.nombre }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 155px">Área:</div>
+          <div class="content-control px-0">{{ contractInfo?.area || data?.documentoLegal?.area?.nombre }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- PARA ADENDA -->
+  <ng-container *ngIf="processType === enumProcessType.ADENDA_AUTOMATICA">
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 130px">Tipo Documento <span class="text-danger">(*)</span>:</div>
+          <div class="content-control px-0">
+            <select class="form-select" formControlName="tipoDocumento" (change)="onSelectChange($event)">
+              <option value="">-- Seleccione --</option>
+              <option value="38">Adenda Resolución de Contratos</option>
+              <option value="39">Adenda Ampliación de Plazo</option>
+              <option value="5">Adenda Modificación de Tarifas</option>
+              <option value="40">Adenda Cesión de Posición Contractual</option>
+              <option [value]="codAdendaUnilateral">Adenda de Resoluciones Unilaterales</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 150px">Número de Contrato <span class="text-danger">(*)</span>:</div>
+          <div class="content-control px-0" style="overflow: inherit">
+            <hdc-autocomplete
+              class="w-100"
+              value-label="sumilla"
+              [items]="filterContracts"
+              formControlName="idContrato"
+              (selectedValue)="selectContract($event)"
+              (changeValue)="filterContract($event)"
+              customReactiveForm
+            ></hdc-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 130px">Número de Adenda:</div>
+          <div class="content-control px-0">{{ contractInfo?.numeroAdenda }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 130px">País:</div>
+          <div class="content-control px-0">{{ contractInfo?.pais }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 150px">Compañía:</div>
+          <div class="content-control px-0">{{ contractInfo?.compania }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 py-label" style="width: 130px">Área:</div>
+          <div class="content-control px-0">{{ contractInfo?.area }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <fieldset class="fieldset-speed mb-3">
+    <legend>Ubicación</legend>
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-5">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 103px">Operación:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="filterOperations"
+              [placeholder]="'-- Operación --'"
+              formControlName="idOperacion"
+              customReactiveForm
+            ></hdc-select>
+            <button type="button" class="btn btn-primary btn-xs ms-2" [disabled]="disableInputs" (click)="addLocation('idOperacion')">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 103px">Oficina:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="filterOffices"
+              [placeholder]="'-- Oficina --'"
+              formControlName="idOficina"
+              customReactiveForm
+            ></hdc-select>
+            <button type="button" class="btn btn-primary btn-xs ms-2" [disabled]="disableInputs" (click)="addLocation('idOficina')">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 103px">Proyecto:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="filterProjects"
+              [placeholder]="'-- Proyecto --'"
+              formControlName="idProyecto"
+              customReactiveForm
+            ></hdc-select>
+            <button type="button" class="btn btn-primary btn-xs ms-2" [disabled]="disableInputs" (click)="addLocation('idProyecto')">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 103px">Exploración:</div>
+          <div class="content-control px-0">
+            <hdc-autocomplete
+              style="width: 100%"
+              value-key="id"
+              value-label="nombre"
+              [items]="filterExplorations"
+              placeholder="-- Exploración --"
+              formControlName="exploracion"
+              (selectedValue)="selectExploration($event)"
+              customReactiveForm
+            ></hdc-autocomplete>
+            <button type="button" class="btn btn-primary btn-xs ms-2" [disabled]="disableInputs" (click)="addLocation('exploracion')">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <div class="table-responsive">
+          <p-table
+            [value]="edocumentForm.get('ubicaciones')?.value"
+            [scrollable]="true"
+            scrollHeight="150px"
+            styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+            [tableStyle]="{ 'min-width': '20rem' }"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Ubicación</th>
+                <th class="text-center" style="width: 110px">Acción</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+              <tr>
+                <td>{{ item.nombre }}</td>
+                <td class="text-center" style="width: 110px">
+                  <button class="btn btn-sm btn-primary" [disabled]="disableInputs" (click)="removeLocation(rowIndex)">
+                    <i class="fa-regular fa-trash-can"></i> Retirar
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="mt-2">
+          <p><span class="text-danger">(*)</span> Debe seleccionar al menos una ubicación</p>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- PARA ADENDA Y ADENDA AUTOMATICA -->
+  <ng-container *ngIf="processType === enumProcessType.ADENDA || processType === enumProcessType.ADENDA_AUTOMATICA">
+    <div class="row mb-3">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 150px">Inicio de Vigencia:</div>
+          <div class="content-control px-0">
+            <input type="date" class="form-control" formControlName="fechaInicio" />
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4" *ngIf="processType === enumProcessType.ADENDA || processType === enumProcessType.ADENDA_AUTOMATICA">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 150px">Modifica fecha fin<br />del Contrato:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input
+                class="form-check-input pointer"
+                type="checkbox"
+                (change)="changeAplicaFechaFin()"
+                formControlName="aplicaFechaFin"
+                id="rs-modifica-fecha-fin"
+                value="true"
+              />
+            </div>
+            <span>S&iacute;</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="aplicaFechaFin" class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 pe-md-1" style="width: 80px">Fecha Fin:</div>
+          <div class="content-control px-0">
+            <input type="date" class="form-control" [attr.min]="initDate" formControlName="fechaFin" />
+            <div class="form-check ms-2 mb-0">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="I"
+                (change)="changeIndefinido()"
+                formControlName="esIndefinido"
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label text-xs" for="flexCheckDefault">Indefinido</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="mb-3">
+    <p class="mb-1 text-xs">Propósito y Observaciones</p>
+    <textarea class="form-control" formControlName="propositoObservaciones" rows="4"></textarea>
+  </div>
+
+  <!-- PARA CONTRATO -->
+  <ng-container *ngIf="processType === enumProcessType.CONTRATO">
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 140px">Fecha Inicio:</div>
+          <div class="content-control px-0">
+            <input type="date" class="form-control" (change)="selectInitDate()" formControlName="fechaInicio" />
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 pe-md-1" style="width: 80px">Fecha Fin:</div>
+          <div class="content-control px-0">
+            <input type="date" class="form-control" [attr.min]="initDate" formControlName="fechaFin" />
+            <div class="form-check ms-2 mb-0">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="I"
+                (change)="changeIndefinido()"
+                formControlName="esIndefinido"
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label text-xs" for="flexCheckDefault">Indefinido</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 135px">Moneda:</div>
+          <div class="content-control px-0">
+            <hdc-select
+              style="width: 100%"
+              value-key="id"
+              value-label="descripcion"
+              [items]="monedasList"
+              formControlName="idMoneda"
+              (changeValue)="seleccionarMoneda($event)"
+              customReactiveForm
+            ></hdc-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 140px">Modalidad de Pago:</div>
+          <div class="flex-1 px-0">
+            <div class="form-check min-h-auto">
+              <input
+                formControlName="modalidadPago"
+                class="form-check-input"
+                checked
+                type="radio"
+                name="modalidadPago"
+                id="mc-modalidad-pago1"
+                (change)="changePaymentMethod($event)"
+                value="esPrecioFijo"
+                selec
+              />
+              <label class="form-check-label" for="mc-modalidad-pago1">Precio Fijo</label>
+            </div>
+            <div class="form-check min-h-auto mb-0">
+              <input
+                formControlName="modalidadPago"
+                class="form-check-input"
+                type="radio"
+                name="modalidadPago"
+                id="mc-modalidad-pago2"
+                (change)="changePaymentMethod($event)"
+                value="esPrecioUnitario"
+              />
+              <label class="form-check-label" for="mc-modalidad-pago2">Precio Unitario</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 pe-md-1" style="width: 80px">{{ labelMonto }} :</div>
+          <div class="content-control px-0">
+            <input type="number" class="form-control" placeholder="0.00" min="0" formControlName="montoFijoTotalEstimado" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 140px">Aplica Modalidad de<br />Pago:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input
+                class="form-check-input pointer"
+                type="checkbox"
+                formControlName="aplicaModalidadPago"
+                (change)="changeAplicaModalidadPago()"
+              />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 140px">Adelanto:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input
+                id="aplicaAdelanto"
+                class="form-check-input pointer"
+                checked
+                type="checkbox"
+                formControlName="aplicaAdelanto"
+                (change)="changeAplicaAdelanto()"
+              />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 120px">Monto Adelantado:</div>
+          <div class="content-control px-0">
+            <input type="number" class="form-control" placeholder="0.00" min="0" formControlName="montoAdelanto" />
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 pe-md-1" style="width: 135px">Periodicidad de pago:</div>
+          <div class="content-control px-0">
+            <input type="text" class="form-control" placeholder="Periodicidad" formControlName="periodicidadPago" />
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 pe-md-1" style="width: 140px">Renovación Automática:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input
+                class="form-check-input pointer"
+                type="checkbox"
+                formControlName="aplicaRenovacionAutomatica"
+                (change)="changeAplicaRenovacionAutomatica()"
+              />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0 pe-md-1" style="width: 120px">Periodo a Renovar:</div>
+          <div class="content-control px-0">
+            <input type="number" class="form-control" placeholder="0" min="0" class="form-control me-2" formControlName="periodoRenovar" />
+            <span>meses</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 140px">Aplica Periodicidad:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input
+                class="form-check-input pointer"
+                type="checkbox"
+                formControlName="aplicaPeriodicidad"
+                (change)="changeAplicaPeriodicidad()"
+                value="true"
+              />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row gx-xxl-5">
+      <div class="col-12 col-md-4">
+        <div class="row content-form-control">
+          <div class="text-xs ps-md-0" style="width: 140px">Arrendamiento:</div>
+          <div class="content-control px-0">
+            <span>No</span>
+            <div class="form-check form-switch d-inline-block ms-2">
+              <input class="form-check-input pointer" type="checkbox" formControlName="aplicaArrendamiento" value="true" />
+            </div>
+            <span>Sí</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,22 @@
+export type IParamsSearchDocument = {
+  num: string;
+  sum: string;
+  fFI: string;
+  fFF: string;
+  fVI: string;
+  fVF: string;
+  idP: number;
+  idC: number;
+  idA: number;
+  tUb: string;
+  idU: number;
+  tAr: string;
+  idS: number;
+  idRe: number;
+  idCo: number;
+  idRp: number;
+  mD: number;
+  mH: number;
+  idTC: number;
+  est: string;
+};

@@ -1,0 +1,11 @@
+<ui-area-dashboard
+  *ngIf="!isLoading"
+  [dataDashboard]="dataDashboard"
+  [dataSolicitudesGenerales]="dataSolicitudesGenerales"
+  [dataSolicitudesAbogado]="dataSolicitudesAbogado"
+  [dataSolicitudes]="dataSolicitudes"
+  [dataSolicitudesVigente]="dataSolicitudesVigente"
+  [urlLegalAlDia]="urlLegalAlDia"
+  [modeloDocumentos]="modeloDocumentos"
+  (downloadFile)="onDownloadFile($event)"
+></ui-area-dashboard>

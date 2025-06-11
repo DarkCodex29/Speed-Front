@@ -1,0 +1,11 @@
+<ui-adc-dashboard
+  *ngIf="!isLoading"
+  [dataDashboard]="dataDashboard"
+  [grupos]="grupos"
+  [documentos]="documentos"
+  [procesoFirma]="procesoFirma"
+  [procesoVisado]="procesoVisado"
+  [urlLegalAlDia]="urlLegalAlDia"
+  [modeloDocumentos]="modeloDocumentos"
+  (downloadFile)="onDownloadFile($event)"
+></ui-adc-dashboard>

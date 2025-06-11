@@ -1,0 +1,16 @@
+{
+  "entries": [
+    "components/atoms/hdc-autocomplete/hdc-autocomplete.js",
+    "components/atoms/hdc-input/hdc-input.js",
+    "components/atoms/hdc-multiselect/hdc-multiselect.js",
+    "components/atoms/hdc-select/hdc-select.js",
+    "components/my-component/my-component.js"
+  ],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "4.0.5",
+    "typescriptVersion": "5.0.4"
+  },
+  "collections": [],
+  "bundles": []
+}

@@ -1,0 +1,10 @@
+<div class="content-speed h-100 overflow-hidden">
+  <ng-template #contractEdit>
+    <ui-contract-detail
+      [contract]="contract"
+      (closeTab)="onCloseTab()"
+      (openVerDocumento)="openOtherTab($event)"
+      [tipoBandeja]="5"
+    ></ui-contract-detail>
+  </ng-template>
+</div>

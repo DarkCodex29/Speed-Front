@@ -1,0 +1,87 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1050;
+}
+
+.modal-content {
+  text-align: left;
+  position: relative;
+  padding: 20px;
+}
+
+.close-button {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #c49227;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  transition: background-color 0.3s;
+}
+
+li.header {
+  font-weight: bold;
+  border-bottom: none;
+  max-height: 2rem;
+}
+
+li:not(.header):hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de las áreas */
+.area {
+  flex: 2;
+  text-align: left;
+  max-height: 2rem;
+}
+
+.cantidad,
+.porcentaje {
+  flex: 1;
+  text-align: right;
+  margin-bottom: 0px;
+  max-height: 2rem;
+}
+
+.linkModal:hover {
+  color: #c49227;
+  cursor: pointer;
+}

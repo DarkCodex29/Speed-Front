@@ -1,0 +1,77 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <span *ngIf="actionType === action.EDITAR">Editar Numeración</span>
+    <span *ngIf="actionType === action.REGISTRAR">Registrar Numeración</span>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-footer pb-0 justify-content-start">
+    <button class="btn btn-sm btn-primary" style="height: 39px" (click)="submit()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+  </div>
+  <div class="modal-body">
+    <fieldset class="fieldset-speed">
+      <legend>Datos de la Numeración</legend>
+      <div [formGroup]="numerationForm">
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Areas:</div>
+          <div class="w-100">
+            <select class="form-select" formControlName="idArea">
+              <option value="null">Seleccione una área</option>
+              <ng-container *ngFor="let item of areas">
+                <option value="{{ item.id }}">{{ item.nombre }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Tipo Documentos:</div>
+          <div class="w-100">
+            <select class="form-select" formControlName="idTipoDocumento">
+              <option value="null">Seleccione tipo documento</option>
+              <ng-container *ngFor="let item of tipoDocumentos">
+                <option value="{{ item.id }}">{{ item.nombre }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Tipo Numeración:</div>
+          <div class="d-flex flex-wrap gap-3">
+            <div class="flex align-items-center">
+              <p-radioButton formControlName="tipoNumeracion" value="A" inputId="tipoNumeracion1"></p-radioButton>
+              <label for="tipoNumeracion1" class="ml-2">Manual</label>
+            </div>
+            <div class="flex align-items-center">
+              <p-radioButton formControlName="tipoNumeracion" value="B" inputId="tipoNumeracion2"></p-radioButton>
+              <label for="tipoNumeracion2" class="ml-2">Automatica</label>
+            </div>
+            <div class="flex align-items-center">
+              <p-radioButton formControlName="tipoNumeracion" value="C" inputId="tipoNumeracion3"></p-radioButton>
+              <label for="tipoNumeracion3" class="ml-2">Sin numeración</label>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Número Actual:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="numeroActual" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Formato:</div>
+          <div class="w-100">
+            <div class="d-flex align-items-center">
+              <input type="text" class="form-control" placeholder="Nro" formControlName="preFormato" />
+              <input type="text" class="ml-2 form-control" placeholder="-2014 CC/STD" formControlName="postFormato" />
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div style="min-width: 130px">Longitud:</div>
+          <div class="w-100">
+            <input type="text" class="form-control" formControlName="longitud" />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>

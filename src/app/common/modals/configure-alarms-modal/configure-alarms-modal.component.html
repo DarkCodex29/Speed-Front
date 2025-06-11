@@ -1,0 +1,45 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="attachDocumentLabel">Configurar Alarmas</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-primary btn-speed btn-sm" (click)="onClickedRegistrarAlarma()">
+        <i class="fa-regular fa-file"></i> Nueva Alarma
+      </button>
+    </div>
+    <div class="">
+      <p-table #pt [value]="listAlarms" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 15, 25]" [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed" [scrollable]="true"
+        scrollHeight="flex">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Fecha Alarma</th>
+            <th>Días previos activación</th>
+            <th>Intervalo</th>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Anual</th>
+            <th>Acción</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr class="text-center">
+            <td>{{ item.fechaAlarma | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.activacion }}</td>
+            <td>{{ item.intervalo }}</td>
+            <td>{{ item.titulo }}</td>
+            <td>{{ item.estado == 'A'?'Activo':'Inactivo'}}</td>
+            <td>{{ item.anual ?'Si':'No'}}</td>
+            <td> <button class="btn btn-sm btn-primary" (click)="onClickedEditarAlarma(item)">
+                <i class="fa-solid fa-pencil"></i> Editar
+              </button></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

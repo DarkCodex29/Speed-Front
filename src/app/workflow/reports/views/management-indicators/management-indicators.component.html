@@ -1,0 +1,13 @@
+<div class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Indicadores de gestión</h4>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="d-flex justify-content-center">
+      <button type="button" class="btn btn-primary btn-sm" (click)="reload()"><i class="fa fa-refresh"></i> Recargar Reporte</button>
+    </div>
+  </div>
+  <iframe *ngIf="showReporte" [src]="urlReporte" frameborder="0" style="width: 100%; height: 100vh"></iframe>
+</div>

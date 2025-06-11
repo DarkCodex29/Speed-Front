@@ -1,0 +1,24 @@
+<div class="modal-container" *ngIf="isModalOpen">
+  <div class="modal-header">
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+
+    <div class="pdf-viewer-controls">
+      <button (click)="goToPrevPage()" [disabled]="currentPage <= 1">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="goToNextPage()" [disabled]="currentPage >= totalPages">
+        Next
+      </button>
+      <button (click)="zoomIn()">Zoom In</button>
+      <button (click)="zoomOut()">Zoom Out</button>
+      <button (click)="downloadPdf()">Descargar</button>
+    </div>
+
+    <div class="pdf-container">
+      <div #pdfContainer></div>
+    </div>
+  </div>
+</div>

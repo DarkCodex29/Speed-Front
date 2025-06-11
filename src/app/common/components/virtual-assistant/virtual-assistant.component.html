@@ -1,0 +1,79 @@
+<div class="asistente-virtual">
+  <div class="d-flex flex-row-reverse">
+    <div class="davi-button" style="text-align: end" (click)="clickInit()">
+      <img style="margin: 2px 4px 0 0; max-width: 40px" src="assets/img/asistente-virtual.png" />
+      <div style="position: absolute; bottom: 22px; left: -29px; z-index: 100; width: 46px">
+        <img class="img-fluid" src="https://www.bancoripley.com.pe/img/Bot/globo.png" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="statusAssistant !== status.INIT" class="asistente-virtual__panel-general" [ngSwitch]="statusAssistant">
+    <ng-container *ngSwitchCase="status.PRESENTATION">
+      <div class="asistente-home">
+        <div class="home-top">
+          <h1 class="home-title">¡Hola!</h1>
+          <div class="home-description">
+            Bienvenido al repositorio de preguntas y respuestas de legal, aquí hallaras una respuesta rápida a tus preguntas más
+            recurrentes.
+          </div>
+        </div>
+        <div class="home-bottom">
+          <div class="home-box">
+            <p>Primero ingresa al área que deseas consultar, y ubica la pregunta que deseas resolver.</p>
+            <button (click)="clickButtonInto()" id="btn-into">Ingresar</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <div class="asistente-opciones" [ngClass]="statusAssistant === status.SELECT_QUESTION ? 'asistente-opciones-pregunta' : ''">
+        <div style="display: flex" class="header-active">
+          <button (click)="retroceder()">
+            <img src="assets/img/virtual-assistant/back_white.png" alt="Regresar" width="35" style="filter: invert(0.5)" />
+          </button>
+          <ng-container [ngSwitch]="statusAssistant">
+            <p *ngSwitchCase="status.SELECT_AREA">Seleciona una área, luego ubica un tema</p>
+            <p *ngSwitchCase="status.SELECT_THEME">Seleciona un tema, luego ubica la pregunta y hallarás tu respuesta</p>
+            <p *ngSwitchCase="status.SELECT_QUESTION">{{ titleWizardStepHeader }}</p>
+            <p *ngSwitchCase="status.SELECT_STATUS_DOCUMENT">Estado de Documento</p>
+            <p *ngSwitchCase="status.SELECT_SEND_QUESTION">Si no encontraste tu respuesta<br />ingresa AQUÍ</p>
+          </ng-container>
+        </div>
+        <div [ngSwitch]="statusAssistant">
+          <ng-container *ngSwitchCase="status.SELECT_AREA">
+            <div class="body-asistente-opciones">
+              <ul class="opciones-list">
+                <li *ngFor="let item of secciones" (click)="clickSectionTema(item.id!)">
+                  {{ item.descripcion }}
+                </li>
+                <li (click)="clickOtherOptions(status.SELECT_STATUS_DOCUMENT)">Estado de Documento</li>
+                <li (click)="clickOtherOptions(status.SELECT_SEND_QUESTION)">Si no encontraste tu respuesta<br />ingrese aquí</li>
+              </ul>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="status.SELECT_THEME">
+            <div class="body-asistente-opciones">
+              <ul class="opciones-list">
+                <li *ngFor="let item of temas" (click)="clickSection(areaSelected, item.codigoArea!)">{{ item.descripcionArea }}</li>
+              </ul>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="status.SELECT_QUESTION">
+            <div class="body-asistente-opciones">
+              <app-list-questions [questions]="preguntasFiltradas"></app-list-questions>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="status.SELECT_SEND_QUESTION">
+            <div class="body-asistente-opciones">
+              <app-register-question-assistant></app-register-question-assistant>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="status.SELECT_STATUS_DOCUMENT">
+            <app-status-document></app-status-document>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

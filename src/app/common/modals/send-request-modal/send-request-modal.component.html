@@ -1,0 +1,15 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="acceptRequestLabel">Aprobar solicitud</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <p>¿Está seguro de enviar la solicitud?</p>
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-primary btn-speed btn-sm" (click)="close()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button type="button" class="btn btn-secondary btn-speed btn-sm" (click)="sendRequest()">
+        <i class="fa-solid fa-check"></i> Aceptar
+      </button>
+    </div>
+  </div>
+</div>

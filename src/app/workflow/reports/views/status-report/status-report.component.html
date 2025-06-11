@@ -1,0 +1,156 @@
+<div *ngIf="!isLoading" class="card content-speed">
+  <div class="card-header d-flex justify-content-between">
+    <div class="header-title">
+      <h4 class="card-title">Reporte de estados</h4>
+    </div>
+  </div>
+  <div class="card-body" [formGroup]="requestForm">
+    <div class="accordion mb-3" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="false"
+            aria-controls="collapseOne"
+          >
+            Panel de Búsqueda
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 160px">Abogado Responsable:</div>
+                  <div class="content-control px-0" style="overflow: inherit">
+                    <hdc-autocomplete
+                      class="w-100"
+                      value-label="nombreCompleto"
+                      [items]="responsibleLawyerList"
+                      [lock]="false"
+                      formControlName="idResponsable"
+                      customReactiveForm
+                      (selectedValue)="selectResponsibleLawyer($event)"
+                    ></hdc-autocomplete>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-3">
+                <div class="row content-form-control">
+                  <div class="text-xs ps-0 label-custom" style="width: 60px">Año:</div>
+                  <div class="content-control px-0">
+                    <!--
+<select id="idTipoContratom" class="form-select" formControlName="anio">
+                      <ng-container *ngFor="let item of anios">
+                        <option value="{{ item }}" selected>{{ item }}</option>
+                      </ng-container>
+                    </select>
+
+                    -->
+
+                    <hdc-select
+                      class="w-100"
+                      [items]="anios"
+                      [valueKey]="'year'"
+                      formControlName="anio"
+                      [valueLabel]="'year'"
+                      [lock]="false"
+                      customReactiveForm
+                    ></hdc-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-xl-5 mx-0 mb-2 text-end">
+                <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px" (click)="openPrintModal()">
+                  <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+                <button type="button" class="mx-1 btn btn-primary btn-sm" style="height: 38px" (click)="cleanForm()">
+                  <i class="fa-solid fa-trash-can"></i> Limpiar
+                </button>
+                <button type="button" class="ms-1 btn btn-primary btn-sm" style="height: 38px" (click)="submit()">
+                  <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="data.length > 0" class="table-responsive">
+      <p-table
+        #pt
+        [value]="data"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[10, 15, 25]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-gridlines p-datatable-striped p-datatable-sm datatable-speed"
+        [globalFilterFields]="[
+          'strStatus',
+          'enero',
+          'febrero',
+          'marzo',
+          'abril',
+          'mayo',
+          'junio',
+          'julio',
+          'agosto',
+          'setiembre',
+          'octubre',
+          'noviembre',
+          'diciembre'
+        ]"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+        <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-end align-items-center">
+            <div class="p-input-icon-left table-input-search">
+              <i class="pi pi-search"></i>
+              <input type="text" pInputText placeholder="Buscar" (input)="filterRows($event)" />
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="strStatus" style="text-align: center">Estado</th>
+            <th pSortableColumn="enero">Enero<p-sortIcon field="enero"></p-sortIcon></th>
+            <th pSortableColumn="febrero">Febrero<p-sortIcon field="febrero"></p-sortIcon></th>
+            <th pSortableColumn="marzo">Marzo<p-sortIcon field="marzo"></p-sortIcon></th>
+            <th pSortableColumn="abril">Abril<p-sortIcon field="abril"></p-sortIcon></th>
+            <th pSortableColumn="mayo">Mayo<p-sortIcon field="mayo"></p-sortIcon></th>
+            <th pSortableColumn="junio">Junio<p-sortIcon field="junio"></p-sortIcon></th>
+            <th pSortableColumn="julio">Julio<p-sortIcon field="julio"></p-sortIcon></th>
+            <th pSortableColumn="agosto">Agosto<p-sortIcon field="agosto"></p-sortIcon></th>
+            <th pSortableColumn="setiembre">Setiembre<p-sortIcon field="setiembre"></p-sortIcon></th>
+            <th pSortableColumn="octubre">Octubre<p-sortIcon field="octubre"></p-sortIcon></th>
+            <th pSortableColumn="noviembre">Noviembre<p-sortIcon field="noviembre"></p-sortIcon></th>
+            <th pSortableColumn="diciembre">Diciembre<p-sortIcon field="diciembre"></p-sortIcon></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.strStatus }}</td>
+            <td>{{ item.enero }}</td>
+            <td>{{ item.febrero }}</td>
+            <td>{{ item.marzo }}</td>
+            <td>{{ item.abril }}</td>
+            <td>{{ item.mayo }}</td>
+            <td>{{ item.junio }}</td>
+            <td>{{ item.julio }}</td>
+            <td>{{ item.agosto }}</td>
+            <td>{{ item.setiembre }}</td>
+            <td>{{ item.octubre }}</td>
+            <td>{{ item.noviembre }}</td>
+            <td>{{ item.diciembre }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="modal-container" *ngIf="!loading">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="deleteDocumentLabel">Cancelar Visado</h1>
+    <span class="modal-close" (click)="close()">✕</span>
+  </div>
+  <div class="modal-body">
+    <p>¿Desea cancelar el proceso de visado para el(la) {{ visationData?.tipo }} Nº {{ visationData?.numero }}?</p>
+
+    <br />
+    <div class="d-flex flex-row-reverse flex-wrap gap-1 mb-3">
+      <button type="button" class="btn btn-primary btn-speed btn-sm" (click)="close()"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+      <button type="submit" class="btn btn-secondary btn-speed btn-sm" (click)="onSubmit()">
+        <i class="fa-solid fa-check"></i> Cancelar visado
+      </button>
+    </div>
+  </div>
+</div>

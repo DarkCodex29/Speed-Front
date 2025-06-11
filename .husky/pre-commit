@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Apply Prettier only to changed files
+LIST=$(echo `git diff-index --name-only --diff-filter=d HEAD | grep -E '\.(js|jsx|ts|css|scss|html|json)$'`)
+if [ "$LIST" ]; then
+  echo 'formatting the modified code'
+  npx prettier --write $LIST
+  git add .
+fi
+
+# Apply Eslint
+# npm run lint && npm run build
