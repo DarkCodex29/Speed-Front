@@ -76,12 +76,18 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged --relative"
+      "pre-commit": "lint-staged --relative --verbose --concurrent false --chunk-size 5"
     }
   },
   "lint-staged": {
     "*.{ts,html}": [
-      "eslint --fix"
+      "eslint --fix --max-warnings=0"
+    ],
+    "*.ts": [
+      "eslint --fix --max-warnings=0"
+    ],
+    "*.html": [
+      "eslint --fix --max-warnings=0"
     ]
   }
 }
