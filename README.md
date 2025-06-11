@@ -1,38 +1,38 @@
-# 🚀 Speed Front - Sistema de Gestión Documental y Workflow
+# Speed Front - Sistema de Gestión Documental y Workflow
 
-[![Angular](https://img.shields.io/badge/Angular-16.2.0-red)](https://angular.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0.2-blue)](https://www.typescriptlang.org/)
-[![PrimeNG](https://img.shields.io/badge/PrimeNG-16.3.1-blue)](https://primeng.org/)
-[![License](https://img.shields.io/badge/License-Private-yellow)]()
+![Angular](https://img.shields.io/badge/Angular-16.2.0-red)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0.2-blue)
+![PrimeNG](https://img.shields.io/badge/PrimeNG-16.3.1-blue)
+![License](https://img.shields.io/badge/License-Private-yellow)
 
 **Speed Front** es una aplicación web empresarial desarrollada en Angular 16 que funciona como un sistema integral de gestión documental y automatización de workflows para contratos y documentos legales.
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
-- [Características Principales](#-características-principales)
-- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
-- [Requisitos del Sistema](#-requisitos-del-sistema)
-- [Instalación y Configuración](#-instalación-y-configuración)
-- [Scripts Disponibles](#-scripts-disponibles)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Módulos Principales](#-módulos-principales)
-- [Configuración de Entorno](#-configuración-de-entorno)
-- [Funcionalidades](#-funcionalidades)
-- [Arquitectura](#-arquitectura)
-- [Contribución](#-contribución)
+- [Características Principales](#características-principales)
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Requisitos del Sistema](#requisitos-del-sistema)
+- [Instalación y Configuración](#instalación-y-configuración)
+- [Scripts Disponibles](#scripts-disponibles)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Módulos Principales](#módulos-principales)
+- [Configuración de Entorno](#configuración-de-entorno)
+- [Funcionalidades](#funcionalidades)
+- [Arquitectura](#arquitectura)
+- [Contribución](#contribución)
 
-## ✨ Características Principales
+## Características Principales
 
-- 📄 **Gestión Documental Avanzada** - Upload, versionado y control de documentos
-- ⚡ **Workflows Automatizados** - Flujos de aprobación configurables
-- 🔐 **Firma Electrónica** - Integración con sistemas de firma digital
-- 📊 **Dashboards Ejecutivos** - Métricas y KPIs en tiempo real
-- 🔒 **Sistema de Permisos** - Control granular de acceso por roles
-- 📈 **Reportería Integrada** - Reportes SSRS empresariales
-- 💬 **Asistente Virtual** - IA integrada para soporte al usuario
-- 🎨 **UI/UX Moderna** - Interfaz responsive con PrimeNG
+- **Gestión Documental Avanzada** - Upload, versionado y control de documentos
+- **Workflows Automatizados** - Flujos de aprobación configurables
+- **Firma Electrónica** - Integración con sistemas de firma digital
+- **Dashboards Ejecutivos** - Métricas y KPIs en tiempo real
+- **Sistema de Permisos** - Control granular de acceso por roles
+- **Reportería Integrada** - Reportes SSRS empresariales
+- **Asistente Virtual** - IA integrada para soporte al usuario
+- **UI/UX Moderna** - Interfaz responsive con PrimeNG
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Core Framework
 
@@ -71,14 +71,14 @@
   - `hdc-multiselect` - Multiselección
   - `hdc-autocomplete` - Autocompletado
 
-## 📋 Requisitos del Sistema
+## Requisitos del Sistema
 
 - **Node.js** 18.x o superior
 - **npm** 9.x o superior
 - **Angular CLI** 16.x
 - **Navegador** moderno con soporte ES2022
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### 1. Clonar el repositorio
 
@@ -108,7 +108,7 @@ npm start
 
 La aplicación estará disponible en `http://localhost:4200`
 
-## 📜 Scripts Disponibles
+## Scripts Disponibles
 
 | Script                   | Descripción                                     |
 | ------------------------ | ----------------------------------------------- |
@@ -123,7 +123,7 @@ La aplicación estará disponible en `http://localhost:4200`
 | `npm run version`        | Muestra la versión actual del proyecto          |
 | `grunt`                  | Genera archivo WAR para despliegue              |
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 src/
@@ -152,23 +152,23 @@ src/
 └── favicon.ico
 ```
 
-## 🏗️ Módulos Principales
+## Módulos Principales
 
-### 🔐 Authentication
+### Authentication
 
 - Sistema de login interno y externo
 - Gestión de tokens JWT
 - Guards de autenticación y permisos
 - Interceptores para APIs
 
-### 📊 Dashboard
+### Dashboard
 
 - Dashboard ejecutivo multi-rol
 - Métricas de gestión en tiempo real
 - Gráficos interactivos
 - Indicadores de rendimiento
 
-### 👤 Final User
+### Final User
 
 - **Inbox** - Bandeja de entrada de solicitudes
 - **Register Request** - Registro de nuevas solicitudes
@@ -176,7 +176,7 @@ src/
 - **Document Search** - Búsqueda avanzada de documentos
 - **Tracking** - Seguimiento de solicitudes
 
-### ⚙️ Maintenance
+### Maintenance
 
 - Gestión de usuarios, roles y perfiles
 - Configuración de workflows
@@ -184,7 +184,7 @@ src/
 - Configuración de alertas
 - Gestión de tipos de documentos
 
-### 📈 Reports
+### Reports
 
 - Reportes de indicadores de gestión
 - Estados de solicitudes
@@ -192,7 +192,7 @@ src/
 - Reportes por área y usuario
 - Monitoreo de procesos
 
-## 🌐 Configuración de Entorno
+## Configuración de Entorno
 
 ### Variables de Entorno (environment.ts)
 
@@ -213,34 +213,34 @@ export const environment = {
 - **File Upload**: Soporte para múltiples formatos
 - **Despliegue**: Generación de archivos WAR para servidores Java
 
-## 🎯 Funcionalidades
+## Funcionalidades
 
 ### Gestión Documental
 
-- ✅ Upload y gestión de archivos
-- ✅ Versionado de documentos
-- ✅ Firma electrónica integrada
-- ✅ Plantillas automáticas
-- ✅ Historial de cambios
-- ✅ Visualizador de PDFs
+- Upload y gestión de archivos
+- Versionado de documentos
+- Firma electrónica integrada
+- Plantillas automáticas
+- Historial de cambios
+- Visualizador de PDFs
 
 ### Workflow de Aprobación
 
-- ✅ Flujos configurables
-- ✅ Sistema de visado
-- ✅ Notificaciones automáticas
-- ✅ Escalamiento de tareas
-- ✅ Trazabilidad completa
+- Flujos configurables
+- Sistema de visado
+- Notificaciones automáticas
+- Escalamiento de tareas
+- Trazabilidad completa
 
 ### Características Empresariales
 
-- ✅ Multi-tenant
-- ✅ Roles y permisos granulares
-- ✅ Integración con Active Directory
-- ✅ API RESTful
-- ✅ Cache optimizado
+- Multi-tenant
+- Roles y permisos granulares
+- Integración con Active Directory
+- API RESTful
+- Cache optimizado
 
-## 🏛️ Arquitectura
+## Arquitectura
 
 ### Patrones de Diseño
 
@@ -257,7 +257,7 @@ export const environment = {
 - **Shared Components** - Componentes reutilizables
 - **Custom Elements** - Web Components personalizados
 
-## 🤝 Contribución
+## Contribución
 
 ### Estándares de Código
 
@@ -279,17 +279,14 @@ export const environment = {
 - **Pre-commit**: Ejecuta linting automático
 - **Lint-staged**: Verifica archivos modificados
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es propietario y confidencial. Todos los derechos reservados.
 
 ---
 
-## 📞 Soporte
+## Soporte
 
 Para soporte técnico o consultas sobre el proyecto, contactar al equipo de desarrollo.
 
 **Desarrollado con ❤️ por el equipo Speed Front**
-#   S p e e d - F r o n t 
- 
- 
