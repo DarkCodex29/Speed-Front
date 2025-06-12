@@ -3,6 +3,7 @@ import { TabComponent } from '../tab/tab.component';
 import { DynamicTabsDirective } from '../../dynamic-tabs.directive';
 import { Route, Router } from '@angular/router';
 import { WorkflowTabCacheService } from 'src/app/workflow/workflow-tab-cache-service';
+import { WorkflowTabService } from 'src/app/workflow/workflow-tab-service';
 
 @Component({
   selector: 'ui-tabs-component',
@@ -18,6 +19,7 @@ export class TabsComponent implements AfterContentInit {
     private _componentFactoryResolver: ComponentFactoryResolver,
     private router: Router,
     private cacheService: WorkflowTabCacheService,
+    private workflowTabService: WorkflowTabService,
   ) {}
 
   public ngAfterContentInit() {
@@ -76,6 +78,8 @@ export class TabsComponent implements AfterContentInit {
 
     // activar la pestaña en la que el usuario ha hecho clic.
     tab.active = true;
+
+    this.workflowTabService.setActiveTab(tab);
   }
 
   public closeTab(tab: TabComponent) {
@@ -110,7 +114,12 @@ export class TabsComponent implements AfterContentInit {
     if (this.dynamicTabs.length === 2 && externalTab) {
       this.closeTab(externalTab);
     } else {
-      this.selectTab(this.dynamicTabs[i] ?? this.dynamicTabs[i - 1]);
+      const nextTab = this.dynamicTabs[i] ?? this.dynamicTabs[i - 1];
+      if (nextTab) {
+        this.selectTab(nextTab);
+      } else {
+        this.workflowTabService.setActiveTab(null);
+      }
     }
   }
 }

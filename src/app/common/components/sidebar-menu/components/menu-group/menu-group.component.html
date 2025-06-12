@@ -67,7 +67,11 @@
         </div>
         <ul class="sub-nav collapse" [ngClass]="{ show: item.expanded }">
           <li *ngFor="let subopcion of item.subOpciones" class="nav-item mt-2">
-            <a class="nav-link pointer" (click)="optionClick(subopcion)">
+            <a
+              class="nav-link pointer"
+              [ngClass]="{ active: isOptionActive && isOptionActive(subopcion) }"
+              (click)="optionClick(subopcion)"
+            >
               <span class="item-name ms-0">{{ subopcion.nombre }}</span>
             </a>
           </li>
@@ -75,7 +79,7 @@
       </div>
 
       <div *ngIf="item.subOpciones == null || item.subOpciones.length <= 0">
-        <a class="nav-link pointer" (click)="optionClick(item)">
+        <a class="nav-link pointer" [ngClass]="{ active: isOptionActive && isOptionActive(item) }" (click)="optionClick(item)">
           <span class="item-name ms-0">{{ item.nombre }}</span>
         </a>
       </div>

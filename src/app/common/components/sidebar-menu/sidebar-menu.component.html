@@ -50,7 +50,8 @@
       <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
         <li class="nav-item">
           <a
-            class="nav-link active"
+            class="nav-link"
+            [ngClass]="{ active: isOptionActive({ id: 0, nombre: 'Dashboard', linkOpcion: '/speed', subOpciones: [], expanded: false }) }"
             (click)="
               optionSelected({
                 id: 0,
@@ -86,6 +87,7 @@
 
             <ui-menu-group
               [opciones]="listaOpciones"
+              [isOptionActive]="isOptionActive.bind(this)"
               (collapseOtherMenu)="collapseOtherMenu($event)"
               (optionClicked)="optionSelected($event)"
             ></ui-menu-group>

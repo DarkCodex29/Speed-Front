@@ -28,7 +28,7 @@ export class WorkflowComponent implements AfterViewInit, OnDestroy {
     private loginService: LoginService,
     private router: Router,
     private workflowTabService: WorkflowTabService,
-    private tabServices:TabService
+    private tabServices: TabService,
   ) {
     this.userInfo = loginService.getUserInfo();
     this.listaOpciones = this.loginService.listaOpciones;
@@ -37,12 +37,20 @@ export class WorkflowComponent implements AfterViewInit, OnDestroy {
   public ngAfterViewInit() {
     this.workflowTabService.setTabsComponent(this.tabsComponent);
     this.loadTabsIni();
-    this.tabServices.obtener().subscribe((x) => { this.optionClicked(x) } );
+    this.tabServices.obtener().subscribe((x) => {
+      this.optionClicked(x);
+    });
   }
 
   public loadTabsIni(): void {
     this.openTabAsync('Dashboard', this.dasboardTabTemplate, { id: 0, linkDashboard: '/speed' }, false)
       .then(() => {
+        this.workflowTabService.setActiveTab({
+          title: 'Dashboard',
+          dataContext: { id: 0, linkDashboard: true, linkOpcion: '/speed' },
+          active: true,
+        } as any);
+
         return new Promise<void>((resolve) => {
           setTimeout(() => {
             const urlExternal: string = localStorage.getItem('urlExternal') || '';
@@ -87,7 +95,16 @@ export class WorkflowComponent implements AfterViewInit, OnDestroy {
   }
 
   public optionClicked(opcion: Opciones | SubOpciones) {
-    this.tabsComponent.openTab(opcion.nombre ?? '', this.tabTemplate, { id: opcion.id, linkOpcion: opcion.linkOpcion }, true);
+    if (opcion.id === 0 || opcion.linkOpcion === '/speed') {
+      this.tabsComponent.selectTab(this.tabsComponent.tabs.first);
+      this.workflowTabService.setActiveTab({
+        title: 'Dashboard',
+        dataContext: { id: 0, linkDashboard: true, linkOpcion: '/speed' },
+        active: true,
+      } as any);
+    } else {
+      this.tabsComponent.openTab(opcion.nombre ?? '', this.tabTemplate, { id: opcion.id, linkOpcion: opcion.linkOpcion }, true);
+    }
   }
 
   public logout() {
