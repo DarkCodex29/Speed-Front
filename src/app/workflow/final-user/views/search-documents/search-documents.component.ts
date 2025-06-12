@@ -82,7 +82,7 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
     private excelService: SearchDocumentExcelService,
     private dialogService: DialogService,
     private workflowTabService: WorkflowTabService,
-    private cacheService: WorkflowTabCacheService
+    private cacheService: WorkflowTabCacheService,
   ) {
     const form = new SearchDocumentModel();
     this.searchDocumentsForm = this.fb.group({ ...form });
@@ -93,13 +93,15 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
     // this.chargeData();
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.workflowTabService.tabsComponent$.subscribe((tabsC) => {
       if (tabsC) {
         this.tabsComponent = tabsC;
       }
     });
 
+    // 🔄 Aquí es el momento perfecto para restaurar - todo ya está inicializado
+    await this.restoreFromCache();
   }
 
   public ngOnDestroy(): void {
@@ -147,13 +149,79 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
             children: adendas?.map((subRow) => ({ data: subRow })),
           };
         });
+
         this.cachedData.rowsTable = this.rowsTable;
+        this.cachedData.searchFormValues = this.searchDocumentsForm.value;
+        this.cachedData.filterCompanies = this.filterCompanies;
+        this.cachedData.filterAreas = this.filterAreas;
+        this.cachedData.filterLocationList = this.filterLocationList;
         this.cacheService.set('Buscar Documentos', this.cachedData);
+        console.log('💾 Estado completo guardado en cache');
       } catch (e) {
         console.error(e);
       } finally {
         this.spinnerService.hide();
       }
+    }
+  }
+
+  // 🔄 Método para esperar que termine el reload y restaurar data
+  private async restoreFromCache(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const cached = this.cacheService.get('Buscar Documentos');
+    if (cached?.searchFormValues) {
+      console.log('🔍 Restaurando filtros y resultados desde cache...', cached.searchFormValues);
+
+      try {
+        this.searchDocumentsForm.patchValue(cached.searchFormValues);
+        console.log('📝 Formulario actualizado');
+
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        if (cached.searchFormValues.idPais) {
+          this.updateCountry();
+          console.log('🌍 País actualizado');
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+
+        if (cached.searchFormValues.idCompania) {
+          await this.updateCompany();
+          console.log('🏢 Empresa actualizada');
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+
+        if (cached.searchFormValues.tipoUbicacion || cached.searchFormValues.idCompania) {
+          this.filterLocation();
+          console.log('📍 Ubicación filtrada');
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+
+        this.searchDocumentsForm.patchValue(cached.searchFormValues);
+
+        if (cached.rowsTable) {
+          this.rowsTable = cached.rowsTable;
+          console.log('📋 Resultados restaurados:', this.rowsTable.length, 'elementos');
+        }
+
+        if (this.cachedData.filterCompanies) {
+          this.filterCompanies = this.cachedData.filterCompanies;
+        }
+
+        if (this.cachedData.filterAreas) {
+          this.filterAreas = this.cachedData.filterAreas;
+        }
+
+        if (this.cachedData.filterLocationList) {
+          this.filterLocationList = this.cachedData.filterLocationList;
+        }
+
+        console.log('✅ Restauración completada exitosamente');
+      } catch (error) {
+        console.error('❌ Error al restaurar cache:', error);
+      }
+    } else {
+      console.log('ℹ️ No hay filtros guardados para restaurar');
     }
   }
 
@@ -240,6 +308,21 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
   public resetForm() {
     this.searchDocumentsForm.reset();
     this.searchDocumentsForm.get('tipoSolicitud')?.setValue(-1);
+    this.rowsTable = [];
+    this.filterCompanies = [];
+    this.filterAreas = [];
+    this.filterLocationList = [];
+
+    const cached = this.cacheService.get('Buscar Documentos');
+    if (cached) {
+      delete cached.searchFormValues;
+      delete cached.rowsTable;
+      delete cached.filterCompanies;
+      delete cached.filterAreas;
+      delete cached.filterLocationList;
+      this.cacheService.set('Buscar Documentos', cached);
+      console.log('🧹 Cache de filtros y resultados limpiado');
+    }
   }
 
   public async exportarExcel() {
@@ -294,7 +377,11 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
 
   private async recoverData() {
     this.cachedData = this.cacheService.get('Buscar Documentos');
-    if (this.cachedData && this.cachedData.countriesList &&
+    console.log('🔍 Verificando cache existente...', this.cachedData ? 'Encontrado' : 'No encontrado');
+
+    if (
+      this.cachedData &&
+      this.cachedData.countriesList &&
       this.cachedData.companiesList &&
       this.cachedData.statesList &&
       this.cachedData.areasList &&
@@ -305,7 +392,10 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
       this.cachedData.abogadosResponsables &&
       this.cachedData.usuariosResponsables &&
       this.cachedData.usuariosSolicitantes &&
-      this.cachedData.tipoSolicitudList) {
+      this.cachedData.tipoSolicitudList
+    ) {
+      console.log('✅ Cache completo encontrado - restaurando datos...');
+
       this.countriesList = this.cachedData.countriesList;
       this.companiesList = this.cachedData.companiesList;
       this.statesList = this.cachedData.statesList;
@@ -322,13 +412,32 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
       this.tipoSolicitudList.push({ id: -1, nombre: 'Todos' });
       this.searchDocumentsForm.get('tipoSolicitud')?.setValue(-1);
 
-      if(this.cachedData.rowsTable){
+      if (this.cachedData.rowsTable) {
         this.rowsTable = this.cachedData.rowsTable;
       }
+
+      if (this.cachedData.filterCompanies) {
+        this.filterCompanies = this.cachedData.filterCompanies;
+      }
+
+      if (this.cachedData.filterAreas) {
+        this.filterAreas = this.cachedData.filterAreas;
+      }
+
+      if (this.cachedData.filterLocationList) {
+        this.filterLocationList = this.cachedData.filterLocationList;
+      }
+
+      console.log('✅ Datos restaurados desde cache - SIN consultas API');
+      return;
     }
+
+    console.log('❌ Cache incompleto o inexistente - cargando desde API...');
+
     try {
       this.spinnerService.show();
-      this.cachedData={};
+      this.cachedData = {};
+      console.log('🔄 Ejecutando consultas API...');
       const responses = await Promise.all([
         this.dataService.getCountries(),
         this.dataService.getCompanies(),
@@ -341,7 +450,7 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
         this.dataService.getLegalRepresentatives(),
         this.dataService.getResponsibleLawyers(),
         this.dataService.getRequestingUsers(),
-        this.dataService.getProcesosF(TipoProcesosBD.PROCESO_HC)
+        this.dataService.getProcesosF(TipoProcesosBD.PROCESO_HC),
       ]);
       this.countriesList = responses[0];
       this.companiesList = responses[1];
@@ -356,6 +465,7 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
       this.usuariosSolicitantes = responses[10];
       this.tipoSolicitudList = responses[11];
 
+      this.cachedData.countriesList = this.countriesList;
       this.cachedData.companiesList = this.companiesList;
       this.cachedData.statesList = this.statesList;
       this.cachedData.areasList = this.areasList;
@@ -372,12 +482,11 @@ export class SearchDocumentsComponent implements OnInit, OnDestroy, AfterViewIni
       this.searchDocumentsForm.get('tipoSolicitud')?.setValue(-1);
 
       this.cacheService.set('Buscar Documentos', this.cachedData);
+      console.log('💾 Cache guardado exitosamente - próximas visitas serán instantáneas');
 
       this.spinnerService.hide();
-
-
     } catch (err) {
-      console.error(err);
+      console.error('❌ Error al cargar datos:', err);
       this.spinnerService.hide();
     }
   }

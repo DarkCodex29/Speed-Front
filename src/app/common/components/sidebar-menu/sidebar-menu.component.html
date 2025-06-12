@@ -1,5 +1,17 @@
 <div class="sidebar-header d-flex align-items-center justify-content-start">
-  <a class="navbar-brand" [routerLink]="['/speed']">
+  <a
+    class="navbar-brand"
+    (click)="
+      optionSelected({
+        id: 0,
+        nombre: 'Dashboard',
+        linkOpcion: '/speed',
+        subOpciones: [],
+        expanded: false
+      })
+    "
+    style="cursor: pointer"
+  >
     <!--Logo start-->
     <img alt="Logo Speed" width="30" src="assets/img/hoc_isotipo.png" />
     <!--logo End-->
@@ -37,13 +49,19 @@
       <!-- Sidebar Menu Start -->
       <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
         <li class="nav-item">
-          <a class="nav-link active" [routerLink]="['/speed']" (click)="optionSelected({
-            id: 0,
-            nombre: 'Dashboard',
-            linkOpcion: '/speed',
-            subOpciones: [],
-            expanded: false
-          })">
+          <a
+            class="nav-link active"
+            (click)="
+              optionSelected({
+                id: 0,
+                nombre: 'Dashboard',
+                linkOpcion: '/speed',
+                subOpciones: [],
+                expanded: false
+              })
+            "
+            style="cursor: pointer"
+          >
             <i class="icon">
               <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -66,10 +84,12 @@
               <ui-menu-group [menuItem]="item" (collapseOtherMenu)="collapseOtherMenu($event)"></ui-menu-group>
             </li> -->
 
-              <ui-menu-group [opciones]="listaOpciones" (collapseOtherMenu)="collapseOtherMenu($event)"  (optionClicked)="optionSelected($event)"></ui-menu-group>
-
-
-          </ul> 
+            <ui-menu-group
+              [opciones]="listaOpciones"
+              (collapseOtherMenu)="collapseOtherMenu($event)"
+              (optionClicked)="optionSelected($event)"
+            ></ui-menu-group>
+          </ul>
         </li>
       </ul>
       <!-- Sidebar Menu End -->
