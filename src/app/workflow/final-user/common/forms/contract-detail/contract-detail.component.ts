@@ -240,7 +240,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
 
         if (filename.split('.').reverse()[0] === 'pdf') {
           //this.descargarPdf(filename, blob, idArchivo);
-          window.open(this.documentService.downloadFileUserURL(idArchivo, idExpediente, this.idUsuario), '_blank');           
+          window.open(this.documentService.downloadFileUserURL(idArchivo, idExpediente, this.idUsuario), '_blank');
         } else {
           this.descargarArchivoGeneral(filename, blob);
         }
@@ -272,7 +272,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
     const fileURL = String(environment.apiUrl + '/descargarArchivo/' + idArchivo + '/');
     window.open(fileURL, '_blank');
   }
-  
+
   public descargarPdf(filename: string, blob: Blob, idArchivo: number) {
     const newWindow = window.open('', '_blank');
     if (newWindow) {
@@ -308,7 +308,9 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
       (this.indiceDocumento == this.getIndiceAdenda() || this.indiceDocumento == this.getIndiceContrato()) &&
       item.nombre == 'Adjuntar Borrador'
         ? 'Adjuntar Versión Final'
-        : item.nombre == 'Adjuntar Borrador' ? 'Adjuntar Archivo' : item.nombre;
+        : item.nombre == 'Adjuntar Borrador'
+        ? 'Adjuntar Archivo'
+        : item.nombre;
 
     if (item.urlNuevo) {
       this[`${item.urlNuevo}` as keyof ContractDetailComponent]();
@@ -768,7 +770,6 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
   }
 
   public openModalAdjuntarDocumento() {
-
     this.dialogService
       .show({
         component: AttachDocumentModalComponent,
@@ -798,8 +799,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
   }
 
   public openModalAdjuntarBorrador() {
-
-    const indDoc = this.indiceDocumento ? this.indiceDocumento : 1;//joel
+    const indDoc = this.indiceDocumento ? this.indiceDocumento : 1; //joel
     console.log(this.contract.code);
     this.dialogService
       .show({
@@ -812,7 +812,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
             num: this.data.documentoLegal.numero,
             idProceso: this.data.expediente.proceso.id,
             tipoDocumento: this.documentos[indDoc].tipoDocumento.id,
-            documentoObjeto : this.documentos[indDoc].tipoDocumento
+            documentoObjeto: this.documentos[indDoc].tipoDocumento,
           },
           title: this.label,
         },
@@ -1094,15 +1094,6 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
     ) {
       return false;
     }*/
-
-    if (
-      !rolesUsuario?.includes('abogadoResponsable') &&
-      [3, 4].includes(this.data.expediente.proceso.id) && //3=contrato, 4=adenda
-      this.data.estadoDl === 'Doc. Elaborado' &&
-      ['Documentos Solicitud', 'Poderes'].includes(item.titulo)
-    ) {
-      return false;
-    }
 
     if (item.tipoDocumento?.id === 12 && this.data.estadoDl === 'Enviado a Visado') {
       return false;
