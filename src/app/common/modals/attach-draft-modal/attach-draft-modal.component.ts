@@ -39,7 +39,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
   public tipoDocumento: number | undefined;
   private unsubscribe: Subject<void>;
   public documentoObjeto?: object;
-  public nombreCarpeta? : string;
+  public nombreCarpeta?: string;
   public constructor(
     private dialogService: DialogService,
     private dialogRef: DialogRef<boolean>,
@@ -70,15 +70,11 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
           this.datosDocument = response;
           this.attachDraftForm.Form.get('id')?.setValue(this.id);
           this.attachDraftForm.Form.get('enviadoC')?.setValue(false);
-          let userDefault;
-          if (this.datosDocument.destinatariosDefecto.length > 1) {
-            userDefault = this.datosDocument.destinatariosDefecto.filter(
-              (d: any) => d.usuario.usuario != this.loginService.getUserInfo().usuario,
-            );
-          } else {
-            userDefault = this.datosDocument.destinatariosDefecto;
-          }
-          this.listUsuariosSelected.push(...userDefault);
+
+          const currentUser = this.loginService.getUserInfo().usuario;
+          const defaultUsers = this.datosDocument.destinatariosDefecto.filter((d: any) => d.usuario.usuario !== currentUser);
+
+          this.listUsuariosSelected.push(...defaultUsers);
           this.spinnerService.hide();
         },
         error: (error) => {
@@ -90,7 +86,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
 
   public async seleccionarUsuario(event: Event) {
     const termino = (event as CustomEvent).detail;
-    if (termino.length > 2) {
+    if (termino && termino.length > 2) {
       of(termino)
         .pipe(
           debounceTime(800),
@@ -99,24 +95,39 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
           switchMap((value) => this.documentService.getUsersActives({ term: value })),
         )
         .subscribe((data) => {
-          this.listUsuariosUbicacion = data.slice();
-          this.listUsuarios = data.map((user) => {
+          const currentUser = this.loginService.getUserInfo().usuario;
+          const filteredData = data.filter((item: any) => item.usuario.usuario !== currentUser);
+
+          this.listUsuariosUbicacion = filteredData.slice();
+          this.listUsuarios = filteredData.map((user) => {
             return user.usuario;
           });
         });
+    } else if (!termino || termino.length === 0) {
+      this.listUsuarios = [];
+      this.listUsuariosUbicacion = [];
     }
   }
 
   public selectUser(event: Event) {
-    if ((event as CustomEvent).detail !== null) {
-      this.selectUserInput.nativeElement.value = null;
-      const user = (event as CustomEvent).detail;
-      let existe = true;
-      existe = this.listUsuariosSelected.some((e) => e.usuario.id == user.id);
-      if (!existe) {
-        let index = this.listUsuariosUbicacion.findIndex((u) => (u.usuario.id = user.id));
-        if (index > -1) {
-          this.listUsuariosSelected.unshift(this.listUsuariosUbicacion[index]);
+    const selectedUser = (event as CustomEvent).detail;
+
+    if (selectedUser) {
+      setTimeout(() => {
+        if (this.selectUserInput?.nativeElement) {
+          this.selectUserInput.nativeElement.value = '';
+        }
+      }, 100);
+
+      const userAlreadySelected = this.listUsuariosSelected.some((item) => item.usuario.id === selectedUser.id);
+
+      if (!userAlreadySelected) {
+        const userWithLocation = this.listUsuariosUbicacion.find((u) => u.usuario.id === selectedUser.id);
+
+        if (userWithLocation) {
+          this.listUsuariosSelected.unshift(userWithLocation);
+          this.listUsuarios = [];
+          this.listUsuariosUbicacion = [];
         }
       }
     }
@@ -137,8 +148,9 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
     try {
       let fileUpload = event.target.files[0];
       let format = fileUpload.name.split('.');
-      const isVersionFinal = (this.label == "Adjuntar Versión Final");
-      let name = this.cant && this.cant >= 1 && !isVersionFinal ? this.numero + '_V' + this.cant + '.' + format[format.length - 1] : fileUpload.name;
+      const isVersionFinal = this.label == 'Adjuntar Versión Final';
+      let name =
+        this.cant && this.cant >= 1 && !isVersionFinal ? this.numero + '_V' + this.cant + '.' + format[format.length - 1] : fileUpload.name;
       console.log(name);
       const formData = new FormData();
       formData.append('archivo', fileUpload);
@@ -194,7 +206,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
                 },
               },
             });
-          }          
+          }
         },
         error: (err: unknown) => {
           console.error(err);
@@ -214,9 +226,16 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
   public eliminarUsuario(id: number) {
     this.listUsuariosSelected = this.listUsuariosSelected.filter((item) => item.usuario.id !== id);
   }
+
+  public clearSearch() {
+    this.listUsuarios = [];
+    this.listUsuariosUbicacion = [];
+    if (this.selectUserInput?.nativeElement) {
+      this.selectUserInput.nativeElement.value = '';
+    }
+  }
   esBorrador(): boolean {
     const borr = typeof this.nombreCarpeta === 'string' && this.nombreCarpeta.includes('Borrador');
     return borr;
-
   }
 }

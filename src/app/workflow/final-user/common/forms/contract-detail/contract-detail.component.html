@@ -81,17 +81,7 @@
           </div>
           <div class="card-body px-3">
             <ng-container *ngFor="let item of data.documentos; let indice = index">
-              <button
-                *ngIf="showCarpeta(item)"
-                [disabled]="
-                  data.estadoDl === 'Doc. Elaborado' &&
-                  item.titulo.split(' ')[0] !== 'Borradores' &&
-                  data.documentoLegal.responsable.nombreCompleto !== nombreUsuario
-                "
-                type="button"
-                class="btn btn-icon-document"
-                (click)="changeIndexDocumento(indice, item.id)"
-              >
+              <button *ngIf="showCarpeta(item)" type="button" class="btn btn-icon-document" (click)="changeIndexDocumento(indice, item.id)">
                 <img src="assets/img/icons/documento.png" alt="Documento" class="img-fluid mb-1" width="55" />
                 <span>{{ item.titulo }}</span>
               </button>
@@ -115,7 +105,9 @@
               {{
                 (indiceDocumento === getIndiceAdenda() || indiceDocumento === getIndiceContrato()) && item.nombre === 'Adjuntar Borrador'
                   ? 'Adjuntar Versión Final'
-                  : item.nombre == 'Adjuntar Borrador' ? 'Adjuntar Archivo' : item.nombre
+                  : item.nombre == 'Adjuntar Borrador'
+                  ? 'Adjuntar Archivo'
+                  : item.nombre
               }}
             </button>
           </div>
@@ -145,8 +137,6 @@
           <div class="card-header-secondary text-center">Lista de Archivos Correspondientes al Documentos</div>
           <div class="card-body" *ngIf="dataDocumento.lstArchivos !== null">
             <div class="d-inline-block position-relative" *ngFor="let archivo of dataDocumento.lstArchivos; let i = index">
-             
-
               <!-- <div *ngIf="data.documentoLegal.estado === 'V' && i === 0">
                 <button
                   (click)="descargaArchivo(archivo.id)"
@@ -168,15 +158,11 @@
               </div> -->
 
               <div>
-                <button
-                  (click)="descargaArchivo(archivo.id)"
-                  type="button"
-                  class="btn btn-icon-document"
-                >
+                <button (click)="descargaArchivo(archivo.id)" type="button" class="btn btn-icon-document">
                   <img src="assets/img/icons/archivo.png" alt="Documento" class="img-fluid mb-1" width="45" />
                   <span>{{ archivo.nombre }}</span>
                 </button>
-                <div class="tooltip-info" >
+                <div class="tooltip-info">
                   <p class="text-center text-xs mb-2">
                     {{ archivo.nombre }}<br /><span>F. Creación: {{ archivo.fechaCreacion | date: 'dd/MM/yyyy' }}</span>
                   </p>
@@ -186,8 +172,6 @@
                   </p>
                 </div>
               </div>
-
-              
             </div>
           </div>
         </div>

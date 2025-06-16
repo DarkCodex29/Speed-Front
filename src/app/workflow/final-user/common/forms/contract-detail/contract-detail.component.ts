@@ -42,6 +42,25 @@ import { LoginService } from 'src/app/authentication/services';
 import { WorkflowTabCacheService } from 'src/app/workflow/workflow-tab-cache-service';
 import * as pdfjsLib from 'pdfjs-dist';
 import { PdfViewerComponent } from '@speed/common/modals/pdf-viewer/pdf-viewer.component';
+/**
+ * Componente para mostrar los detalles de un contrato/solicitud
+ *
+ * SISTEMA DE VISIBILIDAD DE CARPETAS IMPLEMENTADO:
+ *
+ * Este componente implementa un sistema complejo de visibilidad de carpetas
+ * basado en roles de usuario y estados de solicitud.
+ *
+ * MÉTODOS PRINCIPALES RELACIONADOS CON VISIBILIDAD:
+ * - showCarpeta(): Determina si una carpeta debe mostrarse según rol y estado
+ * - changeIndexDocumento(): Maneja la restricción de archivos en Borradores
+ *
+ * ROLES RECONOCIDOS:
+ * - 'ZSLG:RESP_LEGAL:HOC': Rol de abogado (sistema legacy)
+ * - 'abogadoResponsable': Rol de abogado (sistema actual)
+ *
+ * Para más detalles sobre las reglas de visibilidad, ver documentación
+ * en los métodos showCarpeta() y changeIndexDocumento()
+ */
 @Component({
   selector: 'ui-contract-detail',
   templateUrl: 'contract-detail.component.html',
@@ -972,6 +991,17 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
       },
     });
   }
+  /**
+   * Cambia el índice del documento seleccionado y carga sus detalles
+   *
+   * FUNCIONALIDAD ESPECIAL PARA BORRADORES:
+   * - Los usuarios SIN rol de abogado en la carpeta Borradores (ID: 12)
+   *   solo pueden ver el último archivo de la lista
+   * - Los usuarios CON rol de abogado ven todos los archivos
+   *
+   * @param indice - Índice del documento en la lista
+   * @param id - ID del documento a cargar
+   */
   public async changeIndexDocumento(indice: number, id: number) {
     if (this.indiceDocumento != indice) {
       this.indiceDocumento = indice;
@@ -979,6 +1009,18 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
       this.spinnerService.show();
       this.idDocumentInfo = id;
       this.dataDocumento = await this.documentService.getDocumento(this.idDocumentInfo);
+
+      // Detectar rol de abogado y tipo de documento
+      const rolesUsuario = this.loginService.getUserInfo().rolesUsuario;
+      const isAbogado = rolesUsuario?.includes('ZSLG:RESP_LEGAL:HOC') || rolesUsuario?.includes('abogadoResponsable');
+      const tipoDocumentoId = this.data.documentos[indice].tipoDocumento.id;
+
+      // RESTRICCIÓN ESPECIAL: En Borradores (ID: 12), usuarios sin rol abogado solo ven el último archivo
+      if (!isAbogado && tipoDocumentoId === 12 && this.dataDocumento.lstArchivos?.length > 0) {
+        // Mantener solo el último archivo de la lista
+        this.dataDocumento.lstArchivos = [this.dataDocumento.lstArchivos[this.dataDocumento.lstArchivos.length - 1]];
+      }
+
       this.loadingDocumentDetail = false;
       this.spinnerService.hide();
       this.validateShowButtonsCarpeta(indice);
@@ -1073,32 +1115,102 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
     return this.data.documentos.findIndex((d: any) => d.titulo.split(' ').includes('Contrato'));
   }
 
+  /**
+   * Determina la visibilidad de las carpetas de documentos basada en roles de usuario y estados de solicitud
+   *
+   * SISTEMA DE VISIBILIDAD DE CARPETAS POR ROLES:
+   *
+   * CARPETAS DISPONIBLES:
+   * - ID 4: Documentos Solicitud
+   * - ID 5: Poderes
+   * - ID 7: Contrato
+   * - ID 8: Adenda
+   * - ID 12: Borradores
+   * - ID 13: Versión Final
+   *
+   * ROLES DE USUARIO:
+   * - Abogado: Usuario con rol 'ZSLG:RESP_LEGAL:HOC' o 'abogadoResponsable'
+   * - No Abogado: Cualquier otro usuario
+   *
+   * ESTADOS DE SOLICITUD RELEVANTES:
+   * - "En Elaboracion" / "En Elaboración"
+   * - "Doc. Elaborado" / "Doc. elaborado"
+   * - "Enviado a Visado"
+   *
+   * REGLAS DE VISIBILIDAD:
+   *
+   * 1. SIEMPRE OCULTA:
+   *    - Versión Final (ID: 13) → Nunca visible para ningún usuario
+   *
+   * 2. USUARIO CON ROL ABOGADO:
+   *    - Documentos Solicitud (ID: 4) → Siempre visible
+   *    - Poderes (ID: 5) → Siempre visible
+   *    - Contrato (ID: 7) → Siempre visible
+   *    - Adenda (ID: 8) → Siempre visible
+   *    - Borradores (ID: 12) → Siempre visible
+   *
+   * 3. USUARIO SIN ROL ABOGADO:
+   *    3.1 SIEMPRE VISIBLE:
+   *        - Documentos Solicitud (ID: 4)
+   *        - Poderes (ID: 5)
+   *
+   *    3.2 OCULTA EN ESTADOS ESPECÍFICOS:
+   *        - Contrato (ID: 7) → Oculta si estado es "En Elaboración" o "Doc. elaborado"
+   *        - Adenda (ID: 8) → Oculta si estado es "En Elaboración" o "Doc. elaborado"
+   *
+   *    3.3 OCULTA EN ESTADO VISADO:
+   *        - Borradores (ID: 12) → Oculta si estado es "Enviado a Visado"
+   *
+   * FUNCIONALIDAD ADICIONAL:
+   * - En la carpeta Borradores (ID: 12), los usuarios sin rol abogado solo ven el último archivo
+   *   (Implementado en el método changeIndexDocumento)
+   *
+   * @param item - Objeto que contiene la información de la carpeta, incluyendo tipoDocumento.id
+   * @returns boolean - true si la carpeta debe ser visible, false si debe ocultarse
+   */
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public showCarpeta(item: any): boolean {
     const rolesUsuario = this.loginService.getUserInfo().rolesUsuario;
-    console.log(item);
-    console.log(this.data);
-    //item.tipoDocumento?.id === 7 es contrato, 12=Borradores, 13=version final,  5= poderes, 4=documento solicitud
-    if (item.tipoDocumento?.id === 13) {
+    const tipoDocumentoId = item.tipoDocumento?.id;
+    const estadoDl = this.data.estadoDl;
+
+    // Detectar si el usuario tiene rol de abogado
+    const isAbogado = rolesUsuario?.includes('ZSLG:RESP_LEGAL:HOC') || rolesUsuario?.includes('abogadoResponsable');
+
+    // REGLA 1: Versión Final (ID: 13) siempre está oculta para todos los usuarios
+    if (tipoDocumentoId === 13) {
       return false;
     }
 
-    /*if (item.tipoDocumento?.id === 7 && !['Vigente', 'Vencido'].includes(this.data.estadoDl)) {
-      return false;
-    }*/
-
-    /*if (
-      item.tipoDocumento?.id === 13 &&
-      this.data.documentoLegal.responsable.nombreCompleto !== this.nombreUsuario &&
-      !['Vigente', 'Vencido'].includes(this.data.estadoDl)
-    ) {
-      return false;
-    }*/
-
-    if (item.tipoDocumento?.id === 12 && this.data.estadoDl === 'Enviado a Visado') {
-      return false;
+    // REGLA 2: Usuario CON rol de abogado - puede ver todas las carpetas principales
+    if (isAbogado) {
+      const carpetasAbogado = [4, 5, 7, 8, 12]; // Documentos Solicitud, Poderes, Contrato, Adenda, Borradores
+      return carpetasAbogado.includes(tipoDocumentoId);
     }
 
-    return true;
+    // REGLA 3: Usuario SIN rol de abogado - visibilidad condicionada por estado
+    else {
+      // 3.1 Carpetas siempre visibles para no-abogado
+      if ([4, 5].includes(tipoDocumentoId)) {
+        // Documentos Solicitud, Poderes
+        return true;
+      }
+
+      // 3.2 Contrato y Adenda - ocultas en estados de elaboración
+      if ([7, 8].includes(tipoDocumentoId)) {
+        // Contrato, Adenda
+        const estadosOcultos = ['En Elaboracion', 'En Elaboración', 'Doc. Elaborado', 'Doc. elaborado'];
+        return !estadosOcultos.includes(estadoDl);
+      }
+
+      // 3.3 Borradores - oculta cuando está en visado
+      if (tipoDocumentoId === 12) {
+        // Borradores
+        return estadoDl !== 'Enviado a Visado';
+      }
+
+      // Cualquier otra carpeta no especificada se oculta para no-abogado
+      return false;
+    }
   }
 }
