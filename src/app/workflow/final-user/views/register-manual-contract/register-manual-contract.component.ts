@@ -82,15 +82,14 @@ export class RegisterManualContractComponent implements OnInit, OnDestroy {
   }
 
   public async presionarBoton() {
-    //const paramsDocument = this.requestForm.value.requested;
     const representantesLegales = this.requestForm.value.requested.contrato.representantesLegales;
     let correosRepresentantesLegalesValid = true;
-    if(representantesLegales){
-      correosRepresentantesLegalesValid = representantesLegales.every(({correo}:any) => correo!=null && correo.trim().length !== 0);
+    if (representantesLegales) {
+      correosRepresentantesLegalesValid = representantesLegales.every(({ correo }: any) => correo != null && correo.trim().length !== 0);
     }
     Utils.validateAllFields(this.requestForm);
     if (this.requestForm.valid) {
-      if(correosRepresentantesLegalesValid){
+      if (correosRepresentantesLegalesValid) {
         this.spinnerService.show();
         const paramsExpedient = {
           idProceso: Number(ProcessType.CONTRATO),
@@ -107,36 +106,20 @@ export class RegisterManualContractComponent implements OnInit, OnDestroy {
           paramsDocument.contrato.idContraparte = paramsDocument.contrato.idContraparte.id;
           paramsDocument.esAvance = false;
           paramsDocument.adenda = null;
-          // const paramsRecordFile = {
-          //   idExpediente: result.id,
-          //   idResponsable: paramsDocument.abogadoResponsable,
-          //   usuarios: [
-          //     { id: 447, usuario: 'WILDER CEVALLOS MAMANI', esGrupo: 0 },
-          //     { id: 1, usuario: 'Grupo - Comunes', esGrupo: 1 },
-          //   ],
-          // };
-  
+
           const arrayPromise = this.getAttachedDocuments(result.id);
-  
-          await Promise.all([
-            firstValueFrom(this.registerRequestService.saveDocumentoLegal(paramsDocument)), //Guardar documento legal
-            ...arrayPromise, //Guardar archivos adjuntos
-          ]);
-          // await firstValueFrom(this.registerRequestService.saveManualLegalDocument(paramsRecordFile)); //Registrar expediente
-  
-          // this.spinnerService.hide();
-          // this.requestForm.reset();
-  
-          // this.dialogService.show({
-          //   component: MessageModalComponent,
-          //   config: {
-          //     data: {
-          //       message: 'Solicitud guardada',
-          //     },
-          //   },
-          // });
+
+          const documentResponse = await firstValueFrom(this.registerRequestService.saveDocumentoLegal(paramsDocument));
+          console.log('🎯 Respuesta de saveDocumentoLegal:', documentResponse);
+
+          // No actualizamos los títulos durante el registro ya que el número real se genera después
+          // Los títulos permanecen como "Contrato", "Poderes", "Documentos Solicitud"
+          console.log('✅ Registro completado - Los títulos finales aparecerán cuando se abra el expediente');
+
+          await Promise.all([...arrayPromise]);
+
           this.spinnerService.hide();
-  
+
           this.dialogService
             .show({
               component: NoticeValidityModalComponent,
@@ -161,11 +144,11 @@ export class RegisterManualContractComponent implements OnInit, OnDestroy {
           component: MessageModalComponent,
           config: {
             data: {
-              message: 'Ingrese correo de los representaste legales',
+              message: 'Ingrese correo de los representantes legales',
             },
           },
         });
-      }     
+      }
     } else {
       this.dialogService.show({
         component: MessageModalComponent,
@@ -216,6 +199,7 @@ export class RegisterManualContractComponent implements OnInit, OnDestroy {
     documentsPowers.documentos.forEach((item: IDocumentFileModel) => {
       archivosPowers.push(...item.files);
     });
+
     const paramsPowers = {
       idExpediente,
       idTipoDocumento: documentsPowers.idTipoDocumento,

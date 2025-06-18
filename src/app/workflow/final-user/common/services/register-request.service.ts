@@ -91,4 +91,8 @@ export class RegisterRequestService {
   public getTiposFirma() {
     return firstValueFrom(this.http.get<Array<IParameter>>(`${environment.apiUrl}/firmaElectronica/getTiposFirma`));
   }
+
+  public getDocumentoLegal(idDocumento: number) {
+    return this.http.get<any>(`${environment.apiUrl}/revisarDocumento/obtenerDocumento/${idDocumento}`);
+  }
 }
