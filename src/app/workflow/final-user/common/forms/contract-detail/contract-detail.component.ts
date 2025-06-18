@@ -996,7 +996,8 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
    *
    * FUNCIONALIDAD ESPECIAL PARA BORRADORES:
    * - Los usuarios SIN rol de abogado en la carpeta Borradores (ID: 12)
-   *   solo pueden ver el último archivo de la lista
+   *   solo pueden ver el último archivo (más reciente por fecha de creación)
+   * - Los archivos se ordenan por fecha de creación antes del filtrado
    * - Los usuarios CON rol de abogado ven todos los archivos
    *
    * @param indice - Índice del documento en la lista
@@ -1017,8 +1018,15 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
 
       // RESTRICCIÓN ESPECIAL: En Borradores (ID: 12), usuarios sin rol abogado solo ven el último archivo
       if (!isAbogado && tipoDocumentoId === 12 && this.dataDocumento.lstArchivos?.length > 0) {
-        // Mantener solo el último archivo de la lista
-        this.dataDocumento.lstArchivos = [this.dataDocumento.lstArchivos[this.dataDocumento.lstArchivos.length - 1]];
+        // Ordenar archivos por fecha de creación (más reciente primero)
+        const archivosOrdenados = this.dataDocumento.lstArchivos.sort((a: any, b: any) => {
+          const fechaA = new Date(a.fechaCreacion).getTime();
+          const fechaB = new Date(b.fechaCreacion).getTime();
+          return fechaB - fechaA; // Orden descendente (más reciente primero)
+        });
+
+        // Mantener solo el archivo más reciente (primer elemento después del ordenamiento)
+        this.dataDocumento.lstArchivos = [archivosOrdenados[0]];
       }
 
       this.loadingDocumentDetail = false;
@@ -1163,7 +1171,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
    *
    * FUNCIONALIDAD ADICIONAL:
    * - En la carpeta Borradores (ID: 12), los usuarios sin rol abogado solo ven el último archivo
-   *   (Implementado en el método changeIndexDocumento)
+   *   (más reciente por fecha de creación - Implementado en el método changeIndexDocumento)
    *
    * @param item - Objeto que contiene la información de la carpeta, incluyendo tipoDocumento.id
    * @returns boolean - true si la carpeta debe ser visible, false si debe ocultarse
