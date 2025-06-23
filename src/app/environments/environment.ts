@@ -1,7 +1,7 @@
 export const environment = {
   //apiUrl: 'https://10.30.44.7/SpeedBack',
   apiUrl: 'http://localhost:9096/services', //DEV
-  //apiUrl: 'https://10.30.44.7/speed-back-demo',
+  //apiUrl: 'https://10.30.44.7/speed-back-demo', //QAS
   //apiUrl: 'http://localhost:9096/speed-back-demo',
   //apiUrl: 'http://localhost:8080/SpeedBack',
   //apiUrl: 'https://pecenprd10.hocplc.com/SpeedBack', //PRD

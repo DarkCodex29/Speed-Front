@@ -827,6 +827,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
           data: {
             id: this.idDocumentInfo,
             cant: this.dataDocumento.lstArchivos.length,
+            archivosExistentes: this.dataDocumento.lstArchivos,
             //num: this.contract.code,joel
             num: this.data.documentoLegal.numero,
             idProceso: this.data.expediente.proceso.id,

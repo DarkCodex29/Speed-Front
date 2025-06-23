@@ -40,6 +40,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
   private unsubscribe: Subject<void>;
   public documentoObjeto?: object;
   public nombreCarpeta?: string;
+  public archivosExistentes?: any[];
   public constructor(
     private dialogService: DialogService,
     private dialogRef: DialogRef<boolean>,
@@ -58,6 +59,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
     this.tipoDocumento = this.dialogConfig.data?.tipoDocumento;
     this.documentoObjeto = this.dialogConfig.data?.documentoObjeto;
     this.nombreCarpeta = this.dialogConfig.data.documentoObjeto.nombre;
+    this.archivosExistentes = this.dialogConfig.data?.archivosExistentes;
   }
 
   public ngOnInit(): void {
@@ -149,7 +151,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
       let fileUpload = event.target.files[0];
       let format = fileUpload.name.split('.');
       const isVersionFinal = this.label == 'Adjuntar Versión Final';
-      let name = !isVersionFinal ? this.numero + '_V' + ((this.cant || 0) + 1) + '.' + format[format.length - 1] : fileUpload.name;
+      let name = !isVersionFinal ? this.numero + '_V' + this.getNextVersionNumber() + '.' + format[format.length - 1] : fileUpload.name;
       console.log(name);
       const formData = new FormData();
       formData.append('archivo', fileUpload);
@@ -236,5 +238,41 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
   esBorrador(): boolean {
     const borr = typeof this.nombreCarpeta === 'string' && this.nombreCarpeta.includes('Borrador');
     return borr;
+  }
+
+  /**
+   * Extrae el número de versión más alto de los archivos existentes y devuelve el siguiente
+   * Busca patrones como "_V1", "_V2", "_V3" en los nombres de archivos
+   * @returns El siguiente número de versión a usar
+   */
+  private getNextVersionNumber(): number {
+    if (!this.archivosExistentes || this.archivosExistentes.length === 0) {
+      return 1;
+    }
+
+    const versionNumbers: number[] = [];
+
+    // Recorrer todos los archivos existentes
+    this.archivosExistentes.forEach((archivo: any) => {
+      if (archivo.nombre) {
+        // Buscar patrón _V seguido de números en el nombre del archivo
+        const versionMatch = archivo.nombre.match(/_V(\d+)/i);
+        if (versionMatch && versionMatch[1]) {
+          const versionNumber = parseInt(versionMatch[1], 10);
+          if (!isNaN(versionNumber)) {
+            versionNumbers.push(versionNumber);
+          }
+        }
+      }
+    });
+
+    // Si no se encontraron versiones, empezar con V1
+    if (versionNumbers.length === 0) {
+      return 1;
+    }
+
+    // Encontrar la versión más alta y sumar 1
+    const maxVersion = Math.max(...versionNumbers);
+    return maxVersion + 1;
   }
 }
