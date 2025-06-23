@@ -149,8 +149,7 @@ export class AttachDraftModalComponent implements OnInit, OnDestroy {
       let fileUpload = event.target.files[0];
       let format = fileUpload.name.split('.');
       const isVersionFinal = this.label == 'Adjuntar Versión Final';
-      let name =
-        this.cant && this.cant >= 1 && !isVersionFinal ? this.numero + '_V' + this.cant + '.' + format[format.length - 1] : fileUpload.name;
+      let name = !isVersionFinal ? this.numero + '_V' + ((this.cant || 0) + 1) + '.' + format[format.length - 1] : fileUpload.name;
       console.log(name);
       const formData = new FormData();
       formData.append('archivo', fileUpload);
