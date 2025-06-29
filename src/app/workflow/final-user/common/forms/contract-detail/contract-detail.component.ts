@@ -251,7 +251,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
     //this.downloadFile(idArchivo);
     this.spinnerService.show();
     const idExpediente = this.data.expediente.id;
-    this.documentService.downloadFileUser(idArchivo, idExpediente, this.idUsuario).subscribe({
+    this.documentService.downloadFileUser(idArchivo, idExpediente).subscribe({
       next: (response) => {
         this.spinnerService.hide();
         const filename = String(response.headers.get('Content-Disposition')?.split('=')[1]?.slice(1, -1));
@@ -259,7 +259,7 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
 
         if (filename.split('.').reverse()[0] === 'pdf') {
           //this.descargarPdf(filename, blob, idArchivo);
-          window.open(this.documentService.downloadFileUserURL(idArchivo, idExpediente, this.idUsuario), '_blank');
+          window.open(this.documentService.downloadFileUserURL(idArchivo, idExpediente), '_blank');
         } else {
           this.descargarArchivoGeneral(filename, blob);
         }
@@ -910,6 +910,19 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
   }
 
   public openModalAnularArchivo() {
+    // Validar si hay archivos disponibles
+    if (!this.dataDocumento?.lstArchivos || this.dataDocumento.lstArchivos.length === 0) {
+      this.dialogService.show({
+        component: MessageModalComponent,
+        config: {
+          data: {
+            message: 'No hay archivos disponibles para anular.',
+          },
+        },
+      });
+      return;
+    }
+
     this.dialogService
       .show({
         component: VoidFileModalComponent,

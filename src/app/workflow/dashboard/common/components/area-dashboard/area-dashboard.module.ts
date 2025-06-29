@@ -10,10 +10,19 @@ import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/compone
 import { CanvasRenderer } from 'echarts/renderers';
 import { TableModule } from 'primeng/table';
 import { TreeModule } from '../tree/tree.module';
+import { StatusElaboradoModalModule } from '../status-elaborado-modal/status-elaborado-modal.module';
+import { DetailElaboradoModalModule } from '../detail-elaborado-modal/detail-elaborado-modal.module';
 echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, LineChart, PieChart, CanvasRenderer]);
 
 @NgModule({
-  imports: [CommonModule, TableModule, NgxEchartsModule.forRoot({ echarts }), TreeModule],
+  imports: [
+    CommonModule,
+    TableModule,
+    NgxEchartsModule.forRoot({ echarts }),
+    TreeModule,
+    StatusElaboradoModalModule,
+    DetailElaboradoModalModule,
+  ],
   declarations: [AreaDashboardComponent, AreaDashboardContainer],
   exports: [AreaDashboardContainer],
 })

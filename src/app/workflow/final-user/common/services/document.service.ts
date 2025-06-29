@@ -68,16 +68,22 @@ export class DocumentService {
     return this.http.get(`${environment.apiUrl}/generarPlantilla/plantilla`, { responseType: 'blob', params: params, observe: 'response' });
   }
 
-  public downloadFile(idArchivo: number,idExpediente:number, nombreUsuario:string) {
-    return this.http.get(`${environment.apiUrl}/descargarArchivo/${idExpediente}/${idArchivo}/`, { responseType: 'blob', observe: 'response' });
+  public downloadFile(idArchivo: number, idExpediente: number, nombreUsuario: string) {
+    return this.http.get(`${environment.apiUrl}/descargarArchivo/${idExpediente}/${idArchivo}/`, {
+      responseType: 'blob',
+      observe: 'response',
+    });
   }
 
-  public downloadFileUser(idArchivo: number,idExpediente:number, idUsuario:string) {
-    return this.http.get(`${environment.apiUrl}/descargarArchivo/usuario/${idExpediente}/${idArchivo}/${idUsuario}`, { responseType: 'blob', observe: 'response' });
+  public downloadFileUser(idArchivo: number, idExpediente: number) {
+    return this.http.get(`${environment.apiUrl}/descargarArchivo/usuario/${idExpediente}/${idArchivo}`, {
+      responseType: 'blob',
+      observe: 'response',
+    });
   }
 
-  public downloadFileUserURL(idArchivo: number,idExpediente:number, idUsuario:string) {
-    return `${environment.apiUrl}/descargarArchivo/usuario/${idExpediente}/${idArchivo}/${idUsuario}`;
+  public downloadFileUserURL(idArchivo: number, idExpediente: number) {
+    return `${environment.apiUrl}/descargarArchivo/usuario/${idExpediente}/${idArchivo}`;
   }
 
   public validarPlantilla(params: any) {

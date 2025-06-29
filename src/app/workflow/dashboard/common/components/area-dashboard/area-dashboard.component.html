@@ -197,7 +197,7 @@
   <div class="row-dashboard">
     <div class="card card-slide mb-0">
       <div class="card-body">
-        <div echarts [options]="pieGraph" class="demo-chart"></div>
+        <div echarts [options]="pieGraph" (chartClick)="onChartClick($event)" class="demo-chart"></div>
       </div>
     </div>
     <!-- <div class="card card-slide mb-0">
@@ -373,3 +373,18 @@
   </div>
   <br />
 </div>
+
+<app-status-elaborado-modal
+  *ngIf="isModalOpenElaborado"
+  [dataSolicitudesGeneralesElaborado]="dataSolicitudesGeneralesElaborado"
+  [porcentajeElaborado]="porcentajeElaborado"
+  (closeModal)="closeModalF()"
+  (valDetail)="viewDetails($event)"
+></app-status-elaborado-modal>
+
+<app-detail-elaborado-modal
+  *ngIf="isModalOpenElaboradoDetail"
+  [valSelectDetailModal]="valSelectDetailModal"
+  [dataSolicitudesGeneralesElaborado]="dataSolicitudesGeneralesElaborado"
+  (closeModal)="closeModalD()"
+></app-detail-elaborado-modal>

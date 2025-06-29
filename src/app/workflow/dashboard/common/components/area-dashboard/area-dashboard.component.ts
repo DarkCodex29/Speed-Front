@@ -7,6 +7,7 @@ import {
   ISolicitudesAbogados,
   ISolicitudesArea,
   ISolicitudesGenerales,
+  ISolicitudesGeneralesElaborado,
   ISolicitudesVigentes,
 } from '../../interfaces';
 
@@ -18,6 +19,7 @@ import {
 export class AreaDashboardComponent implements OnInit {
   @Input() public dataDashboard?: IDashboardResponse;
   @Input() public dataSolicitudesGenerales: Array<ISolicitudesGenerales> = [];
+  @Input() public dataSolicitudesGeneralesElaborado: Array<ISolicitudesGeneralesElaborado> = [];
   @Input() public urlLegalAlDia?: IParameter;
   @Input() public dataSolicitudesAbogado: Array<ISolicitudesAbogados> = [];
   @Input() public dataSolicitudesVigente: Array<ISolicitudesVigentes> = [];
@@ -27,6 +29,10 @@ export class AreaDashboardComponent implements OnInit {
   public isLoading = true;
   public barGraph!: EChartsOption;
   public pieGraph!: EChartsOption;
+  public isModalOpenElaborado = false;
+  public isModalOpenElaboradoDetail = false;
+  public porcentajeElaborado = 0;
+  public valSelectDetailModal = 0;
   private colors = ['#bf9000', '#b8aeae', '#e5e1e1', '#cdb0e8', '#bf9000', '#b8aeae'];
 
   public ngOnInit(): void {
@@ -212,6 +218,28 @@ export class AreaDashboardComponent implements OnInit {
 
   public downloadDocument(ruta: string) {
     this.downloadFile.emit(ruta);
+  }
+
+  public onChartClick(event: any): void {
+    if (event.data && event.data.name === 'Doc. Elaborado') {
+      this.porcentajeElaborado = parseFloat(event.percent.toFixed(2));
+      this.isModalOpenElaborado = true;
+    }
+  }
+
+  public closeModalF(): void {
+    this.isModalOpenElaborado = false;
+  }
+
+  public viewDetails(val: number): void {
+    this.valSelectDetailModal = val;
+    this.isModalOpenElaborado = false;
+    this.isModalOpenElaboradoDetail = true;
+  }
+
+  public closeModalD(): void {
+    this.isModalOpenElaboradoDetail = false;
+    this.isModalOpenElaborado = true;
   }
 
   private getSeries(documentos: IDocumentGraph): SeriesOption[] {

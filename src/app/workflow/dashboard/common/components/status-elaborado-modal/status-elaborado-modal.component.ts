@@ -17,11 +17,17 @@ export class StatusElaboradoModalComponent {
   }
 
   public getTotalCantidad(): number {
-    //console.log('yojim data:', this.dataSolicitudesGeneralesElaborado);
-    return this.dataSolicitudesGeneralesElaborado.reduce((sum, item) => sum + item.cantidad, 0);
+    if (!this.dataSolicitudesGeneralesElaborado || this.dataSolicitudesGeneralesElaborado.length === 0) {
+      return 0;
+    }
+    return this.dataSolicitudesGeneralesElaborado.reduce((sum, item) => sum + (item.cantidad || 0), 0);
   }
 
   public viewDetails(val: number) {
     this.valDetail.emit(val);
+  }
+
+  public trackByFn(index: number, item: ISolicitudesGeneralesElaborado): number {
+    return item.idUbicacion || index;
   }
 }

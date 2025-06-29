@@ -1,7 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IDashboardResponse, IParameter } from '@speed/common/interfaces';
 import { DashboardService } from '../../services';
-import { IModeloDocumento, ISolicitudesAbogados, ISolicitudesArea, ISolicitudesGenerales, ISolicitudesVigentes } from '../../interfaces';
+import {
+  IModeloDocumento,
+  ISolicitudesAbogados,
+  ISolicitudesArea,
+  ISolicitudesGenerales,
+  ISolicitudesGeneralesElaborado,
+  ISolicitudesVigentes,
+} from '../../interfaces';
 import { Subject, takeUntil } from 'rxjs';
 import { SpinnerOverlayService } from '@speed/common/services';
 import { DialogService } from '@speed/common/dialog';
@@ -17,6 +24,7 @@ export class AreaDashboardContainer implements OnInit, OnDestroy {
   @Input() public dataDashboard?: IDashboardResponse;
   public isLoading = true;
   public dataSolicitudesGenerales: Array<ISolicitudesGenerales> = [];
+  public dataSolicitudesGeneralesElaborado: Array<ISolicitudesGeneralesElaborado> = [];
   public dataSolicitudesAbogado: Array<ISolicitudesAbogados> = [];
   public dataSolicitudesVigente: Array<ISolicitudesVigentes> = [];
   @Input() public urlLegalAlDia?: IParameter;
@@ -29,7 +37,7 @@ export class AreaDashboardContainer implements OnInit, OnDestroy {
     private dashboardService: DashboardService,
     private spinnerService: SpinnerOverlayService,
     private dialogService: DialogService,
-    private cacheService: WorkflowTabCacheService
+    private cacheService: WorkflowTabCacheService,
   ) {
     this.unsubscribe = new Subject();
   }
@@ -38,14 +46,20 @@ export class AreaDashboardContainer implements OnInit, OnDestroy {
     this.recoverData();
   }
 
-  public recoverData(){
+  public recoverData() {
     //this.cachedData = this.cacheService.get('Dashboard');
     this.cachedData = {};
-    if (this.cachedData && this.cachedData.dataSolicitudesGenerales
-      && this.cachedData.dataSolicitudesAbogado
-      && this.cachedData.dataSolicitudesVigente
-      && this.cachedData.dataSolicitudes && this.cachedData.modeloDocumentos) {
+    if (
+      this.cachedData &&
+      this.cachedData.dataSolicitudesGenerales &&
+      this.cachedData.dataSolicitudesGeneralesElaborado &&
+      this.cachedData.dataSolicitudesAbogado &&
+      this.cachedData.dataSolicitudesVigente &&
+      this.cachedData.dataSolicitudes &&
+      this.cachedData.modeloDocumentos
+    ) {
       this.dataSolicitudesGenerales = this.cachedData.dataSolicitudesGenerales;
+      this.dataSolicitudesGeneralesElaborado = this.cachedData.dataSolicitudesGeneralesElaborado;
       this.dataSolicitudesAbogado = this.cachedData.dataSolicitudesAbogado;
       this.dataSolicitudesVigente = this.cachedData.dataSolicitudesVigente;
       this.dataSolicitudes = this.cachedData.dataSolicitudes;
@@ -97,12 +111,15 @@ export class AreaDashboardContainer implements OnInit, OnDestroy {
       this.dashboardService.solicitudesPorAbogadoArea(),
       this.dashboardService.solicitudesVigentesArea(),
       this.dashboardService.solicitudesArea(),
+      this.dashboardService.solicitudesGeneralesElaborado(4),
     ]);
     this.dataSolicitudesGenerales = responses[0];
     this.dataSolicitudesAbogado = responses[1];
     this.dataSolicitudesVigente = responses[2];
     this.dataSolicitudes = responses[3];
+    this.dataSolicitudesGeneralesElaborado = responses[4];
     this.cachedData.dataSolicitudesGenerales = this.dataSolicitudesGenerales;
+    this.cachedData.dataSolicitudesGeneralesElaborado = this.dataSolicitudesGeneralesElaborado;
     this.cachedData.dataSolicitudesAbogado = this.dataSolicitudesAbogado;
     this.cachedData.dataSolicitudesVigente = this.dataSolicitudesVigente;
     this.cachedData.dataSolicitudes = this.dataSolicitudes;
