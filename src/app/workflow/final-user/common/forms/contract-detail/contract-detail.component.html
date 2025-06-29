@@ -93,18 +93,6 @@
         class="col-12 col-md-6 card-contract__documents"
         *ngIf="documentos !== null && documentos.length > 0 && indiceDocumento !== null && !loadingDocumentDetail"
       >
-        <!-- BOTONES FIJOS: Adjuntar Archivo y Anular Archivo - SIEMPRE VISIBLES SOLO PARA BORRADORES -->
-        <div *ngIf="data?.documentos?.[indiceDocumento]?.tipoDocumento?.id === 12" class="form-group">
-          <div class="d-flex flex-wrap gap-1 mb-2">
-            <button type="button" class="btn btn-primary btn-sm" (click)="openAttachmentFile()">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Adjuntar Archivo
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="openModalAnularArchivo()">
-              <i class="fa-solid fa-trash-can"></i> Anular Archivo
-            </button>
-          </div>
-        </div>
-
         <!-- BOTONES CONDICIONALES: Los demás botones siguen las validaciones normales -->
         <div *ngIf="flagShowButtonsCarpeta" class="form-group">
           <div class="d-flex flex-wrap gap-1">
