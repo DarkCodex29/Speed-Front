@@ -121,4 +121,11 @@ export class DocumentService {
   // public exportarExcel(params: IParamsSearchDocument) {
   //   return this.http.get<void>(`${environment.apiURL}/buscarDocumentosHC/exportarExcel`, { params: params});
   // }
+
+  public generateSecureDownloadURL(idArchivo: number, idExpediente: number) {
+    return this.http.post<{ url: string }>(`${environment.apiUrl}/descargarArchivo/generarUrlSegura`, {
+      idArchivo,
+      idExpediente,
+    });
+  }
 }

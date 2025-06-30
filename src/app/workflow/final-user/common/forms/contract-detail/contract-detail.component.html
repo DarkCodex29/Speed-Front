@@ -113,6 +113,19 @@
             </button>
           </div>
         </div>
+
+        <!-- BOTONES FIJOS PARA BORRADORES: Aparecen SIEMPRE en carpeta borradores -->
+        <div *ngIf="esCarpetaBorradores()" class="form-group">
+          <div class="d-flex flex-wrap gap-1 mb-3">
+            <button type="button" class="btn btn-sm btn-primary d-flex align-items-center" (click)="openModalAttachFileForDrafts()">
+              <i class="fas fa-upload me-1"></i> Adjuntar Archivo
+            </button>
+            <button type="button" class="btn btn-sm btn-danger d-flex align-items-center" (click)="openModalVoidFileForDrafts()">
+              <i class="fas fa-times me-1"></i> Anular Archivo
+            </button>
+          </div>
+        </div>
+
         <div class="card card-custom mb-3">
           <div class="card-header-secondary text-center">Datos Detallados del Documento</div>
           <div class="card-body">

@@ -258,9 +258,19 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
         const blob: Blob = response.body as Blob;
 
         if (filename.split('.').reverse()[0] === 'pdf') {
-          //this.descargarPdf(filename, blob, idArchivo);
-          window.open(this.documentService.downloadFileUserURL(idArchivo, idExpediente), '_blank');
+          // Para PDFs, usar URL firmada (funciona sin JWT en window.open)
+          this.documentService.generateSecureDownloadURL(idArchivo, idExpediente).subscribe({
+            next: (urlResponse) => {
+              window.open(urlResponse.url, '_blank');
+            },
+            error: (error) => {
+              console.error('Error generando URL firmada:', error);
+              // Fallback al método anterior si falla
+              window.open(this.documentService.downloadFileUserURL(idArchivo, idExpediente), '_blank');
+            },
+          });
         } else {
+          // Para otros archivos, mantener descarga normal con blob
           this.descargarArchivoGeneral(filename, blob);
         }
       },
@@ -1234,5 +1244,60 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
       // Cualquier otra carpeta no especificada se oculta para no-abogado
       return false;
     }
+  }
+
+  /**
+   * Detecta si la carpeta actual es la carpeta de borradores (ID 12)
+   * Estos botones deben aparecer SIEMPRE sin condiciones para borradores
+   */
+  public esCarpetaBorradores(): boolean {
+    if (this.indiceDocumento === null || !this.documentos || !this.documentos[this.indiceDocumento]) {
+      return false;
+    }
+    return this.documentos[this.indiceDocumento]?.tipoDocumento?.id === 12;
+  }
+
+  /**
+   * Abre el modal de adjuntar archivo específicamente para borradores
+   * Usa la misma lógica que openAttachmentFile() pero específico para borradores
+   */
+  public openModalAttachFileForDrafts(): void {
+    this.dialogService
+      .show({
+        component: AttachFileModalComponent,
+        config: {
+          data: this.idDocumentInfo,
+        },
+      })
+      .afterClosed.pipe(takeUntil(this.unsubscribe))
+      .subscribe(async (action) => {
+        const response = action as { modified: boolean };
+        if (response.modified) {
+          this.recoverData();
+          this.reloadList.emit(true);
+        }
+      });
+  }
+
+  /**
+   * Abre el modal de anular archivo específicamente para borradores
+   * Usa la misma lógica que openModalAnularArchivo() pero específico para borradores
+   */
+  public openModalVoidFileForDrafts(): void {
+    this.dialogService
+      .show({
+        component: VoidFileModalComponent,
+        config: {
+          data: this.idDocumentInfo,
+        },
+      })
+      .afterClosed.pipe(takeUntil(this.unsubscribe))
+      .subscribe(async (action) => {
+        const response = action as { modified: boolean };
+        if (response.modified) {
+          this.recoverData();
+          this.reloadList.emit(true);
+        }
+      });
   }
 }
