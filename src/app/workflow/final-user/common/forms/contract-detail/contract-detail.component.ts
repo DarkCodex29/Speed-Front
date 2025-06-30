@@ -1069,13 +1069,25 @@ export class ContractDetailComponent implements OnDestroy, OnInit {
     }
 
     //si es contrato y diferente usuario al responsable no muestra botones.
+    //Excepción: permitir botones si el usuario tiene rol de abogado responsable
     if (tipoDocumento === 7 && this.data.documentoLegal.responsable.nombreCompleto !== this.nombreUsuario) {
-      this.flagShowButtonsCarpeta = false;
+      const rolesUsuario = this.loginService.getUserInfo().rolesUsuario;
+      const esAbogadoResponsable = rolesUsuario?.includes('ZSLG:RESP_LEGAL:HOC') || rolesUsuario?.includes('abogadoResponsable');
+
+      if (!esAbogadoResponsable) {
+        this.flagShowButtonsCarpeta = false;
+      }
     }
 
     //si es adenda y diferente usuario al responsable no muestra botones.
+    //Excepción: permitir botones si el usuario tiene rol de abogado responsable
     if (tipoDocumento === 8 && this.data.documentoLegal.responsable.nombreCompleto !== this.nombreUsuario) {
-      this.flagShowButtonsCarpeta = false;
+      const rolesUsuario = this.loginService.getUserInfo().rolesUsuario;
+      const esAbogadoResponsable = rolesUsuario?.includes('ZSLG:RESP_LEGAL:HOC') || rolesUsuario?.includes('abogadoResponsable');
+
+      if (!esAbogadoResponsable) {
+        this.flagShowButtonsCarpeta = false;
+      }
     }
   }
 
